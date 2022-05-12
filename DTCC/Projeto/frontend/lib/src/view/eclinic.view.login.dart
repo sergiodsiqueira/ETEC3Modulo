@@ -10,25 +10,35 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: (Center(
-          child: Row(
+        body: Center(
+      child: SingleChildScrollView(
+          child: Wrap(
         children: [
-          Container(
-              margin: const EdgeInsets.all(2.0),
-              color: Colors.amber[600],
-              width: 500.0,
-              height: 500.0,
-              child: (Image.network(
-                  'https://media.istockphoto.com/vectors/smartphone-screen-with-female-therapist-on-chat-vector-id1253363497'))),
-          Container(
-            margin: const EdgeInsets.all(2.0),
-            color: Colors.red[600],
-            width: 500.0,
-            height: 500.0,
-            child: (Text('Inputs e Labels de Login')),
-          ),
+          WelcomeBox(context),
+          LoginBox(context),
         ],
-      ))),
-    );
+      )),
+    ));
   }
+}
+
+//Componentes ------------------------------------------------------------------
+Widget LoginBox(BuildContext context) {
+  return Container(
+    margin: const EdgeInsets.all(2.0),
+    color: Colors.red[600],
+    width: 600.0,
+    height: 400.0,
+    child: (Text('Inputs e Labels de Login')),
+  );
+}
+
+Widget WelcomeBox(BuildContext context) {
+  return Container(
+      margin: const EdgeInsets.all(2.0),
+      color: Colors.amber[600],
+      width: 400.0,
+      height: 400.0,
+      child: (Image.network(
+          'https://media.istockphoto.com/vectors/smartphone-screen-with-female-therapist-on-chat-vector-id1253363497')));
 }
