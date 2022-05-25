@@ -1,3 +1,4 @@
+import 'package:eclinic/components/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:eclinic/components/components.dart';
 import 'dart:async';
@@ -18,7 +19,8 @@ class _HomeState extends State<Home> {
           SingleChildScrollView(
             child: Container(
               child: Column(
-                children: [const MenuBar()],
+                children: [const MenuBar(),
+                Calendar()],
               ),
             ),
           )
