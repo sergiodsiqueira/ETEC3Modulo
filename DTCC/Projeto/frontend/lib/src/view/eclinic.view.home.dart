@@ -16,11 +16,28 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Stack(
         children: [
-          SingleChildScrollView(
-            child: Container(
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
               child: Column(
-                children: [const MenuBar(),
-                Calendar()],
+                children: [
+                  const MenuBar(),
+                  Row(
+                    children: [
+                      Container(
+                        transformAlignment: Alignment.topCenter,
+                        child: Calendar(),
+                        width: 500,
+                        height: 500,
+                      ),
+                      Container(
+                        width: 800,
+                        height: 500,
+                        color: Colors.amberAccent,
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           )

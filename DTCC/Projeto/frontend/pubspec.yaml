@@ -31,7 +31,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  splashscreen: 
   http:
   animations:
   loading_gifs:

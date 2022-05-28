@@ -39,14 +39,14 @@ class MenuBar extends StatelessWidget {
                             ModalRoute.withName(Navigator.defaultRouteName)),
                         style: menuButtonStyle,
                         child: const Text(
-                          "HOME",
+                          "AGENDA",
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         style: menuButtonStyle,
                         child: const Text(
-                          "PORTFOLIO",
+                          "PACIENTES",
                         ),
                       ),
                       TextButton(
@@ -54,21 +54,7 @@ class MenuBar extends StatelessWidget {
                             Navigator.pushNamed(context, Routes.style),
                         style: menuButtonStyle,
                         child: const Text(
-                          "STYLE",
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        style: menuButtonStyle,
-                        child: const Text(
-                          "ABOUT",
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        style: menuButtonStyle,
-                        child: const Text(
-                          "CONTACT",
+                          "ADMINISTRAÇÃO",
                         ),
                       ),
                     ],
