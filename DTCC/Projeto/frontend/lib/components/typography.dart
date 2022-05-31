@@ -24,3 +24,17 @@ TextStyle bodyTextStyle = GoogleFonts.openSans(
 TextStyle buttonTextStyle = GoogleFonts.montserrat(
     textStyle:
         const TextStyle(fontSize: 14, color: textPrimary, letterSpacing: 1));
+
+TextStyle tituloH1 = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        fontSize: 34,
+        color: textPrimary,
+        letterSpacing: 0.5,
+        fontWeight: FontWeight.w400));
+
+TextStyle tituloH2 = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+        fontSize: 24,
+        color: textPrimary,
+        letterSpacing: 0.5,
+        fontWeight: FontWeight.w400));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:eclinic/src/view/eclinic.view.login.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import './src/view/pages.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,7 +11,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return FluentApp(
+      title: 'OFICINA DA MENTE',
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

@@ -1,8 +1,7 @@
-import 'package:eclinic/components/text.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:eclinic/components/components.dart';
-import 'eclinic.view.home.dart';
+import 'pages.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -27,6 +26,9 @@ class _LoginState extends State<Login> {
 
 //Componentes ------------------------------------------------------------------
 Widget LoginBox(BuildContext context) {
+  TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtSenha = TextEditingController();
+
   return Container(
     margin: const EdgeInsets.all(2.0),
     color: Color.fromARGB(255, 240, 240, 240),
@@ -34,7 +36,7 @@ Widget LoginBox(BuildContext context) {
     height: 400.0,
     child: Padding(
       padding:
-          const EdgeInsets.only(left: 150, right: 150, bottom: 100, top: 100),
+          const EdgeInsets.only(left: 80, right: 80, bottom: 100, top: 100),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -47,15 +49,12 @@ Widget LoginBox(BuildContext context) {
             style: bodyTextStyle,
           ),
           TextFormField(
+            controller: txtEmail,
             decoration: const InputDecoration(
-              icon: Icon(Icons.mail),
+              icon: Icon(FluentIcons.mail),
               hintText: '',
               labelText: 'E-mail',
             ),
-            onSaved: (String? value) {
-              // This optional block of code can be used to run
-              // code when the user saves the form.
-            },
             validator: (String? value) {
               return (value != null && value.contains('@'))
                   ? 'Do not use the @ char.'
@@ -63,15 +62,13 @@ Widget LoginBox(BuildContext context) {
             },
           ),
           TextFormField(
+            controller: txtSenha,
+            obscureText: true,
             decoration: const InputDecoration(
-              icon: Icon(Icons.password),
+              icon: Icon(FluentIcons.password_field),
               hintText: '',
               labelText: 'Senha',
             ),
-            onSaved: (String? value) {
-              // This optional block of code can be used to run
-              // code when the user saves the form.
-            },
             validator: (String? value) {
               return (value != null && value.contains('@'))
                   ? 'Do not use the @ char.'
@@ -80,10 +77,13 @@ Widget LoginBox(BuildContext context) {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => Home()));
+              if (txtSenha.text == '123' &&
+                  txtEmail.text == 'sergio@local.com') {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Home()));
+              }
             },
-            child: Text('LOGIN'),
+            child: Text('ENTRAR'),
           )
         ],
       ),

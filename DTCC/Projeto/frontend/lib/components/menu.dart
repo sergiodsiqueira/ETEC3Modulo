@@ -1,8 +1,8 @@
+import 'package:eclinic/src/view/eclinic.view.agenda.dart';
+import 'package:eclinic/src/view/eclinic.view.dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:eclinic/components/color.dart';
-import 'package:eclinic/components/text.dart';
-import 'package:eclinic/routes.dart';
+import 'package:eclinic/components/components.dart';
 
 class MenuBar extends StatelessWidget {
   const MenuBar({Key? key}) : super(key: key);
@@ -20,8 +20,12 @@ class MenuBar extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
-                onTap: () => Navigator.popUntil(
-                    context, ModalRoute.withName(Navigator.defaultRouteName)),
+                onTap: () => {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Dashboard()))
+                },
                 child: Text("OFICINA DA MENTE",
                     style: GoogleFonts.montserrat(
                         color: textPrimary,
@@ -35,8 +39,25 @@ class MenuBar extends StatelessWidget {
                   child: Wrap(
                     children: <Widget>[
                       TextButton(
-                        onPressed: () => Navigator.popUntil(context,
-                            ModalRoute.withName(Navigator.defaultRouteName)),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Dashboard()));
+                        },
+                        style: menuButtonStyle,
+                        child: const Text(
+                          "DASHBOARD",
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Agenda()));
+                        },
                         style: menuButtonStyle,
                         child: const Text(
                           "AGENDA",
@@ -50,8 +71,14 @@ class MenuBar extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, Routes.style),
+                        onPressed: () {},
+                        style: menuButtonStyle,
+                        child: const Text(
+                          "TERAPIAS",
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
                         style: menuButtonStyle,
                         child: const Text(
                           "ADMINISTRAÇÃO",
