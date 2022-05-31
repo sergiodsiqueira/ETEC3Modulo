@@ -33,9 +33,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   http:
-  animations:
-  loading_gifs:
-  syncfusion_flutter_calendar:
+  table_calendar: ^3.0.6
   fl_chart: ^0.51.0
 
   # The following adds the Cupertino Icons font to your application.

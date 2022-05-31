@@ -1,5 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:eclinic/components/components.dart';
 import 'pages.dart';
 
@@ -77,8 +77,7 @@ Widget LoginBox(BuildContext context) {
           ),
           ElevatedButton(
             onPressed: () {
-              if (txtSenha.text == '123' &&
-                  txtEmail.text == 'sergio@local.com') {
+              if (txtSenha.text != '' && txtEmail.text != '') {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => Home()));
               }
