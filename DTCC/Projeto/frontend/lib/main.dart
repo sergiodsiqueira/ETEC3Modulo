@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import './src/view/pages.dart';
+import './src/screens/screens.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 void main() => runApp(const MyApp());

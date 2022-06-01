@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:eclinic/components/components.dart';
-import 'pages.dart';
+import 'screens.dart';
 
 class Login extends StatefulWidget {
   @override

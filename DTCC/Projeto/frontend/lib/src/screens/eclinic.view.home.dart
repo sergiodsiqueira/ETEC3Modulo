@@ -1,4 +1,4 @@
-import 'package:eclinic/src/view/pages.dart';
+import 'package:eclinic/src/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:eclinic/components/components.dart';
 import 'package:fluent_ui/fluent_ui.dart';
