@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
           ]),
       content: NavigationBody(index: index, children: [
         Dashboard(),
-        Agenda(),
+        TelaAgenda(),
       ]),
     );
   }

@@ -1,16 +1,17 @@
-import 'package:eclinic/components/calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:eclinic/components/components.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import '../../components/components.dart';
+import '../states/eclinic.state.agenda.dart';
+import 'package:get/get.dart';
 
-class Agenda extends StatefulWidget {
+class TelaAgenda extends StatefulWidget {
+  const TelaAgenda({Key? key}) : super(key: key);
+
   @override
-  State<Agenda> createState() => _AgendaState();
+  State<TelaAgenda> createState() => _TelaAgendaState();
 }
 
-class _AgendaState extends State<Agenda> {
+class _TelaAgendaState extends State<TelaAgenda> {
+  final Agendamentos _agendamentos = Get.put(Agendamentos());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +32,19 @@ class _AgendaState extends State<Agenda> {
                         height: 400,
                       ),
                       Container(
-                          width: 500,
-                          height: 400,
-                          color: Colors.amberAccent,
-                          child: (Column(
-                            children: [Text('Ola'), Text('ola2'), Text('ola2')],
-                          ))),
+                          color: Colors.blue,
+                          child: ListView.builder(
+                            itemCount: _agendamentos.items.length,
+                            itemBuilder: (context, index) {
+                              final evento = _agendamentos.items[index];
+                              return Card(
+                                key: ValueKey(evento.id),
+                                margin: EdgeInsets.all(5),
+                                color: Colors.amber,
+                                child: ListTile(title: Text(evento.evento)),
+                              );
+                            },
+                          )),
                     ],
                   )
                 ],

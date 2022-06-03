@@ -1,0 +1,28 @@
+[
+    {
+      "id": 1,
+      "evento": "Evento 1",
+      "observacao": "Atendimento ao paciente com depressão",
+      "data": "2022-06-01",
+      "horaInicial": "09:00:00",
+      "horaFinal": "10:00:00",
+      "confirmado": false,
+      "idTipoEvento": 1,
+      "descricaoTipoEvento": "Atendimento",
+      "idPaciente": 1,
+      "nomePaciente": "Anonymous 1"
+    },
+    {
+      "id": 2,
+      "evento": "Evento 2",
+      "observacao": "Atendimento ao paciente com ansiedade",
+      "data": "2022-06-01",
+      "horaInicial": "09:00:00",
+      "horaFinal": "10:00:00",
+      "confirmado": false,
+      "idTipoEvento": 1,
+      "descricaoTipoEvento": "Atendimento",
+      "idPaciente": 2,
+      "nomePaciente": "Anonymous 2"
+    }
+]
