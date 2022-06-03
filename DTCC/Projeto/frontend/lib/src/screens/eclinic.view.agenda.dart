@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../components/components.dart';
-import '../states/eclinic.state.agenda.dart';
-import 'package:get/get.dart';
 
 class TelaAgenda extends StatefulWidget {
   const TelaAgenda({Key? key}) : super(key: key);
@@ -11,7 +9,6 @@ class TelaAgenda extends StatefulWidget {
 }
 
 class _TelaAgendaState extends State<TelaAgenda> {
-  final Agendamentos _agendamentos = Get.put(Agendamentos());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,25 +23,15 @@ class _TelaAgendaState extends State<TelaAgenda> {
                   Row(
                     children: [
                       Container(
-                        transformAlignment: Alignment.topCenter,
-                        child: Calendar(),
-                        width: 300,
-                        height: 400,
+                        child: wdgCalendario(),
+                        width: MediaQuery.of(context).size.width / 1.7,
+                        height: MediaQuery.of(context).size.height - 100,
                       ),
                       Container(
-                          color: Colors.blue,
-                          child: ListView.builder(
-                            itemCount: _agendamentos.items.length,
-                            itemBuilder: (context, index) {
-                              final evento = _agendamentos.items[index];
-                              return Card(
-                                key: ValueKey(evento.id),
-                                margin: EdgeInsets.all(5),
-                                color: Colors.amber,
-                                child: ListTile(title: Text(evento.evento)),
-                              );
-                            },
-                          )),
+                        child: wdgAgendamentos(),
+                        width: MediaQuery.of(context).size.width / 2.9,
+                        height: MediaQuery.of(context).size.height - 100,
+                      ),
                     ],
                   )
                 ],

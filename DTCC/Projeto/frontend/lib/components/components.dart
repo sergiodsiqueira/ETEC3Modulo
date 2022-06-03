@@ -1,8 +1,9 @@
 export 'color.dart';
 export 'typography.dart';
-export 'calendar.dart';
+export 'wdg_calendario.dart';
 export 'spacing.dart';
 export 'text.dart';
 export 'linearChart.dart';
 export 'barChart.dart';
 export 'pieChart.dart';
+export 'wdg_agendamentos.dart';

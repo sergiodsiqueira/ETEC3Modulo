@@ -8,7 +8,7 @@ class Agendamento {
   DateTime data;
   DateTime horaInicial;
   DateTime horaFinal;
-  RxBool confirmado; //Variavel a ser observada
+  bool confirmado;
   int idTipoEvento;
   String descricaoTipoEvento;
   int idPaciente;

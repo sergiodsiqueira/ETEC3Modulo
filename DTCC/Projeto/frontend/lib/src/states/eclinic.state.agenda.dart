@@ -1,7 +1,7 @@
 // state/products.dart
 import 'package:get/get.dart';
 import 'dart:math';
-import '../models/eclinic.model.agenda.dart';
+import '../models/eclinic.model.agendamento.dart';
 
 class Agendamentos extends GetxController {
   // Todos Agendamentos
@@ -16,7 +16,7 @@ class Agendamentos extends GetxController {
             horaInicial: DateTime.now(),
             horaFinal: DateTime(DateTime.now().year, DateTime.now().month,
                 DateTime.now().day, DateTime.now().hour + 1),
-            confirmado: false.obs, //Variavel a ser observada
+            confirmado: false, //Variavel a ser observada
             idTipoEvento: Random().nextInt(3),
             descricaoTipoEvento: 'Atendimento',
             idPaciente: index,
@@ -30,18 +30,18 @@ class Agendamentos extends GetxController {
 
   //Lista de Confirmados
   List<Agendamento> get listaConfirmados {
-    return _eventos.where((item) => item.confirmado.value == true).toList();
+    return _eventos.where((item) => item.confirmado == true).toList();
   }
 
   //Metodo Adicionar a lista de Atendimentos Confirmados
   void addItem(int id) {
     final int index = _eventos.indexWhere((item) => item.id == id);
-    _eventos[index].confirmado.value = true;
+    _eventos[index].confirmado = true;
   }
 
   //Metodo Remover da lista de Atendimentos Confirmados
   void removeItem(int id) {
     final int index = _eventos.indexWhere((item) => item.id == id);
-    _eventos[index].confirmado.value = false;
+    _eventos[index].confirmado = false;
   }
 }

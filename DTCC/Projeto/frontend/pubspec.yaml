@@ -34,6 +34,7 @@ dependencies:
     sdk: flutter
   http:
   table_calendar: ^3.0.6
+  syncfusion_flutter_datepicker:
   fl_chart: ^0.51.0
   get:
 
