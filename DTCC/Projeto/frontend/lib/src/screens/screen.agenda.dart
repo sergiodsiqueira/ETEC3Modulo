@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../components/components.dart';
+import 'package:eclinic/src/components/components.dart';
 
 class TelaAgenda extends StatefulWidget {
   const TelaAgenda({Key? key}) : super(key: key);
@@ -23,12 +23,12 @@ class _TelaAgendaState extends State<TelaAgenda> {
                   Row(
                     children: [
                       Container(
-                        child: wdgCalendario(),
+                        child: Calendario(),
                         width: MediaQuery.of(context).size.width / 1.7,
                         height: MediaQuery.of(context).size.height - 100,
                       ),
                       Container(
-                        child: wdgAgendamentos(),
+                        child: ListViewAtendimentos(),
                         width: MediaQuery.of(context).size.width / 2.9,
                         height: MediaQuery.of(context).size.height - 100,
                       ),

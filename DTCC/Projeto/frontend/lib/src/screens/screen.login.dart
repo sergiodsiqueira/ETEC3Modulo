@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:eclinic/components/components.dart';
-import 'screens.dart';
+import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
+import 'package:eclinic/src/components/components.dart';
+import 'package:eclinic/src/screens/screens.dart';
+import 'package:eclinic/src/models/models.dart';
+import 'package:eclinic/src/providers/providers.dart';
+
+class ScreenLogin extends StatefulWidget {
   @override
-  State<Login> createState() => _LoginState();
+  State<ScreenLogin> createState() => _ScreenLoginState();
 }
 
-class _LoginState extends State<Login> {
+class _ScreenLoginState extends State<ScreenLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +29,39 @@ class _LoginState extends State<Login> {
   }
 }
 
-//Componentes ------------------------------------------------------------------
+//Container Imagem
+Widget WelcomeBox(BuildContext context) {
+  return Container(
+      margin: const EdgeInsets.all(2.0),
+      color: Color.fromARGB(255, 240, 240, 240),
+      width: 300.0,
+      height: 400.0,
+      child: (Image(
+        image: NetworkImage(
+            'https://rehabafterwork.pyramidhealthcarepa.com/wp-content/uploads/2020/03/Online-Counseling-and-Confidentiality.jpg'),
+        fit: BoxFit.cover,
+      )));
+}
+
+//Container Login
 Widget LoginBox(BuildContext context) {
-  TextEditingController txtEmail = TextEditingController();
-  TextEditingController txtSenha = TextEditingController();
+  final _tEmail = TextEditingController();
+  final _tSenha = TextEditingController();
+  final Login _login = Get.put(Login());
+
+  _onClickEntrar(BuildContext context) async {
+    final login = _tEmail.text;
+    final senha = _tSenha.text;
+
+    ApiResponse response = await LoginApi.login(login, senha);
+
+    if (response.ok) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ScreenHome()));
+    } else {
+      alert(context, "Login", "Erro ao efetuar login");
+    }
+  }
 
   return Container(
     margin: const EdgeInsets.all(2.0),
@@ -42,14 +76,12 @@ Widget LoginBox(BuildContext context) {
         children: [
           Text(
             'BEM-VINDO',
-            style: subtitleTextStyle,
           ),
           Text(
             'OFICINA DA MENTE',
-            style: bodyTextStyle,
           ),
           TextFormField(
-            controller: txtEmail,
+            controller: _tEmail,
             decoration: const InputDecoration(
               icon: Icon(FluentIcons.mail),
               hintText: '',
@@ -62,7 +94,7 @@ Widget LoginBox(BuildContext context) {
             },
           ),
           TextFormField(
-            controller: txtSenha,
+            controller: _tSenha,
             obscureText: true,
             decoration: const InputDecoration(
               icon: Icon(FluentIcons.password_field),
@@ -77,10 +109,7 @@ Widget LoginBox(BuildContext context) {
           ),
           ElevatedButton(
             onPressed: () {
-              if (txtSenha.text != '' && txtEmail.text != '') {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Home()));
-              }
+              _onClickEntrar(context);
             },
             child: Text('ENTRAR'),
           )
@@ -88,17 +117,4 @@ Widget LoginBox(BuildContext context) {
       ),
     ),
   );
-}
-
-Widget WelcomeBox(BuildContext context) {
-  return Container(
-      margin: const EdgeInsets.all(2.0),
-      color: Color.fromARGB(255, 240, 240, 240),
-      width: 300.0,
-      height: 400.0,
-      child: (Image(
-        image: NetworkImage(
-            'https://rehabafterwork.pyramidhealthcarepa.com/wp-content/uploads/2020/03/Online-Counseling-and-Confidentiality.jpg'),
-        fit: BoxFit.cover,
-      )));
 }

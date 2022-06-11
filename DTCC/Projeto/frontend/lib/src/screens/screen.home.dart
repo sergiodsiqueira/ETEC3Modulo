@@ -1,14 +1,17 @@
-import 'package:eclinic/src/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:eclinic/components/components.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:get/get.dart';
 
-class Home extends StatefulWidget {
+import 'package:eclinic/src/screens/screens.dart';
+import 'package:eclinic/src/models/models.dart';
+
+class ScreenHome extends StatefulWidget {
   @override
-  State<Home> createState() => _HomeState();
+  State<ScreenHome> createState() => _ScreenHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _ScreenHomeState extends State<ScreenHome> {
+  final Login _login = Get.find<Login>();
   final viewKey = GlobalKey();
   int index = 0;
   bool value = false;
@@ -29,7 +32,10 @@ class _HomeState extends State<Home> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 10),
-                child: Text('OFICINA DA MENTE', style: tituloH2),
+                child: Obx(() => Text(
+                      'OFICINA DA MENTE: ${_login.login}',
+                      style: const TextStyle(fontSize: 28),
+                    )),
               ),
             ],
           );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:eclinic/components/components.dart';
+import 'package:eclinic/src/components/components.dart';
 
 class Dashboard extends StatefulWidget {
   @override

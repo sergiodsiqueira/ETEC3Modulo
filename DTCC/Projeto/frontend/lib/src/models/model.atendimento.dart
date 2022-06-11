@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-class Agendamento {
+class Atendimento {
   int id;
   String evento;
   String observacao;
@@ -14,7 +11,7 @@ class Agendamento {
   int idPaciente;
   String nomePaciente;
 
-  Agendamento({
+  Atendimento({
     required this.id,
     required this.evento,
     required this.observacao,
