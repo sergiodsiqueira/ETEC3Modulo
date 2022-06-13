@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:eclinic/src/models/model.login.dart';
 
 class ListViewAtendimentos extends StatefulWidget {
-  final Login _login = Get.put(Login());
-
   @override
   State<ListViewAtendimentos> createState() => _ListViewAtendimentosState();
 }

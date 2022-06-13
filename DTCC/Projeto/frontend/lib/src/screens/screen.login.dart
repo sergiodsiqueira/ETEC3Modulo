@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +8,7 @@ import 'package:eclinic/src/models/models.dart';
 import 'package:eclinic/src/providers/providers.dart';
 
 class ScreenLogin extends StatefulWidget {
+  const ScreenLogin({Key? key}) : super(key: key);
   @override
   State<ScreenLogin> createState() => _ScreenLoginState();
 }
@@ -21,8 +21,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
       child: SingleChildScrollView(
           child: Wrap(
         children: [
-          WelcomeBox(context),
-          LoginBox(context),
+          welcomeBox(context),
+          loginBox(context),
         ],
       )),
     ));
@@ -30,7 +30,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 }
 
 //Container Imagem
-Widget WelcomeBox(BuildContext context) {
+Widget welcomeBox(BuildContext context) {
   return Container(
       margin: const EdgeInsets.all(2.0),
       color: Color.fromARGB(255, 240, 240, 240),
@@ -44,10 +44,10 @@ Widget WelcomeBox(BuildContext context) {
 }
 
 //Container Login
-Widget LoginBox(BuildContext context) {
+Widget loginBox(BuildContext context) {
   final _tEmail = TextEditingController();
   final _tSenha = TextEditingController();
-  final Login _login = Get.put(Login());
+  final Login _login = Get.find<Login>();
 
   _onClickEntrar(BuildContext context) async {
     final login = _tEmail.text;
