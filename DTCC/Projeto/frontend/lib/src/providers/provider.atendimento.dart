@@ -23,21 +23,34 @@ class Atendimentos extends GetxController {
 
           if (response.statusCode == 200) {
             var dados = json.decode(response.body);
-            if (dados.length > 0){
-              for (int i = 0; i < dados.length; i++){
-                Map<String,dynamic> map = dados[i];
-                _todosAtendimentos.add(Atendimento.fromJson(map));
-                print('asasass' + _todosAtendimentos.length.toString());
-              }
-            }
-            return ApiResponse.ok(_todosAtendimentos);
-          }
+            for (var atendimento in dados) {
+              Atendimento item = Atendimento(
+                  id: atendimento['id'],
+                  idPaciente: atendimento['id_paciente'],
+                  data: atendimento['data'],
+                  horaInicio: atendimento['hora_inicio'],
+                  horaFim: atendimento['hora_fim'],
+                  descricao: atendimento['descricao'],
+                  observacao: atendimento['observacao'],
+                  confirmado: atendimento['confirmado'],
+                  efetivado: atendimento['efetivado'],
+                  valor: atendimento['valor'],
+                  pago: atendimento['pago'],
+                  idTipo: atendimento['id_tipo']);
 
-          return ApiResponse.error("Erro ao carregar atendimentos");
+              _todosAtendimentos.add(item);
+              print('Qtde importada: ' + _todosAtendimentos.length.toString());
+            }
+          } else {
+            return ApiResponse.error("Erro ao carregar atendimentos");
+          }
         } catch (error, exception) {
-          return ApiResponse.error("Sem comunica��o ... tente mais tarde... ");
+          return ApiResponse.error(
+              "Sem comunica��o ... tente mais tarde... ");
         }
       };
+
+  //Lista de todos Atendimentos
   List<Atendimento> get todosAtendimentos {
     return [..._todosAtendimentos];
   }

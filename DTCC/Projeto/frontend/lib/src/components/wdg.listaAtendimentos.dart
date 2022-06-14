@@ -10,39 +10,60 @@ class ListViewAtendimentos extends StatefulWidget {
 }
 
 class _ListViewAtendimentosState extends State<ListViewAtendimentos> {
-  final Atendimentos _todosAtendimentos = Get.find<Atendimentos>();
   @override
   Widget build(BuildContext context) {
-    return (Column(children: [Text('Ola mundo'),
-                              ElevatedButton(onPressed: () => {_todosAtendimentos.carregarDados()}, child: Icon(Icons.cloud_download)),
-                              Obx(() => Text(_todosAtendimentos.todosAtendimentos.length.toString())),
-            
-        Expanded(
-          child: ListView.builder(
-            itemCount: _todosAtendimentos.todosAtendimentos.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: Padding(
-                  padding: EdgeInsets.all(10),
+    return (Expanded(child: Column(children: [Lista(), BotaoConfirmado()])));
+  }
+}
+
+class Lista extends StatelessWidget {
+  final Atendimentos _lista = Get.find<Atendimentos>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => (exibirLista(context, _lista.todosAtendimentos.length)));
+  }
+
+  exibirLista(context, var pQtdeAtendimentos) {
+    if (pQtdeAtendimentos > 0) {
+      return Obx(
+        () => Column(children: [
+          ListView.builder(
+              itemCount: _lista.todosAtendimentos.length,
+              // List item widget
+              itemBuilder: (context, index) {
+                final atendimento = _lista.todosAtendimentos[index];
+                return Card(
+                  key: ValueKey(atendimento.id),
+                  margin: EdgeInsets.all(5),
+                  color: Colors.amberAccent,
                   child: ListTile(
-                    title: Text(
-                      _todosAtendimentos.todosAtendimentos[index].descricao,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    leading: CircleAvatar(
-                      child: Text(
-                        _todosAtendimentos.todosAtendimentos[index].descricao[0],
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    trailing: Text(
-                        "\$ ${_todosAtendimentos.todosAtendimentos[index].horaInicio.toString()}"),
-                  ),
-                ),
-              );
-            }),
-        )
-  ]));}
+                      title: Text(atendimento.descricao),
+                      subtitle: Text("\$${atendimento.horaInicio.toString()}"),
+                      trailing: Obx(
+                        () => IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.check_box_outline_blank),
+                        ),
+                      )),
+                );
+              })
+        ]),
+      );
+    } else {
+      return Column(children: [
+        Icon(Icons.calendar_month_outlined),
+        Text('Carregar atendimentos')
+      ]);
+    }
+  }
+}
+
+class BotaoConfirmado extends StatelessWidget {
+  const BotaoConfirmado({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (Switch(value: true, onChanged: null));
+  }
 }

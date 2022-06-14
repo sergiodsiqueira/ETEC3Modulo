@@ -11,7 +11,6 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
-  final Login _login = Get.find<Login>();
   final viewKey = GlobalKey();
   int index = 0;
   bool value = false;
@@ -32,10 +31,10 @@ class _ScreenHomeState extends State<ScreenHome> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 10),
-                child: Obx(() => Text(
-                      'OFICINA DA MENTE: ${_login.login}',
-                      style: const TextStyle(fontSize: 28),
-                    )),
+                child: Text(
+                  'OFICINA DA MENTE',
+                  style: const TextStyle(fontSize: 24),
+                ),
               ),
             ],
           );
