@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:get/get.dart';
 
 import 'package:eclinic/src/components/components.dart';
 import 'package:eclinic/src/screens/screens.dart';
-import 'package:eclinic/src/models/models.dart';
 import 'package:eclinic/src/providers/providers.dart';
 
 class ScreenLogin extends StatefulWidget {
@@ -47,7 +45,6 @@ Widget welcomeBox(BuildContext context) {
 Widget loginBox(BuildContext context) {
   final _tEmail = TextEditingController();
   final _tSenha = TextEditingController();
-  final Login _login = Get.find<Login>();
 
   _onClickEntrar(BuildContext context) async {
     final login = _tEmail.text;
@@ -74,10 +71,10 @@ Widget loginBox(BuildContext context) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             'BEM-VINDO',
           ),
-          Text(
+          const Text(
             'OFICINA DA MENTE',
           ),
           TextFormField(
@@ -111,7 +108,7 @@ Widget loginBox(BuildContext context) {
             onPressed: () {
               _onClickEntrar(context);
             },
-            child: Text('ENTRAR'),
+            child: const Text('ENTRAR'),
           )
         ],
       ),

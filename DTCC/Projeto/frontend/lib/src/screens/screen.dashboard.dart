@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:eclinic/src/components/components.dart';
+import 'package:eclinic/src/providers/providers.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -7,6 +10,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final Atendimentos _listaAtendimentos = Get.put(Atendimentos());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +39,14 @@ class _DashboardState extends State<Dashboard> {
                         color: Color.fromARGB(26, 17, 133, 228),
                         child: PieChartSample2(),
                         width: 300,
+                      ),
+                      Container(
+                        child: Column(children: [
+                          const Text('Atendimentos'),
+                          Obx(() => Text(_listaAtendimentos
+                              .todosAtendimentos.length
+                              .toString()))
+                        ]),
                       ),
                     ],
                   )

@@ -21,47 +21,28 @@ class Lista extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => (exibirLista(context, _lista.todosAtendimentos.length)));
-  }
-
-  exibirLista(context, var pQtdeAtendimentos) {
-    if (pQtdeAtendimentos > 0) {
-      return Obx(
-        () => Column(children: [
-          ListView.builder(
-              itemCount: _lista.todosAtendimentos.length,
-              // List item widget
-              itemBuilder: (context, index) {
-                final atendimento = _lista.todosAtendimentos[index];
-                return Card(
-                  key: ValueKey(atendimento.id),
-                  margin: EdgeInsets.all(5),
-                  color: Colors.amberAccent,
-                  child: ListTile(
-                      title: Text(atendimento.descricao),
-                      subtitle: Text("\$${atendimento.horaInicio.toString()}"),
-                      trailing: Obx(
-                        () => IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.check_box_outline_blank),
-                        ),
-                      )),
-                );
-              })
-        ]),
-      );
-    } else {
-      return Column(children: [
-        Icon(Icons.calendar_month_outlined),
-        Text('Carregar atendimentos')
-      ]);
-    }
+    return Expanded(
+        child: Obx(
+      () => ListView.builder(
+        itemCount: _lista.todosAtendimentos.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text(_lista.todosAtendimentos[index].id.toString()),
+                  subtitle: Text(_lista.todosAtendimentos[index].descricao),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    ));
   }
 }
 
 class BotaoConfirmado extends StatelessWidget {
-  const BotaoConfirmado({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return (Switch(value: true, onChanged: null));

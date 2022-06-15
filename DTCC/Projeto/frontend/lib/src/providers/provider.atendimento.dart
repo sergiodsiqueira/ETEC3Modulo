@@ -7,7 +7,7 @@ import 'package:eclinic/src/components/components.dart';
 
 class Atendimentos extends GetxController {
   final Login _login = Get.find<Login>();
-  final RxList<Atendimento> _todosAtendimentos = RxList<Atendimento>.empty();
+  final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;  
 
   //Carga de dados
   get carregarDados => () async {

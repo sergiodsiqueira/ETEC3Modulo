@@ -5,7 +5,6 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:eclinic/src/screens/screens.dart';
-import 'package:eclinic/src/providers/providers.dart';
 
 void main() => runApp(const Application());
 
@@ -28,8 +27,7 @@ class Application extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  final StartProviders _startProviders = StartProviders();
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,7 +43,6 @@ class MyApp extends StatelessWidget {
         locale: const Locale('pt'),
         debugShowCheckedModeBanner: false,
         home: ScreenLogin(),
-        onGenerateTitle: _startProviders.start(),
       ),
     );
   }

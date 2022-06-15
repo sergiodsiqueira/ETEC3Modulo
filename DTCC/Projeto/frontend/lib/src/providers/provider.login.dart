@@ -7,7 +7,7 @@ import 'package:eclinic/src/models/models.dart';
 
 class LoginApi {
   static Future<ApiResponse<Login>> login(String pEmail, String pSenha) async {
-    final Login _login = Get.find<Login>();
+    final Login _login = Get.put(Login());
     try {
       String url = 'https://app-eclinic-oficinadamente.herokuapp.com/api/login';
 
