@@ -17,6 +17,7 @@ class _CalendarioState extends State<Calendario> {
 
   void carregarLista(DateRangePickerSelectionChangedArgs args) {
     _todosAtendimentos.carregarDados();
+    _todosAtendimentos.validar();
   }
 
   @override

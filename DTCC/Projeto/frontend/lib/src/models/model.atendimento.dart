@@ -1,53 +1,18 @@
 import 'package:get/get.dart';
 
 class Atendimento {
-  final _id = 0.obs;
-  get id => _id.value;
-  set id(value) => _id.value = value;
-
-  final _idPaciente = 0.obs;
-  get idPaciente => _idPaciente.value;
-  set idPaciente(value) => _idPaciente.value = value;
-
-  final _data = ''.obs;
-  get data => _data.value;
-  set data(value) => _data.value = value;
-
-  final _horaInicio = ''.obs;
-  get horaInicio => _horaInicio.value;
-  set horaInicio(value) => _horaInicio.value = value;
-
-  final _horaFim = ''.obs;
-  get horaFim => _horaFim.value;
-  set horaFim(value) => _horaFim.value = value;
-
-  final _descricao = ''.obs;
-  get descricao => _descricao.value;
-  set descricao(value) => _descricao.value = value;
-
-  final _observacao = ''.obs;
-  get observacao => _observacao.value;
-  set observacao(value) => _observacao.value = value;
-
-  final _confirmado = false.obs;
-  get confirmado => _confirmado.value;
-  set confirmado(value) => _confirmado.value = value;
-
-  final _efetivado = false.obs;
-  get efetivado => _efetivado.value;
-  set efetivado(value) => _efetivado.value = value;
-
-  final _valor = 0.obs;
-  get valor => _valor.value;
-  set valor(value) => _valor.value = value;
-
-  final _pago = false.obs;
-  get pago => _pago.value;
-  set pago(value) => _pago.value = value;
-
-  final _idTipo = 0.obs;
-  get idTipo => _idTipo.value;
-  set idTipo(value) => _idTipo.value = value;
+  int? id = 0;
+  int? idPaciente = 0;
+  DateTime? data = null;
+  DateTime? horaInicio = null;
+  DateTime? horaFim = null;
+  String? descricao = '';
+  String? observacao = '';
+  bool? confirmado = false;
+  RxBool? efetivado = false.obs;
+  double? valor = 0;
+  bool? pago = false;
+  int? idTipo = 0;
 
   Atendimento(
       {id,

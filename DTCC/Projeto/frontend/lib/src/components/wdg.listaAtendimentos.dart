@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 import 'package:eclinic/src/providers/providers.dart';
+import 'package:eclinic/src/models/models.dart';
 
 class ListViewAtendimentos extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _ListViewAtendimentosState extends State<ListViewAtendimentos> {
 
 class Lista extends StatelessWidget {
   final Atendimentos _lista = Get.find<Atendimentos>();
+  final Atendimento _atendimento = Get.find<Atendimento>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class Lista extends StatelessWidget {
               children: [
                 ListTile(
                   title: Text(_lista.todosAtendimentos[index].id.toString()),
-                  subtitle: Text(_lista.todosAtendimentos[index].descricao),
+                  subtitle: Text('Evento' + index.toString()),
                 ),
               ],
             ),

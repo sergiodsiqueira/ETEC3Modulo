@@ -7,7 +7,7 @@ import 'package:eclinic/src/components/components.dart';
 
 class Atendimentos extends GetxController {
   final Login _login = Get.find<Login>();
-  final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;  
+  final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;
 
   //Carga de dados
   get carregarDados => () async {
@@ -23,23 +23,15 @@ class Atendimentos extends GetxController {
 
           if (response.statusCode == 200) {
             var dados = json.decode(response.body);
-            for (var atendimento in dados) {
-              Atendimento item = Atendimento(
-                  id: atendimento['id'],
-                  idPaciente: atendimento['id_paciente'],
-                  data: atendimento['data'],
-                  horaInicio: atendimento['hora_inicio'],
-                  horaFim: atendimento['hora_fim'],
-                  descricao: atendimento['descricao'],
-                  observacao: atendimento['observacao'],
-                  confirmado: atendimento['confirmado'],
-                  efetivado: atendimento['efetivado'],
-                  valor: atendimento['valor'],
-                  pago: atendimento['pago'],
-                  idTipo: atendimento['id_tipo']);
+            for (var e in dados) {
+              Atendimento item = Atendimento();
+              item.id = e['id'];
 
               _todosAtendimentos.add(item);
-              print('Qtde importada: ' + _todosAtendimentos.length.toString());
+            }
+
+            for (var e in _todosAtendimentos) {
+              print(e.id.toString());
             }
           } else {
             return ApiResponse.error("Erro ao carregar atendimentos");
@@ -57,12 +49,21 @@ class Atendimentos extends GetxController {
 
   //Lista de atendimentos efetivados
   List<Atendimento> get efetivados {
-    return _todosAtendimentos.where((x) => x.efetivado.value == true).toList();
+    return _todosAtendimentos.where((x) => x.efetivado == true).toList();
+  }
+
+  validar() {
+    if (_todosAtendimentos.length > 0) {
+      print('Tem coisas na lista');
+      for (var item in _todosAtendimentos) {
+        print(item.id.toString() + item.descricao.toString());
+      }
+    }
   }
 
   //Adicionar ao efetivados
-  void efetivar(int id) {
-    final int index = _todosAtendimentos.indexWhere((x) => x.id == id);
-    _todosAtendimentos[index].efetivado.value = true;
-  }
+  // void efetivar(int id) {
+  //   final int index = _todosAtendimentos.indexWhere((x) => x.id == id);
+  //   _todosAtendimentos[index].efetivado = true;
+  // }
 }
