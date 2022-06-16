@@ -8,10 +8,12 @@ import 'package:eclinic/src/components/components.dart';
 class Atendimentos extends GetxController {
   final Login _login = Get.find<Login>();
   final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;
+  final RxString dataSelecionada = DateTime.now().toString().obs;
 
   //Carga de dados
   get carregarDados => () async {
         try {
+          print('data selecioana prov:' + dataSelecionada.value.toString());
           String url =
               'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos';
 

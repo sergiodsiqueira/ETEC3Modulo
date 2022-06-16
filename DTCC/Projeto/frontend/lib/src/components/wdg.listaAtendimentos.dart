@@ -1,25 +1,22 @@
+import 'package:eclinic/src/components/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 import 'package:eclinic/src/providers/providers.dart';
-import 'package:eclinic/src/models/models.dart';
 
-class ListViewAtendimentos extends StatefulWidget {
-  @override
-  State<ListViewAtendimentos> createState() => _ListViewAtendimentosState();
-}
-
-class _ListViewAtendimentosState extends State<ListViewAtendimentos> {
+class ListViewAtendimentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return (Expanded(child: Column(children: [Lista(), BotaoConfirmado()])));
+    return (Expanded(
+        child: Column(children: [
+      Cabecalho(),
+      Lista(),
+    ])));
   }
 }
 
 class Lista extends StatelessWidget {
   final Atendimentos _lista = Get.find<Atendimentos>();
-  final Atendimento _atendimento = Get.find<Atendimento>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +41,50 @@ class Lista extends StatelessWidget {
   }
 }
 
-class BotaoConfirmado extends StatelessWidget {
+class Cabecalho extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return (Switch(value: true, onChanged: null));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: (Wrap(
+        children: [
+          LblDataSelecionada(),
+          BtnAdicionar(),
+        ],
+      )),
+    );
+  }
+}
+
+class LblDataSelecionada extends StatelessWidget {
+  final Atendimentos _lista = Get.find<Atendimentos>();
+
+  DataBR(String pData) {
+    try {
+      if (pData != '') {
+        return DateTime.parse('yyyy/MM/dd').parse(pData);
+      } else {
+        return 'Impossivel converter a data';
+      }
+    } catch (error) {
+      Get.snackbar('Erro', 'Data inválida');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (Obx(() => Text(DataBR(_lista.dataSelecionada.value.toString()))));
+  }
+}
+
+class BtnAdicionar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return (ElevatedButton(
+      child: Text('ADICIONAR'),
+      onPressed: () {
+        print('ADICIONAR');
+      },
+    ));
   }
 }

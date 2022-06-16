@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import 'package:eclinic/src/providers/providers.dart';
 import 'package:eclinic/src/screens/screens.dart';
 
 void main() => runApp(const Application());
@@ -13,7 +14,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Clean Code',
+        title: 'OFICINA DA MENTE',
         home: AnimatedSplashScreen(
             duration: 3000,
             splash: LoadingAnimationWidget.discreteCircle(
@@ -27,10 +28,16 @@ class Application extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
+  IniciarProviders() {
+    Providers _providers = Providers();
+    _providers.start();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: FluentApp(
+        onGenerateTitle: IniciarProviders(),
         title: 'OFICINA DA MENTE',
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,

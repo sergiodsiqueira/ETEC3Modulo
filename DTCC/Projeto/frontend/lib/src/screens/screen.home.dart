@@ -3,7 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
 
 import 'package:eclinic/src/screens/screens.dart';
-import 'package:eclinic/src/models/models.dart';
+import 'package:eclinic/src/providers/providers.dart';
 
 class ScreenHome extends StatefulWidget {
   @override
@@ -14,6 +14,15 @@ class _ScreenHomeState extends State<ScreenHome> {
   final viewKey = GlobalKey();
   int index = 0;
   bool value = false;
+
+  final Atendimentos _atendimentos = Get.find<Atendimentos>();
+
+  @override
+  void initState() {
+    _atendimentos.carregarDados();
+    print('Iniciando...');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

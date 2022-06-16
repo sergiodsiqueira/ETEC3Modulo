@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:eclinic/src/components/components.dart';
 
 class TelaAgenda extends StatefulWidget {

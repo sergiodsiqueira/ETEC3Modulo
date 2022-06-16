@@ -2,7 +2,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:get/get.dart';
 
-import 'package:eclinic/src/components/wdg.alert.dart';
 import 'package:eclinic/src/providers/providers.dart';
 
 class Calendario extends StatefulWidget {
@@ -13,9 +12,9 @@ class Calendario extends StatefulWidget {
 class _CalendarioState extends State<Calendario> {
   final Atendimentos _todosAtendimentos = Get.find<Atendimentos>();
   final _controller = DateRangePickerController();
-  String _date = DateTime.now().toIso8601String();
 
   void carregarLista(DateRangePickerSelectionChangedArgs args) {
+    _todosAtendimentos.dataSelecionada.value = args.value.toString();
     _todosAtendimentos.carregarDados();
     _todosAtendimentos.validar();
   }
@@ -24,6 +23,7 @@ class _CalendarioState extends State<Calendario> {
   Widget build(BuildContext context) {
     return (SfDateRangePicker(
       controller: _controller,
+      selectionShape: DateRangePickerSelectionShape.rectangle,
       onSelectionChanged: carregarLista,
       monthCellStyle: const DateRangePickerMonthCellStyle(
           blackoutDateTextStyle:

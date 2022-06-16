@@ -1,9 +1,8 @@
-import 'package:eclinic/src/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:eclinic/src/components/components.dart';
-import 'package:eclinic/src/models/models.dart';
+import 'package:eclinic/src/providers/providers.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -11,8 +10,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final Atendimentos _listaAtendimentos = Get.put(Atendimentos());
-  final Atendimento _atendimentos = Get.put(Atendimento());
+  final Atendimentos _atendimentos = Get.find<Atendimentos>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +43,7 @@ class _DashboardState extends State<Dashboard> {
                       Container(
                         child: Column(children: [
                           const Text('Atendimentos'),
-                          Obx(() => Text(_listaAtendimentos
-                              .todosAtendimentos.length
+                          Obx(() => Text(_atendimentos.todosAtendimentos.length
                               .toString()))
                         ]),
                       ),
