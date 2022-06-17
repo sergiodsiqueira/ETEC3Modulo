@@ -47,8 +47,11 @@ Widget loginBox(BuildContext context) {
   final _tSenha = TextEditingController();
 
   _onClickEntrar(BuildContext context) async {
-    final login = _tEmail.text;
-    final senha = _tSenha.text;
+    // final login = _tEmail.text;
+    // final senha = _tSenha.text;
+
+    final login = 'admin@local.com';
+    final senha = '12345678';
 
     ApiResponse response = await LoginApi.login(login, senha);
 

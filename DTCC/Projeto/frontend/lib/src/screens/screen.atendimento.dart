@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide showDialog, Colors;
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
 import 'package:eclinic/src/components/components.dart';
+import 'package:eclinic/src/providers/providers.dart';
+import 'package:eclinic/src/models/models.dart';
 
 //   confirmado,
 //   pago,
@@ -14,15 +17,19 @@ class ScreenAtendimento extends StatefulWidget {
 }
 
 class _ScreenAtendimentoState extends State<ScreenAtendimento> {
+  final Atendimentos _atendimentos = Get.find<Atendimentos>();
   final edtData = TextEditingController();
+  DateTime? data;
   final edtPaciente = TextEditingController();
   final edtHoraInicio = TextEditingController();
+  TimeOfDay? horaInicio;
   final edtHoraFim = TextEditingController();
+  TimeOfDay? horaFim;
   final edtDescricao = TextEditingController();
   final edtPreco = TextEditingController();
   final String? edtTipo = '';
   String tipo = 'Pessoal';
-  var tipos = ['Pessoal', 'Ansiedade', 'Depress√£o'];
+  var tipos = ['Pessoal', 'Ansiedade', 'Depress„o'];
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +58,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
                     DateFormat('dd/MM/yyyy').format(pickedDate);
                 setState(() {
                   edtData.text = formattedDate;
+                  data = pickedDate;
                 });
               } else {
                 print("Date is not selected");
@@ -66,7 +74,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               labelText: 'Paciente',
             ),
             validator: (String? value) {
-              return (value == null) ? 'Campo obrigat√≥rio' : null;
+              return (value == null) ? 'Campo obrigatÛrio' : null;
             },
           ),
           SizedBox(height: 3),
@@ -88,9 +96,13 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
                   });
 
               if (pickedTime != null) {
+                horaInicio = pickedTime;
                 setState(() {
-                  edtHoraInicio.text =
-                      "${pickedTime.hour}:${pickedTime.minute}";
+                  String pHora = "${pickedTime.hour}:${pickedTime.minute}";
+                  if (pHora.split(':').last.toString() == '0') {
+                    pHora += '0';
+                  }
+                  edtHoraInicio.text = pHora;
                 });
               } else {
                 print("Time is not selected");
@@ -117,7 +129,12 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
 
               if (pickedTime != null) {
                 setState(() {
-                  edtHoraFim.text = "${pickedTime.hour}:${pickedTime.minute}";
+                  horaFim = pickedTime;
+                  String pHora = "${pickedTime.hour}:${pickedTime.minute}";
+                  if (pHora.split(':').last.toString() == '0') {
+                    pHora += '0';
+                  }
+                  edtHoraFim.text = pHora;
                 });
               } else {
                 print("Time is not selected");
@@ -130,10 +147,10 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
             decoration: const InputDecoration(
               icon: Icon(FluentIcons.event_info),
               hintText: '',
-              labelText: 'Descri√ß√£o',
+              labelText: 'DescriÁ„o',
             ),
             validator: (String? value) {
-              return (value == null) ? 'Campo obrigat√≥rio' : null;
+              return (value == null) ? 'Campo obrigatÛrio' : null;
             },
           ),
           SizedBox(height: 3),
@@ -142,10 +159,10 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
             decoration: const InputDecoration(
               icon: Icon(FluentIcons.money),
               hintText: '',
-              labelText: 'Pre√ßo da Consulta',
+              labelText: 'PreÁo da Consulta',
             ),
             validator: (String? value) {
-              return (value == null) ? 'Campo obrigat√≥rio' : null;
+              return (value == null) ? 'Campo obrigatÛrio' : null;
             },
           ),
           SizedBox(height: 3),
@@ -169,7 +186,20 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               SizedBox(width: 20),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context, edtPaciente.text);
+                    Atendimento atendimento = Atendimento();
+                    // atendimento.data = data;
+                    // atendimento.idPaciente = 1;
+                    // atendimento.horaInicio = horaInicio;
+                    // atendimento.horaFim = horaFim;
+                    // atendimento.descricao = edtDescricao.text;
+                    // atendimento.valor = double.parse(edtPreco.text);
+                    // atendimento.idTipo = 1;
+
+                    // print('Gravando Tela Agendamento' +
+                    //     atendimento.toJson().toString());
+
+                    _atendimentos.adicionar(atendimento);
+                    //Navigator.pop(context, edtPaciente.text);
                   },
                   child: Text(
                     "CONFIRMAR",

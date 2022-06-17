@@ -9,6 +9,7 @@ class Atendimentos extends GetxController {
   final Login _login = Get.find<Login>();
   final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;
   final RxString dataSelecionada = DateTime.now().toString().obs;
+  final item = Atendimento();
 
   //Carga de dados
   get carregarDados => () async {
@@ -68,4 +69,41 @@ class Atendimentos extends GetxController {
   //   final int index = _todosAtendimentos.indexWhere((x) => x.id == id);
   //   _todosAtendimentos[index].efetivado = true;
   // }
+
+  adicionar(Atendimento pAtendimento) async {
+    try {
+      String json = '';
+      json += '{"id_paciente": 0,';
+      json += '"data": "2022-06-07",';
+      json += '"hora_inicio": "16:00:00",';
+      json += '"hora_fim": "17:30:00",';
+      json += '"descricao": "Atendimento",';
+      json += '"observacao": "Cliente de encerramento",';
+      json += '"confirmado": false,';
+      json += '"efetivado": false,';
+      json += '"valor": null,';
+      json += '"pago": null,';
+      json += '"id_tipo": 0';
+      json += '}';
+
+      print(json);
+
+      var response = await http.post(
+          Uri.parse(
+              'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos'),
+          headers: {"Accept": "*/*", 'x-access-token': _login.x_access_token},
+          body: json);
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('Enviado com sucesso');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  alterar(Atendimento atendimento) => () async {};
+
+  apagar(Atendimento atendimento) => () async {};
 }

@@ -1,15 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Atendimento {
   int? id = 0;
   int? idPaciente = 0;
   DateTime? data = null;
-  DateTime? horaInicio = null;
-  DateTime? horaFim = null;
+  TimeOfDay? horaInicio = null;
+  TimeOfDay? horaFim = null;
   String? descricao = '';
   String? observacao = '';
   bool? confirmado = false;
-  RxBool? efetivado = false.obs;
+  bool? efetivado = false;
   double? valor = 0;
   bool? pago = false;
   int? idTipo = 0;

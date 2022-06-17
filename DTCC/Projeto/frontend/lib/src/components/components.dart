@@ -7,3 +7,4 @@ export './wdg.alert.dart';
 export './wdg.APIResponse.dart';
 export './wdg.DatePicker.dart';
 export './wdg.TimerPicker.dart';
+export './wdg.utils.dart';
