@@ -1,8 +1,9 @@
-import 'package:eclinic/src/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:eclinic/src/providers/providers.dart';
+import 'package:eclinic/src/screens/screens.dart';
+import 'package:eclinic/src/components/components.dart';
 
 class ListViewAtendimentos extends StatelessWidget {
   @override
@@ -62,12 +63,12 @@ class LblDataSelecionada extends StatelessWidget {
   DataBR(String pData) {
     try {
       if (pData != '') {
-        return DateTime.parse('yyyy/MM/dd').parse(pData);
+        return pData;
       } else {
         return 'Impossivel converter a data';
       }
     } catch (error) {
-      Get.snackbar('Erro', 'Data inválida');
+      Get.snackbar('Erro', 'Data invï¿½lida');
     }
   }
 
@@ -83,7 +84,14 @@ class BtnAdicionar extends StatelessWidget {
     return (ElevatedButton(
       child: Text('ADICIONAR'),
       onPressed: () {
-        print('ADICIONAR');
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => ScreenAtendimento()).then((value) {
+          if (value != null) {
+            print(value);
+          }
+        });
       },
     ));
   }

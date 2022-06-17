@@ -5,3 +5,5 @@ export './pieChart.dart';
 export './wdg.listaAtendimentos.dart';
 export './wdg.alert.dart';
 export './wdg.APIResponse.dart';
+export './wdg.DatePicker.dart';
+export './wdg.TimerPicker.dart';
