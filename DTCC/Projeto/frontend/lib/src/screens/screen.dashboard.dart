@@ -145,7 +145,7 @@ class CardNaoConfirmados extends StatelessWidget {
                   SizedBox(
                     width: 130,
                     child: Text(
-                      'Não Confirmados',
+                      'NÃ£o Confirmados',
                       textAlign: TextAlign.left,
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),

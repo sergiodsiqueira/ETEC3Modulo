@@ -1,10 +1,10 @@
 import 'package:eclinic/src/models/model.login.dart';
-import 'package:eclinic/src/providers/provider.atendimento.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import './provider.atendimento.dart';
 
-export 'package:eclinic/src/providers/provider.atendimento.dart';
-export 'package:eclinic/src/providers/provider.login.dart';
+export './provider.atendimento.dart';
+export './provider.login.dart';
 
 class Providers {
   Login _login = Get.put<Login>(Login());

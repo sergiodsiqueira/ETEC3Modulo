@@ -12,25 +12,26 @@ class ScreenAtendimento extends StatefulWidget {
 }
 
 class _ScreenAtendimentoState extends State<ScreenAtendimento> {
-  final Atendimentos _atendimentos = Get.find<Atendimentos>();
-  final edtData = TextEditingController();
+  String? comboBoxValue;
   DateTime? data;
-  final edtPaciente = TextEditingController();
-  final edtHoraInicio = TextEditingController();
-  TimeOfDay? horaInicio;
-  final edtHoraFim = TextEditingController();
-  TimeOfDay? horaFim;
+  final edtData = TextEditingController();
   final edtDescricao = TextEditingController();
+  final edtHoraFim = TextEditingController();
+  final edtHoraInicio = TextEditingController();
+  final edtPaciente = TextEditingController();
   final String? edtTipo = '';
+  TimeOfDay? horaFim;
+  TimeOfDay? horaInicio;
 
   static const _tiposAtendimentos = <String>[
     'Pessoal',
     'Ansiedade',
-    'Depressão',
-    'Famíliar',
+    'DepressÃ£o',
+    'FamÃ­liar',
     'Financeiro'
   ];
-  String? comboBoxValue;
+
+  final Atendimentos _atendimentos = Get.find<Atendimentos>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,14 +77,14 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
                 labelText: 'Paciente',
               ),
               validator: (String? value) {
-                return (value == null) ? 'Campo obrigatório' : null;
+                return (value == null) ? 'Campo obrigatÃ³rio' : null;
               },
             ),
             const SizedBox(height: 3),
             TextField(
               controller: edtHoraInicio,
               decoration: const InputDecoration(
-                  icon: Icon(FluentIcons.timer), labelText: 'Horário Inicial'),
+                  icon: Icon(FluentIcons.timer), labelText: 'HorÃ¡rio Inicial'),
               readOnly: true,
               onTap: () async {
                 TimeOfDay? pickedTime = await showTimePicker(
@@ -115,7 +116,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
             TextField(
               controller: edtHoraFim,
               decoration: const InputDecoration(
-                  icon: Icon(FluentIcons.timer), labelText: 'Horário Final'),
+                  icon: Icon(FluentIcons.timer), labelText: 'HorÃ¡rio Final'),
               readOnly: true,
               onTap: () async {
                 TimeOfDay? pickedTime = await showTimePicker(
@@ -149,14 +150,33 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               decoration: const InputDecoration(
                 icon: Icon(FluentIcons.event_info),
                 hintText: '',
-                labelText: 'Descrição',
+                labelText: 'DescriÃ§Ã£o',
               ),
               validator: (String? value) {
-                return (value == null) ? 'Campo obrigatório' : null;
+                return (value == null) ? 'Campo obrigatÃ³rio' : null;
               },
             ),
-            const SizedBox(height: 3),
-////// Combobox
+            const SizedBox(height: 10),
+            InfoLabel(
+              label: 'Tipo de Atendimento',
+              child: Combobox<String>(
+                //placeholder: const Text('Tipo de Atendimento'),
+                isExpanded: true,
+                items: _tiposAtendimentos
+                    .map((e) => ComboboxItem<String>(
+                          value: e,
+                          child: Text(e),
+                        ))
+                    .toList(),
+                value: comboBoxValue,
+                onChanged: (value) {
+                  print(value);
+                  if (value != null) {
+                    setState(() => comboBoxValue = value);
+                  }
+                },
+              ),
+            ),
             const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
