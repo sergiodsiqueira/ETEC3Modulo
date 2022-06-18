@@ -121,6 +121,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.6.5"
+  graphic:
+    dependency: "direct main"
+    description:
+      name: graphic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.5"
   http:
     dependency: "direct main"
     description:
@@ -198,6 +205,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   recase:
     dependency: transitive
     description:
@@ -273,13 +294,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.9"
-  timer_snackbar:
-    dependency: "direct main"
-    description:
-      name: timer_snackbar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.3"
   typed_data:
     dependency: transitive
     description:

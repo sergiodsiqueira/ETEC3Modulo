@@ -17,6 +17,10 @@ class Atendimentos extends GetxController {
   late String feedback = '';
   late String _dados = '';
 
+  late RxInt atendimentosDoDia = 0.obs;
+  late RxInt efetivadosDia = 0.obs;
+  late RxInt naoConfirmadosDia = 0.obs;
+
   //Carga de dados
   get carregarDados => () async {
         _todosAtendimentos.clear();
@@ -43,34 +47,35 @@ class Atendimentos extends GetxController {
               item.id = el['id'];
               item.idPaciente = el['id_paciente'];
               item.data = DateTime.parse(el['data']);
+
               hora = el['hora_inicio'].toString().substring(0, 2);
               minuto = el['hora_inicio'].toString().substring(3, 5);
               item.horaInicio =
                   TimeOfDay(hour: int.parse(hora), minute: int.parse(minuto));
+
               hora = el['hora_fim'].toString().substring(0, 2);
               minuto = el['hora_fim'].toString().substring(3, 5);
-
               item.horaFim =
                   TimeOfDay(hour: int.parse(hora), minute: int.parse(minuto));
+
               item.descricao = el['descricao'];
               item.observacao = el['observacao'];
               item.confirmado = el['confirmado'];
               item.efetivado = el['efetivado'];
-              //item.valor = double.parse(el['valor'].toString());
+              item.valor = null;
               item.pago = el['pago'];
               item.idTipo = el['id_tipo'];
 
               _todosAtendimentos.add(item);
-            }
 
-            for (var e in _todosAtendimentos) {
-              print(e.id.toString());
+              ContadorDiario();
             }
           } else {
             return ApiResponse.error("Erro ao carregar atendimentos");
           }
-        } catch (error, exception) {
-          return ApiResponse.error("Sem comunicaï¿½ï¿½o ... tente mais tarde... ");
+        } catch (error) {
+          return ApiResponse.error(
+              "Servidor não respondendo... tente mais tarde... ");
         }
       };
 
@@ -158,6 +163,7 @@ class Atendimentos extends GetxController {
   }
 
   gerarDados(Atendimento pAtendimento) {
+    print('Gerando dados...');
     _dados = '';
     _dados += '{"id_paciente": ${pAtendimento.id},';
     _dados +=
@@ -171,8 +177,23 @@ class Atendimentos extends GetxController {
     _dados += '"confirmado": ${pAtendimento.confirmado},';
     _dados += '"efetivado": ${pAtendimento.efetivado},';
     _dados += '"valor": ${pAtendimento.valor.toString()},';
+    //_dados += '"valor": ${null},';
     _dados += '"pago": ${pAtendimento.pago},';
     _dados += '"id_tipo": ${pAtendimento.idTipo}';
     _dados += '}';
+    print('Dados gerados...');
+  }
+
+  ContadorDiario() {
+    if (dataSelecionada.value.toString().substring(0, 10) ==
+        DateTime.now().toString().substring(0, 10)) {
+      atendimentosDoDia.value = todosAtendimentos.length;
+
+      efetivadosDia.value =
+          _todosAtendimentos.where((item) => item.efetivado == true).length;
+
+      naoConfirmadosDia.value =
+          _todosAtendimentos.where((item) => item.confirmado == true).length;
+    }
   }
 }

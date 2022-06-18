@@ -8,3 +8,4 @@ export './wdg.APIResponse.dart';
 export './wdg.DatePicker.dart';
 export './wdg.TimerPicker.dart';
 export './wdg.utils.dart';
+export './wdg.GraphicLine.dart';

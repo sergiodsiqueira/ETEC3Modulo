@@ -78,6 +78,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       content: NavigationBody(index: index, children: [
         Dashboard(),
         TelaAgenda(),
+        ScreenPacientes(),
       ]),
     );
   }
