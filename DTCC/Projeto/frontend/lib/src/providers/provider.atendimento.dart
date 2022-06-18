@@ -1,34 +1,64 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
 
 import 'package:eclinic/src/models/models.dart';
 import 'package:eclinic/src/components/components.dart';
+import 'package:intl/intl.dart';
 
 class Atendimentos extends GetxController {
   final Login _login = Get.find<Login>();
   final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;
-  final RxString dataSelecionada = DateTime.now().toString().obs;
+  final RxString dataSelecionada = DateTime.now().toIso8601String().obs;
   final item = Atendimento();
+  final RxString x_access_token = ''.obs;
+  late String feedback = '';
 
   //Carga de dados
   get carregarDados => () async {
-        try {
-          print('data selecioana prov:' + dataSelecionada.value.toString());
-          String url =
-              'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos';
+        _todosAtendimentos.clear();
 
+        if (x_access_token.value == '') {
+          x_access_token.value = _login.x_access_token;
+        }
+
+        try {
+          String url =
+              "https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/data?data='${dataSelecionada.value.substring(0, 10)}'";
+          print(url);
           var response = await http.get(Uri.parse(url), headers: {
             "Content-Type": "application/json",
-            'x-access-token': _login.x_access_token
+            'x-access-token': x_access_token.value
           });
-          print(response.body);
 
           if (response.statusCode == 200) {
             var dados = json.decode(response.body);
-            for (var e in dados) {
+            for (var el in dados) {
+              String hora = '';
+              String minuto = '';
+
               Atendimento item = Atendimento();
-              item.id = e['id'];
+              item.id = el['id'];
+              item.idPaciente = el['id_paciente'];
+              item.data = DateTime.parse(el['data']);
+              hora = el['hora_inicio'].toString().substring(0, 2);
+              minuto = el['hora_inicio'].toString().substring(3, 5);
+              item.horaInicio =
+                  TimeOfDay(hour: int.parse(hora), minute: int.parse(minuto));
+              hora = el['hora_fim'].toString().substring(0, 2);
+              minuto = el['hora_fim'].toString().substring(3, 5);
+
+              item.horaFim =
+                  TimeOfDay(hour: int.parse(hora), minute: int.parse(minuto));
+              item.descricao = el['descricao'];
+              item.observacao = el['observacao'];
+              item.confirmado = el['confirmado'];
+              item.efetivado = el['efetivado'];
+              //item.valor = double.parse(el['valor'].toString());
+              item.pago = el['pago'];
+              item.idTipo = el['id_tipo'];
 
               _todosAtendimentos.add(item);
             }
@@ -70,40 +100,56 @@ class Atendimentos extends GetxController {
   //   _todosAtendimentos[index].efetivado = true;
   // }
 
-  adicionar(Atendimento pAtendimento) async {
-    try {
-      String json = '';
-      json += '{"id_paciente": 0,';
-      json += '"data": "2022-06-07",';
-      json += '"hora_inicio": "16:00:00",';
-      json += '"hora_fim": "17:30:00",';
-      json += '"descricao": "Atendimento",';
-      json += '"observacao": "Cliente de encerramento",';
-      json += '"confirmado": false,';
-      json += '"efetivado": false,';
-      json += '"valor": null,';
-      json += '"pago": null,';
-      json += '"id_tipo": 0';
-      json += '}';
+  Future<void> adicionar(Atendimento pAtendimento) async {
+    String dados = '';
+    dados += '{"id_paciente": ${pAtendimento.id},';
+    dados +=
+        '"data": "${pAtendimento.data!.toIso8601String().substring(0, 10)}",';
+    dados +=
+        '"hora_inicio": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
+    dados +=
+        '"hora_fim": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
+    dados += '"descricao": "${pAtendimento.descricao}",';
+    dados += '"observacao": "${pAtendimento.observacao}",';
+    dados += '"confirmado": ${pAtendimento.confirmado},';
+    dados += '"efetivado": ${pAtendimento.efetivado},';
+    dados += '"valor": ${pAtendimento.valor.toString()},';
+    dados += '"pago": ${pAtendimento.pago},';
+    dados += '"id_tipo": ${pAtendimento.idTipo}';
+    dados += '}';
 
-      print(json);
-
-      var response = await http.post(
-          Uri.parse(
-              'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos'),
-          headers: {"Accept": "*/*", 'x-access-token': _login.x_access_token},
-          body: json);
-      print(response.body);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        print('Enviado com sucesso');
-      }
-    } catch (e) {
-      print(e);
+    final url = Uri.parse(
+        'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos');
+    final response = await http.post(url,
+        headers: {
+          "Content-Type": "application/json",
+          'x-access-token': x_access_token.value,
+        },
+        body: dados);
+    if (response.statusCode >= 400) {
+      feedback = response.body;
+    } else {
+      feedback = response.body;
+      carregarDados();
     }
   }
 
-  alterar(Atendimento atendimento) => () async {};
-
-  apagar(Atendimento atendimento) => () async {};
+  Future<void> apagar(Atendimento pAtendimento) async {
+    final url = Uri.parse(
+        'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/' +
+            pAtendimento.id.toString());
+    final response = await http.delete(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        'x-access-token': x_access_token.value,
+      },
+    );
+    if (response.statusCode >= 400) {
+      feedback = response.body;
+    } else {
+      feedback = response.body;
+      carregarDados();
+    }
+  }
 }

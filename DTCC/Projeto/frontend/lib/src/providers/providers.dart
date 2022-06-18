@@ -7,9 +7,8 @@ export 'package:eclinic/src/providers/provider.login.dart';
 export 'package:eclinic/src/providers/provider.atendimento.dart';
 
 class Providers {
-  Login _login = Get.put<Login>(Login(), permanent: true);
-  Atendimentos _atendimentos =
-      Get.put<Atendimentos>(Atendimentos(), permanent: true);
+  Login _login = Get.put<Login>(Login());
+  Atendimentos _atendimentos = Get.put<Atendimentos>(Atendimentos());
 
   start() {
     _atendimentos.carregarDados();

@@ -30,9 +30,10 @@ class Lista extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  title: Text(_lista.todosAtendimentos[index].id.toString()),
-                  subtitle: Text('Evento' + index.toString()),
-                ),
+                    title: Text(
+                        _lista.todosAtendimentos[index].descricao.toString()),
+                    subtitle: Text(
+                        _lista.todosAtendimentos[index].idPaciente.toString())),
               ],
             ),
           );
@@ -60,21 +61,9 @@ class Cabecalho extends StatelessWidget {
 class LblDataSelecionada extends StatelessWidget {
   final Atendimentos _lista = Get.find<Atendimentos>();
 
-  DataBR(String pData) {
-    try {
-      if (pData != '') {
-        return pData;
-      } else {
-        return 'Impossivel converter a data';
-      }
-    } catch (error) {
-      Get.snackbar('Erro', 'Data inv�lida');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return (Obx(() => Text(DataBR(_lista.dataSelecionada.value.toString()))));
+    return (Obx(() => Text(_lista.dataSelecionada.value.toString())));
   }
 }
 
@@ -82,17 +71,12 @@ class BtnAdicionar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (ElevatedButton(
-      child: Text('ADICIONAR'),
-      onPressed: () {
-        showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) => ScreenAtendimento()).then((value) {
-          if (value != null) {
-            print(value);
-          }
-        });
-      },
-    ));
+        child: Text('ADICIONAR'),
+        onPressed: () {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) => ScreenAtendimento());
+        }));
   }
 }

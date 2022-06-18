@@ -14,9 +14,9 @@ class _CalendarioState extends State<Calendario> {
   final _controller = DateRangePickerController();
 
   void carregarLista(DateRangePickerSelectionChangedArgs args) {
-    _todosAtendimentos.dataSelecionada.value = args.value.toString();
+    _todosAtendimentos.dataSelecionada.value =
+        args.value.toString().substring(0, 10);
     _todosAtendimentos.carregarDados();
-    _todosAtendimentos.validar();
   }
 
   @override

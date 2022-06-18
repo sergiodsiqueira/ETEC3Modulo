@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluent_ui/fluent_ui.dart' hide showDialog, Colors;
+import 'package:fluent_ui/fluent_ui.dart' hide Colors;
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
-import 'package:eclinic/src/components/components.dart';
 import 'package:eclinic/src/providers/providers.dart';
 import 'package:eclinic/src/models/models.dart';
-
-//   confirmado,
-//   pago,
-//   idTipo}
 
 class ScreenAtendimento extends StatefulWidget {
   @override
@@ -187,26 +182,24 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               ElevatedButton(
                   onPressed: () {
                     Atendimento atendimento = Atendimento();
-                    // atendimento.data = data;
-                    // atendimento.idPaciente = 1;
-                    // atendimento.horaInicio = horaInicio;
-                    // atendimento.horaFim = horaFim;
-                    // atendimento.descricao = edtDescricao.text;
-                    // atendimento.valor = double.parse(edtPreco.text);
-                    // atendimento.idTipo = 1;
+                    atendimento.data = data;
+                    atendimento.idPaciente = 0;
+                    atendimento.horaInicio = horaInicio;
+                    atendimento.horaFim = horaFim;
+                    atendimento.descricao = edtDescricao.text;
+                    atendimento.valor = double.parse(edtPreco.text);
+                    atendimento.idTipo = 0;
 
-                    // print('Gravando Tela Agendamento' +
-                    //     atendimento.toJson().toString());
-
-                    _atendimentos.adicionar(atendimento);
-                    //Navigator.pop(context, edtPaciente.text);
+                    _atendimentos
+                        .adicionar(atendimento)
+                        .then((value) => {Navigator.of(context).pop()});
                   },
                   child: Text(
                     "CONFIRMAR",
                     style: TextStyle(color: Colors.white),
                   )),
             ],
-          )
+          ),
         ],
       ),
     ));

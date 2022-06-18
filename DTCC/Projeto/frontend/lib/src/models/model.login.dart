@@ -1,9 +1,4 @@
-//https://app-eclinic-oficinadamente.herokuapp.com/api/login
-import 'package:get/get.dart' hide Response;
-import 'package:eclinic/src/components/wdg.APIResponse.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
+import 'package:get/get.dart';
 
 class Login extends GetxController {
   final _id = 0.obs;
@@ -22,7 +17,7 @@ class Login extends GetxController {
   get id_cliente => _id_cliente.value;
   set id_cliente(value) => _id_cliente.value = value;
 
-  final _x_access_token = ''.obs;
+  RxString _x_access_token = ''.obs;
   get x_access_token => _x_access_token.value;
   set x_access_token(value) => _x_access_token.value = value;
 

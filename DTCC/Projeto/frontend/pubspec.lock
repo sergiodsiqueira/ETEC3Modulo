@@ -273,6 +273,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.9"
+  timer_snackbar:
+    dependency: "direct main"
+    description:
+      name: timer_snackbar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   typed_data:
     dependency: transitive
     description:
