@@ -11,10 +11,11 @@ import 'package:intl/intl.dart';
 class Atendimentos extends GetxController {
   final Login _login = Get.find<Login>();
   final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;
-  final RxString dataSelecionada = DateTime.now().toIso8601String().obs;
-  final item = Atendimento();
+  final RxString dataSelecionada =
+      DateTime.now().toIso8601String().substring(0, 10).obs;
   final RxString x_access_token = ''.obs;
   late String feedback = '';
+  late String _dados = '';
 
   //Carga de dados
   get carregarDados => () async {
@@ -27,7 +28,6 @@ class Atendimentos extends GetxController {
         try {
           String url =
               "https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/data?data='${dataSelecionada.value.substring(0, 10)}'";
-          print(url);
           var response = await http.get(Uri.parse(url), headers: {
             "Content-Type": "application/json",
             'x-access-token': x_access_token.value
@@ -70,8 +70,7 @@ class Atendimentos extends GetxController {
             return ApiResponse.error("Erro ao carregar atendimentos");
           }
         } catch (error, exception) {
-          return ApiResponse.error(
-              "Sem comunica��o ... tente mais tarde... ");
+          return ApiResponse.error("Sem comunica��o ... tente mais tarde... ");
         }
       };
 
@@ -85,15 +84,6 @@ class Atendimentos extends GetxController {
     return _todosAtendimentos.where((x) => x.efetivado == true).toList();
   }
 
-  validar() {
-    if (_todosAtendimentos.length > 0) {
-      print('Tem coisas na lista');
-      for (var item in _todosAtendimentos) {
-        print(item.id.toString() + item.descricao.toString());
-      }
-    }
-  }
-
   //Adicionar ao efetivados
   // void efetivar(int id) {
   //   final int index = _todosAtendimentos.indexWhere((x) => x.id == id);
@@ -101,22 +91,12 @@ class Atendimentos extends GetxController {
   // }
 
   Future<void> adicionar(Atendimento pAtendimento) async {
-    String dados = '';
-    dados += '{"id_paciente": ${pAtendimento.id},';
-    dados +=
-        '"data": "${pAtendimento.data!.toIso8601String().substring(0, 10)}",';
-    dados +=
-        '"hora_inicio": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
-    dados +=
-        '"hora_fim": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
-    dados += '"descricao": "${pAtendimento.descricao}",';
-    dados += '"observacao": "${pAtendimento.observacao}",';
-    dados += '"confirmado": ${pAtendimento.confirmado},';
-    dados += '"efetivado": ${pAtendimento.efetivado},';
-    dados += '"valor": ${pAtendimento.valor.toString()},';
-    dados += '"pago": ${pAtendimento.pago},';
-    dados += '"id_tipo": ${pAtendimento.idTipo}';
-    dados += '}';
+    if (pAtendimento.id! > 0) {
+      feedback = 'Impossivel incluir este atendimento';
+      return;
+    } else {
+      gerarDados(pAtendimento);
+    }
 
     final url = Uri.parse(
         'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos');
@@ -125,7 +105,7 @@ class Atendimentos extends GetxController {
           "Content-Type": "application/json",
           'x-access-token': x_access_token.value,
         },
-        body: dados);
+        body: _dados);
     if (response.statusCode >= 400) {
       feedback = response.body;
     } else {
@@ -134,10 +114,34 @@ class Atendimentos extends GetxController {
     }
   }
 
-  Future<void> apagar(Atendimento pAtendimento) async {
+  Future<void> alterar(Atendimento pAtendimento) async {
+    if (pAtendimento.id == 0) {
+      feedback = 'Impossivel alterar este atendimento';
+      return;
+    } else {
+      gerarDados(pAtendimento);
+    }
+
+    final url = Uri.parse(
+        'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos');
+    final response = await http.put(url,
+        headers: {
+          "Content-Type": "application/json",
+          'x-access-token': x_access_token.value,
+        },
+        body: _dados);
+    if (response.statusCode >= 400) {
+      feedback = response.body;
+    } else {
+      feedback = response.body;
+      carregarDados();
+    }
+  }
+
+  Future<void> apagar(int pID) async {
     final url = Uri.parse(
         'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/' +
-            pAtendimento.id.toString());
+            pID.toString());
     final response = await http.delete(
       url,
       headers: {
@@ -151,5 +155,24 @@ class Atendimentos extends GetxController {
       feedback = response.body;
       carregarDados();
     }
+  }
+
+  gerarDados(Atendimento pAtendimento) {
+    _dados = '';
+    _dados += '{"id_paciente": ${pAtendimento.id},';
+    _dados +=
+        '"data": "${pAtendimento.data!.toIso8601String().substring(0, 10)}",';
+    _dados +=
+        '"hora_inicio": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
+    _dados +=
+        '"hora_fim": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
+    _dados += '"descricao": "${pAtendimento.descricao}",';
+    _dados += '"observacao": "${pAtendimento.observacao}",';
+    _dados += '"confirmado": ${pAtendimento.confirmado},';
+    _dados += '"efetivado": ${pAtendimento.efetivado},';
+    _dados += '"valor": ${pAtendimento.valor.toString()},';
+    _dados += '"pago": ${pAtendimento.pago},';
+    _dados += '"id_tipo": ${pAtendimento.idTipo}';
+    _dados += '}';
   }
 }

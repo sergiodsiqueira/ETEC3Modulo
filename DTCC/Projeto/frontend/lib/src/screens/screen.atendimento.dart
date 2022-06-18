@@ -24,7 +24,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
   final edtPreco = TextEditingController();
   final String? edtTipo = '';
   String tipo = 'Pessoal';
-  var tipos = ['Pessoal', 'Ansiedade', 'Depressão'];
+  var tipos = ['Pessoal', 'Ansiedade', 'Depressï¿½o'];
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               labelText: 'Paciente',
             ),
             validator: (String? value) {
-              return (value == null) ? 'Campo obrigatório' : null;
+              return (value == null) ? 'Campo obrigatï¿½rio' : null;
             },
           ),
           SizedBox(height: 3),
@@ -142,10 +142,10 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
             decoration: const InputDecoration(
               icon: Icon(FluentIcons.event_info),
               hintText: '',
-              labelText: 'Descrição',
+              labelText: 'Descriï¿½ï¿½o',
             ),
             validator: (String? value) {
-              return (value == null) ? 'Campo obrigatório' : null;
+              return (value == null) ? 'Campo obrigatï¿½rio' : null;
             },
           ),
           SizedBox(height: 3),
@@ -154,10 +154,10 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
             decoration: const InputDecoration(
               icon: Icon(FluentIcons.money),
               hintText: '',
-              labelText: 'Preço da Consulta',
+              labelText: 'Preï¿½o da Consulta',
             ),
             validator: (String? value) {
-              return (value == null) ? 'Campo obrigatório' : null;
+              return (value == null) ? 'Campo obrigatï¿½rio' : null;
             },
           ),
           SizedBox(height: 3),
@@ -191,7 +191,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
                     atendimento.idTipo = 0;
 
                     _atendimentos
-                        .adicionar(atendimento)
+                        .alterar(atendimento)
                         .then((value) => {Navigator.of(context).pop()});
                   },
                   child: Text(
