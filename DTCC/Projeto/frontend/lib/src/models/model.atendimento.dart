@@ -14,6 +14,7 @@ class Atendimento {
   double? valor = 0;
   bool? pago = false;
   int? idTipo = 0;
+  String? nome = '';
 
   Atendimento(
       {id,
@@ -27,7 +28,8 @@ class Atendimento {
       efetivado,
       valor,
       pago,
-      idTipo});
+      idTipo,
+      nome});
 
   Atendimento.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -42,6 +44,7 @@ class Atendimento {
     valor = json['valor'];
     pago = json['pago'];
     idTipo = json['id_tipo'];
+    idTipo = json['nome'];
   }
 
   Map<String, dynamic> toJson() {
@@ -58,6 +61,7 @@ class Atendimento {
     data['valor'] = this.valor;
     data['pago'] = this.pago;
     data['id_tipo'] = this.idTipo;
+    data['nome'] = this.nome;
     return data;
   }
 }

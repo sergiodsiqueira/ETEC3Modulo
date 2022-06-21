@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-class wdgDatePicker extends StatefulWidget {
+class WdgDatePicker extends StatefulWidget {
+  const WdgDatePicker({Key? key}) : super(key: key);
+
   @override
-  State<wdgDatePicker> createState() => _wdgDatePickerState();
+  State<WdgDatePicker> createState() => _WdgDatePickerState();
 }
 
-class _wdgDatePickerState extends State<wdgDatePicker> {
+class _WdgDatePickerState extends State<WdgDatePicker> {
   TextEditingController edtDatePicker = TextEditingController();
 
   @override
@@ -15,11 +17,9 @@ class _wdgDatePickerState extends State<wdgDatePicker> {
     return (Center(
         child: TextFormField(
       controller: edtDatePicker,
-      decoration: InputDecoration(
-          icon: Icon(FluentIcons.calendar_agenda), //icon of text field
-          labelText: "Data" //label text of field
-          ),
-      readOnly: true, //set it true, so that user will not able to edit text
+      decoration: const InputDecoration(
+          icon: Icon(FluentIcons.calendar_agenda), labelText: "Data"),
+      readOnly: true,
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(
             context: context,
@@ -32,8 +32,6 @@ class _wdgDatePickerState extends State<wdgDatePicker> {
           setState(() {
             edtDatePicker.text = formattedDate;
           });
-        } else {
-          print("Date is not selected");
         }
       },
     )));

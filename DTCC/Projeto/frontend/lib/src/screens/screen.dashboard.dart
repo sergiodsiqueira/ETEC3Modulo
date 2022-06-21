@@ -7,6 +7,7 @@ import 'package:eclinic/src/providers/providers.dart';
 import 'package:intl/intl.dart';
 
 final Atendimentos _atendimentos = Get.find<Atendimentos>();
+final Pacientes _pacientes = Get.find<Pacientes>();
 
 class Dashboard extends StatefulWidget {
   @override
@@ -36,7 +37,8 @@ class EstatisticasDiarias extends StatelessWidget {
       child: Wrap(children: [
         CardAtendimentos(),
         CardNaoConfirmados(),
-        CardEfetivados()
+        CardEfetivados(),
+        CardPacientes()
       ]),
     ));
   }
@@ -145,7 +147,7 @@ class CardNaoConfirmados extends StatelessWidget {
                   SizedBox(
                     width: 130,
                     child: Text(
-                      'Não Confirmados',
+                      'Confirmados',
                       textAlign: TextAlign.left,
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
@@ -165,7 +167,7 @@ class CardNaoConfirmados extends StatelessWidget {
                     width: 130,
                     child: Obx(
                       () => Text(
-                        _atendimentos.naoConfirmadosDia.value.toString(),
+                        _atendimentos.confirmadosDia.value.toString(),
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 20,
@@ -233,6 +235,73 @@ class CardEfetivados extends StatelessWidget {
                     child: Obx(
                       () => Text(
                         _atendimentos.efetivadosDia.value.toString(),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          )),
+    );
+  }
+}
+
+class CardPacientes extends StatelessWidget {
+  final DataAtual = DateTime.now().toIso8601String().substring(0, 10);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 250,
+      height: 100,
+      child: Card(
+          elevation: 2,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 40),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  color: Color.fromARGB(153, 139, 184, 236),
+                  width: 50,
+                  height: 50,
+                  child: Icon(FluentIcons.contact_list, color: Colors.indigo),
+                ),
+              ),
+              SizedBox(width: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 130,
+                    child: Text(
+                      'Pacientes',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 130,
+                    child: Text(
+                      'Total Geral de Pacientes',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontSize: 8,
+                          color: Color.fromARGB(255, 173, 174, 179),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 130,
+                    child: Obx(
+                      () => Text(
+                        _pacientes.todosPacientes.length.toString(),
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 20,

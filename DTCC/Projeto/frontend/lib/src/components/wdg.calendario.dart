@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:eclinic/src/providers/providers.dart';
 
 class Calendario extends StatefulWidget {
+  const Calendario({Key? key}) : super(key: key);
+
   @override
   State<Calendario> createState() => _CalendarioState();
 }
@@ -28,7 +30,7 @@ class _CalendarioState extends State<Calendario> {
       monthCellStyle: const DateRangePickerMonthCellStyle(
           blackoutDateTextStyle:
               TextStyle(decoration: TextDecoration.lineThrough)),
-      monthViewSettings: DateRangePickerMonthViewSettings(
+      monthViewSettings: const DateRangePickerMonthViewSettings(
         showTrailingAndLeadingDates: true,
       ),
       showNavigationArrow: true,

@@ -27,7 +27,7 @@ class Body extends StatelessWidget {
   _apagar(BuildContext context, Atendimento pAtendimento) {
     if (pAtendimento.efetivado == true) {
       alert(context, 'Agendamento',
-          'Não é possivel apagar visto que o atendimento já foi efetivado');
+          'NÃ£o Ã© possivel apagar visto que o atendimento jÃ¡ foi efetivado');
     } else {
       _lista.apagar(pAtendimento.id!);
     }
@@ -49,7 +49,8 @@ class Body extends StatelessWidget {
                   key: Key(_lista.todosAtendimentos[index].id.toString()),
                   title: Text(
                       _lista.todosAtendimentos[index].descricao.toString()),
-                  subtitle: Text(_lista.todosAtendimentos[index].id.toString()),
+                  subtitle:
+                      Text(_lista.todosAtendimentos[index].nome.toString()),
                   leading: Container(
                       width: 5,
                       color: atendimento.confirmado == true
@@ -60,7 +61,17 @@ class Body extends StatelessWidget {
                     children: [
                       if (atendimento.efetivado == true) Efetivado(),
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.edit)),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (_) => ScreenAtendimento(
+                                      pAtendimento: atendimento,
+                                      pIdTipoAtendimento: int.parse(
+                                          atendimento.idTipo.toString()),
+                                    ));
+                          },
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
                             _apagar(context, atendimento);
@@ -128,7 +139,7 @@ class Footer extends StatelessWidget {
               showDialog(
                   context: context,
                   barrierDismissible: false,
-                  builder: (_) => ScreenAtendimento());
+                  builder: (_) => ScreenAgendamento());
             })),
       ),
     );

@@ -47,11 +47,11 @@ Widget loginBox(BuildContext context) {
   final _tSenha = TextEditingController();
 
   _onClickEntrar(BuildContext context) async {
-    final login = _tEmail.text;
-    final senha = _tSenha.text;
+    // final login = _tEmail.text;
+    // final senha = _tSenha.text;
 
-    // final login = 'admin@local.com';
-    // final senha = '12345678';
+    final login = 'admin@local.com';
+    final senha = '12345678';
 
     ApiResponse response = await LoginApi.login(login, senha);
 
@@ -69,8 +69,7 @@ Widget loginBox(BuildContext context) {
     width: 500.0,
     height: 400.0,
     child: Padding(
-      padding:
-          const EdgeInsets.only(left: 80, right: 80, bottom: 100, top: 100),
+      padding: const EdgeInsets.only(left: 80, right: 80, bottom: 60, top: 80),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -80,33 +79,11 @@ Widget loginBox(BuildContext context) {
           const Text(
             'OFICINA DA MENTE',
           ),
-          TextFormField(
-            controller: _tEmail,
-            decoration: const InputDecoration(
-              icon: Icon(FluentIcons.mail),
-              hintText: '',
-              labelText: 'E-mail',
-            ),
-            validator: (String? value) {
-              return (value != null && value.contains('@'))
-                  ? 'Do not use the @ char.'
-                  : null;
-            },
-          ),
-          TextFormField(
-            controller: _tSenha,
-            obscureText: true,
-            decoration: const InputDecoration(
-              icon: Icon(FluentIcons.password_field),
-              hintText: '',
-              labelText: 'Senha',
-            ),
-            validator: (String? value) {
-              return (value != null && value.contains('@'))
-                  ? 'Do not use the @ char.'
-                  : null;
-            },
-          ),
+          SizedBox(height: 30),
+          WdgEdtEmail(myController: _tEmail),
+          SizedBox(height: 10),
+          WdgEdtSenha(myController: _tSenha),
+          SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               _onClickEntrar(context);

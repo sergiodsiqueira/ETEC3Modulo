@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-class wdgTimePicker extends StatefulWidget {
+class WdgTimePicker extends StatefulWidget {
+  const WdgTimePicker({Key? key}) : super(key: key);
+
   @override
-  State<wdgTimePicker> createState() => _wdgTimePickerState();
+  State<WdgTimePicker> createState() => _WdgTimePickerState();
 }
 
-class _wdgTimePickerState extends State<wdgTimePicker> {
+class _WdgTimePickerState extends State<WdgTimePicker> {
   final edtTimerPicker = TextEditingController();
   final String label = 'Hora';
 

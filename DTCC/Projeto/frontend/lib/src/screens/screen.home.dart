@@ -16,11 +16,13 @@ class _ScreenHomeState extends State<ScreenHome> {
   bool value = false;
 
   final Atendimentos _atendimentos = Get.find<Atendimentos>();
+  final Pacientes _pacientes = Get.find<Pacientes>();
 
   @override
   void initState() {
-    _atendimentos.carregarDados();
     print('Iniciando...');
+    _atendimentos.carregarDados();
+    _pacientes.carregarDados();
     super.initState();
   }
 

@@ -32,8 +32,7 @@ class LoginApi {
 
       return ApiResponse.error("Erro ao fazer o login");
     } catch (error, exception) {
-      return ApiResponse.error(
-          "Servidor n„o respondendo... tente mais tarde... ");
+      return ApiResponse.error("Servidor n√£o responde... tente mais tarde... ");
     }
   }
 }
