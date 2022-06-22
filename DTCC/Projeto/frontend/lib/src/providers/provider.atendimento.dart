@@ -160,7 +160,7 @@ class Atendimentos extends GetxController {
     _dados +=
         '"data": "${pAtendimento.data!.toIso8601String().substring(0, 10)}",';
     _dados +=
-        '"hora_inicio": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
+        '"hora_inicio": "${pAtendimento.horaInicio!.hour.toString() + ':' + pAtendimento.horaInicio!.minute.toString()}",';
     _dados +=
         '"hora_fim": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
     _dados += '"descricao": "${pAtendimento.descricao}",';

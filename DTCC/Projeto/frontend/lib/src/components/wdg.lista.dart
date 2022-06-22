@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 
 import 'package:eclinic/src/providers/providers.dart';
 import 'package:eclinic/src/screens/screens.dart';
 import 'package:eclinic/src/components/components.dart';
-import 'package:eclinic/src/models/models.dart';
 
 class ListViewAtendimentos extends StatelessWidget {
   const ListViewAtendimentos({Key? key}) : super(key: key);
@@ -15,9 +15,9 @@ class ListViewAtendimentos extends StatelessWidget {
     return (Expanded(
         child: Container(
       child: Column(children: [
-        Head(),
+        const Head(),
         Body(),
-        Footer(),
+        const Footer(),
       ]),
     )));
   }
@@ -25,15 +25,6 @@ class ListViewAtendimentos extends StatelessWidget {
 
 class Body extends StatelessWidget {
   final Atendimentos _lista = Get.find<Atendimentos>();
-
-  _apagar(BuildContext context, Atendimento pAtendimento) {
-    if (pAtendimento.efetivado == true) {
-      alert(context, 'Agendamento',
-          'Não é possivel apagar visto que o atendimento já foi efetivado');
-    } else {
-      _lista.apagar(pAtendimento.id!);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +39,27 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  key: Key(_lista.todosAtendimentos[index].id.toString()),
+                  isThreeLine: true,
                   title: Text(
                       _lista.todosAtendimentos[index].descricao.toString()),
-                  subtitle:
-                      Text(_lista.todosAtendimentos[index].nome.toString()),
+                  subtitle: Text(
+                      _lista.todosAtendimentos[index].nome.toString() +
+                          '\n' +
+                          UtilData.obterHoraHHMM(DateTime(
+                              0000,
+                              00,
+                              00,
+                              _lista.todosAtendimentos[index].horaInicio!.hour,
+                              _lista.todosAtendimentos[index].horaInicio!
+                                  .minute)) +
+                          ' - ' +
+                          UtilData.obterHoraHHMM(DateTime(
+                              0000,
+                              00,
+                              00,
+                              _lista.todosAtendimentos[index].horaFim!.hour,
+                              _lista.todosAtendimentos[index].horaFim!.minute)),
+                      maxLines: 3),
                   leading: Container(
                       width: 5,
                       color: atendimento.confirmado == true
@@ -63,8 +70,8 @@ class Body extends StatelessWidget {
                     children: [
                       if (atendimento.efetivado == true)
                         const WdgIconEfetivado(),
-                      WdgEditarAtendimento(atendimento: atendimento),
-                      WdgApagarAtendimento(),
+                      WdgEditarAtendimento(pAtendimento: atendimento),
+                      WdgApagarAtendimento(pAtendimento: atendimento),
                     ],
                   ),
                 ),

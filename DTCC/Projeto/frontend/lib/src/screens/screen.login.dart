@@ -59,7 +59,7 @@ Widget loginBox(BuildContext context) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => ScreenHome()));
     } else {
-      alert(context, "Login", "Erro ao efetuar login");
+      showMessage(context, "Login", "Erro ao efetuar login");
     }
   }
 

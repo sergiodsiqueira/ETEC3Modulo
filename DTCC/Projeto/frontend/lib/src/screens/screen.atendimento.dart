@@ -33,7 +33,6 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
   bool edtPago = false;
   final edtValor = TextEditingController();
 
-  TipoAtendimento? comboBoxValueTipoAtendimento;
   DateTime? data;
   TimeOfDay? horaFim;
   TimeOfDay? horaInicio;
@@ -47,8 +46,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
     edtHoraInicio.text = widget.pAtendimento.horaInicio.toString();
     edtHoraFim.text = widget.pAtendimento.horaFim.toString();
     edtDescricao.text = widget.pAtendimento.descricao.toString();
-    // comboBoxValueTipoAtendimento = TiposAtendimento.firstWhere(
-    //     (tipos) => tipos.id == widget.pIdTipoAtendimento);
+    edtTipo.text = widget.pAtendimento.descricao.toString();
     super.initState();
   }
 

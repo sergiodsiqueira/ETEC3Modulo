@@ -40,7 +40,7 @@ class _WdgEdtPaciente extends State<WdgEdtPaciente> {
               .map((e) => e.id.toString() + " | " + e.nome.toString())
               .toList(),
           onSelected: (item) {
-            setState(() => {print(item.toString())});
+            setState(() => {});
           },
           controller: widget.myController,
           placeholder: 'Informe o Paciente',
@@ -70,6 +70,7 @@ class _WdgEdtData extends State<WdgEdtData> {
   Widget build(BuildContext context) {
     return (Expanded(
       child: TextFormBox(
+        readOnly: true,
         controller: widget.myController,
         header: 'Data',
         placeholder: 'Escolha uma data',
@@ -185,6 +186,7 @@ class _WdgEdtHora extends State<WdgEdtHora> {
   Widget build(BuildContext context) {
     return (Expanded(
       child: TextFormBox(
+          readOnly: true,
           controller: widget.myController,
           header: widget.label,
           placeholder: 'Defina um ' + widget.label,
@@ -299,37 +301,45 @@ class _WdgEdtTiposAtendimento extends State<WdgEdtTiposAtendimento> {
 
 // WdgApagarAtendimento --------------------------------------------------------
 class WdgApagarAtendimento extends StatefulWidget {
-  const WdgApagarAtendimento({Key? key}) : super(key: key);
+  final Atendimento pAtendimento;
+  const WdgApagarAtendimento({Key? key, required this.pAtendimento})
+      : super(key: key);
 
   @override
   State<WdgApagarAtendimento> createState() => _WdgApagarAtendimentoState();
 }
 
 class _WdgApagarAtendimentoState extends State<WdgApagarAtendimento> {
+  final Atendimentos _lista = Get.find<Atendimentos>();
+
   void showContentDialog(BuildContext context) async {
     await showDialog<String>(
       context: context,
       builder: (context) => ContentDialog(
         title: const Text('Apagar'),
-        content: const Text(
-          'Deseja realmente apagar o atendimento?',
-        ),
+        content: widget.pAtendimento.efetivado!
+            ? const Text('Não é possivel apagar este atendimento!')
+            : const Text(
+                'Deseja realmente apagar o atendimento?',
+              ),
         actions: [
-          Button(
+          ElevatedButton(
             child: const Text('CONFIRMAR'),
-            onPressed: () {
-              //apagar aqui
-              Navigator.pop(context, 'User deleted file');
-            },
+            onPressed: widget.pAtendimento.efetivado!
+                ? null
+                : () {
+                    Navigator.pop(context);
+                    _lista.apagar(widget.pAtendimento.id!);
+                  },
           ),
-          FilledButton(
+          ElevatedButton(
             child: const Text('CANCELAR'),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
     );
-    setState(() {});
+    //setState(() {}); Poderia aqui mudar algo na tela aonde o componente está
   }
 
   @override
@@ -343,8 +353,8 @@ class _WdgApagarAtendimentoState extends State<WdgApagarAtendimento> {
 
 // WdgEditarAtendimento --------------------------------------------------------
 class WdgEditarAtendimento extends StatefulWidget {
-  final Atendimento? atendimento;
-  const WdgEditarAtendimento({Key? key, required this.atendimento})
+  final Atendimento? pAtendimento;
+  const WdgEditarAtendimento({Key? key, required this.pAtendimento})
       : super(key: key);
 
   @override
@@ -356,9 +366,9 @@ class _WdgEditarAtendimentoState extends State<WdgEditarAtendimento> {
     await showDialog(
         context: context,
         builder: (context) => ScreenAtendimento(
-              pAtendimento: widget.atendimento!,
+              pAtendimento: widget.pAtendimento!,
               pIdTipoAtendimento:
-                  int.parse(widget.atendimento!.idTipo.toString()),
+                  int.parse(widget.pAtendimento!.idTipo.toString()),
             ));
   }
 
@@ -427,5 +437,56 @@ class WdgEdtValor extends StatelessWidget {
             child: Icon(FluentIcons.circle_dollar)),
       ),
     ));
+  }
+}
+
+// WdgInfoBar ------------------------------------------------------------------
+class WdgInfoBar extends StatefulWidget {
+  final String pTitulo;
+  final String pMensagem;
+  final int pSeveridade;
+
+  const WdgInfoBar(
+      {Key? key,
+      required this.pTitulo,
+      required this.pMensagem,
+      required this.pSeveridade})
+      : super(key: key);
+
+  @override
+  State<WdgInfoBar> createState() => _WdgInfoBarState();
+}
+
+class _WdgInfoBarState extends State<WdgInfoBar> {
+  bool? show = false;
+
+  severidade() {
+    switch (widget.pSeveridade) {
+      case 1:
+        {
+          return InfoBarSeverity.success;
+        }
+      case 2:
+        {
+          return InfoBarSeverity.error;
+        }
+      case 3:
+        {
+          return InfoBarSeverity.warning;
+        }
+
+      default:
+        return InfoBarSeverity.info;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (InfoBar(
+        title: Text(''),
+        content: Text(widget.pMensagem),
+        severity: severidade(),
+        isLong: false,
+        onClose: () => setState(() => show = false)));
   }
 }
