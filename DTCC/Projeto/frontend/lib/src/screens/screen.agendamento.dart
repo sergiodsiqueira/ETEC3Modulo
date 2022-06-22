@@ -34,6 +34,8 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
     TipoAtendimento? tipo;
     int? idPaciente;
     Paciente? paciente;
+    DateTime horaIni;
+    DateTime horaFim;
 
     if (edtData.text.isEmpty && !edtData.text.isDateTime) {
       showMessage(
@@ -62,6 +64,12 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
       return null;
     }
 
+    if (edtDescricao.text.isEmpty) {
+      showMessage(context, 'Descrição inválida',
+          'Informe uma descrição para o agendamento');
+      return null;
+    }
+
     if (edtPaciente.text.isEmpty) {
       showMessage(context, 'Nome inválido', 'Nome do paciente em branco');
       return null;
@@ -85,21 +93,40 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
       return null;
     }
 
-    if (edtDescricao.text.isEmpty) {
-      showMessage(context, 'Descrição inválida',
-          'Informe uma descrição para o agendamento');
+    if (edtHoraInicio.text.isEmpty) {
+      showMessage(
+          context, 'Hora Inicial Inválida', 'Horário inicial em branco');
+      return null;
+    }
+
+    try {
+      horaIni = DateFormat('HH:mm').parse(edtHoraInicio.text);
+    } catch (e) {
+      showMessage(context, 'Hora Inicial Inválida',
+          'Verifique o horário inicial do agendamento (Exe. 13:00)');
+      return null;
+    }
+
+    if (edtHoraFim.text.isEmpty) {
+      showMessage(context, 'Hora Final Inválida', 'Horário final em branco');
+      return null;
+    }
+
+    try {
+      horaFim = DateFormat('HH:mm').parse(edtHoraFim.text);
+    } catch (e) {
+      showMessage(context, 'Hora Final Inválida',
+          'Verifique o horário final do agendamento (Exe. 13:00)');
       return null;
     }
 
     atendimento.data = DateFormat('dd/MM/yyyy').parse(edtData.text);
-    atendimento.idPaciente = idPaciente;
-    atendimento.horaInicio = parseTimeOfDay(edtHoraInicio.text.toString());
-    atendimento.horaFim = parseTimeOfDay(edtHoraFim.text.toString());
+    atendimento.idTipo = idTipo;
     atendimento.descricao = edtDescricao.text;
-    var tipoAtendimento =
-        TiposAtendimento.firstWhere((e) => e.descricao == edtTipo.text);
-    atendimento.idTipo = tipoAtendimento.id;
-    print(atendimento.toJson().toString());
+    atendimento.idPaciente = idPaciente;
+    atendimento.horaInicio = TimeOfDay.fromDateTime(horaIni);
+    atendimento.horaFim = TimeOfDay.fromDateTime(horaFim);
+
     _atendimentos
         .adicionar(atendimento)
         .then((value) => {Navigator.of(context).pop()});

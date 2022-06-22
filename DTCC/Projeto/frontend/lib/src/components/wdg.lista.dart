@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Card, ListTile;
+import 'package:fluent_ui/fluent_ui.dart' hide Colors, showDialog;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -13,13 +14,11 @@ class ListViewAtendimentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-        child: Container(
-      child: Column(children: [
-        const Head(),
-        Body(),
-        const Footer(),
-      ]),
-    )));
+        child: Column(children: [
+      const Head(),
+      Body(),
+      const Footer(),
+    ])));
   }
 }
 
@@ -34,48 +33,54 @@ class Body extends StatelessWidget {
         itemCount: _lista.todosAtendimentos.length,
         itemBuilder: (context, index) {
           final atendimento = _lista.todosAtendimentos[index];
-          return Card(
-            elevation: 2.0,
-            child: Column(
-              children: [
-                ListTile(
-                  isThreeLine: true,
-                  title: Text(
-                      _lista.todosAtendimentos[index].descricao.toString()),
-                  subtitle: Text(
-                      _lista.todosAtendimentos[index].nome.toString() +
-                          '\n' +
-                          UtilData.obterHoraHHMM(DateTime(
-                              0000,
-                              00,
-                              00,
-                              _lista.todosAtendimentos[index].horaInicio!.hour,
-                              _lista.todosAtendimentos[index].horaInicio!
-                                  .minute)) +
-                          ' - ' +
-                          UtilData.obterHoraHHMM(DateTime(
-                              0000,
-                              00,
-                              00,
-                              _lista.todosAtendimentos[index].horaFim!.hour,
-                              _lista.todosAtendimentos[index].horaFim!.minute)),
-                      maxLines: 3),
-                  leading: Container(
-                      width: 5,
-                      color: atendimento.confirmado == true
-                          ? Colors.green
-                          : Colors.red[400]),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (atendimento.efetivado == true)
-                        const WdgIconEfetivado(),
-                      WdgEditarAtendimento(pAtendimento: atendimento),
-                      WdgApagarAtendimento(pAtendimento: atendimento),
-                    ],
+          return Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Card(
+              backgroundColor: Colors.white,
+              elevation: 2.0,
+              child: Column(
+                children: [
+                  ListTile(
+                    isThreeLine: true,
+                    title: Text(
+                        _lista.todosAtendimentos[index].descricao.toString()),
+                    subtitle: Text(
+                        _lista.todosAtendimentos[index].nome.toString() +
+                            '\n' +
+                            UtilData.obterHoraHHMM(DateTime(
+                                0000,
+                                00,
+                                00,
+                                _lista
+                                    .todosAtendimentos[index].horaInicio!.hour,
+                                _lista.todosAtendimentos[index].horaInicio!
+                                    .minute)) +
+                            ' - ' +
+                            UtilData.obterHoraHHMM(DateTime(
+                                0000,
+                                00,
+                                00,
+                                _lista.todosAtendimentos[index].horaFim!.hour,
+                                _lista
+                                    .todosAtendimentos[index].horaFim!.minute)),
+                        maxLines: 3),
+                    leading: Container(
+                        width: 5,
+                        color: atendimento.confirmado == true
+                            ? Colors.green
+                            : Colors.red[400]),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (atendimento.efetivado == true)
+                          const WdgIconEfetivado(),
+                        WdgEditarAtendimento(pAtendimento: atendimento),
+                        WdgApagarAtendimento(pAtendimento: atendimento),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

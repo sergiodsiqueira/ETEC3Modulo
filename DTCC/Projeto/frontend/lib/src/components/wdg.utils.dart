@@ -214,13 +214,9 @@ class _WdgEdtHora extends State<WdgEdtHora> {
 
             if (pickedTime != null) {
               setState(() {
-                String pHora = "${pickedTime.hour}:${pickedTime.minute}";
-                if (pHora.split(':').last.toString() == '0') {
-                  pHora += '0';
-                }
-                if (pHora.split(':').first.toString() == '0') {
-                  pHora += '0';
-                }
+                String pHora;
+                pHora = pickedTime.toString().substring(10);
+                pHora = pHora.substring(0, 5);
                 widget.myController.text = pHora;
               });
             }
@@ -365,11 +361,8 @@ class _WdgEditarAtendimentoState extends State<WdgEditarAtendimento> {
   void showContentDialog(BuildContext context) async {
     await showDialog(
         context: context,
-        builder: (context) => ScreenAtendimento(
-              pAtendimento: widget.pAtendimento!,
-              pIdTipoAtendimento:
-                  int.parse(widget.pAtendimento!.idTipo.toString()),
-            ));
+        builder: (context) =>
+            ScreenAtendimento(pAtendimento: widget.pAtendimento!));
   }
 
   @override
@@ -483,10 +476,10 @@ class _WdgInfoBarState extends State<WdgInfoBar> {
   @override
   Widget build(BuildContext context) {
     return (InfoBar(
-        title: Text(''),
+        title: Text(widget.pTitulo),
         content: Text(widget.pMensagem),
         severity: severidade(),
-        isLong: false,
+        isLong: true,
         onClose: () => setState(() => show = false)));
   }
 }

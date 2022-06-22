@@ -155,22 +155,25 @@ class Atendimentos extends GetxController {
   }
 
   gerarDados(Atendimento pAtendimento) {
-    print('Gerando dados...');
-    _dados = '{"id_paciente": ${pAtendimento.idPaciente},';
-    _dados +=
-        '"data": "${pAtendimento.data!.toIso8601String().substring(0, 10)}",';
-    _dados +=
-        '"hora_inicio": "${pAtendimento.horaInicio!.hour.toString() + ':' + pAtendimento.horaInicio!.minute.toString()}",';
-    _dados +=
-        '"hora_fim": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
-    _dados += '"descricao": "${pAtendimento.descricao}",';
-    _dados += '"observacao": "${pAtendimento.observacao}",';
-    _dados += '"confirmado": ${pAtendimento.confirmado},';
-    _dados += '"efetivado": ${pAtendimento.efetivado},';
-    _dados += '"valor": ${pAtendimento.valor.toString()},';
-    _dados += '"pago": ${pAtendimento.pago},';
-    _dados += '"id_tipo": ${pAtendimento.idTipo}}';
-    print('Dados gerados...');
+    print('Processing data...');
+    try {
+      _dados = '{"id_paciente": ${pAtendimento.idPaciente},';
+      _dados +=
+          '"data": "${pAtendimento.data!.toIso8601String().substring(0, 10)}",';
+      _dados +=
+          '"hora_inicio": "${pAtendimento.horaInicio!.hour.toString() + ':' + pAtendimento.horaInicio!.minute.toString()}",';
+      _dados +=
+          '"hora_fim": "${pAtendimento.horaFim!.hour.toString() + ':' + pAtendimento.horaFim!.minute.toString()}",';
+      _dados += '"descricao": "${pAtendimento.descricao}",';
+      _dados += '"observacao": "${pAtendimento.observacao}",';
+      _dados += '"confirmado": ${pAtendimento.confirmado},';
+      _dados += '"efetivado": ${pAtendimento.efetivado},';
+      _dados += '"valor": ${pAtendimento.valor},';
+      _dados += '"pago": ${pAtendimento.pago},';
+      _dados += '"id_tipo": ${pAtendimento.idTipo}}';
+    } catch (error) {
+      print('Erro ao gerar dados ' + error.toString());
+    }
   }
 
   ContadorDiario() {
