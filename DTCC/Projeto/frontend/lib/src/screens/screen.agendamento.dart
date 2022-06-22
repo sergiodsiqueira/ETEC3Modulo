@@ -37,8 +37,25 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            WdgEdtData(myController: edtData),
-            WdgEdtPaciente(myController: edtPaciente),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width: 180, child: WdgEdtData(myController: edtData)),
+                SizedBox(width: 30),
+                SizedBox(
+                    width: 289,
+                    child: WdgEdtTiposAtendimento(myController: edtTipo)),
+              ],
+            ),
+            SizedBox(
+              height: 70,
+              child: WdgEdtSimples(
+                  myController: edtDescricao,
+                  label: 'Descrição',
+                  placehold: 'Informe a descrição do agendamento'),
+            ),
+            SizedBox(
+                height: 70, child: WdgEdtPaciente(myController: edtPaciente)),
             Row(
               children: [
                 WdgEdtHora(
@@ -47,11 +64,7 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
                 WdgEdtHora(myController: edtHoraFim, label: 'Horário Final'),
               ],
             ),
-            WdgEdtSimples(
-                myController: edtDescricao,
-                label: 'Descrição',
-                placehold: 'Informe a descrição do agendamento'),
-            WdgEdtTiposAtendimento(myController: edtTipo),
+            SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -66,7 +79,8 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
                       Atendimento atendimento = Atendimento();
                       atendimento.data =
                           DateFormat('dd/MM/yyyy').parse(edtData.text);
-                      atendimento.idPaciente = 0;
+                      atendimento.idPaciente = int.parse(
+                          edtPaciente.text.split('|').first.toString().trim());
                       atendimento.horaInicio =
                           parseTimeOfDay(edtHoraInicio.text.toString());
                       atendimento.horaFim =
@@ -77,9 +91,9 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
                       atendimento.idTipo = tipoAtendimento.id;
 
                       print(atendimento.toJson().toString());
-                      // _atendimentos
-                      //     .adicionar(atendimento)
-                      //     .then((value) => {Navigator.of(context).pop()});
+                      _atendimentos
+                          .adicionar(atendimento)
+                          .then((value) => {Navigator.of(context).pop()});
                     },
                     child: const Text(
                       "CONFIRMAR",

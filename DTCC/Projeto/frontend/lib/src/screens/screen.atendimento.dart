@@ -21,14 +21,18 @@ class ScreenAtendimento extends StatefulWidget {
 
 class _ScreenAtendimentoState extends State<ScreenAtendimento> {
   final Atendimentos _atendimentos = Get.find<Atendimentos>();
-  late int Id = 0;
-  late int IdPaciente = 0;
   final edtData = TextEditingController();
   final edtDescricao = TextEditingController();
   final edtHoraFim = TextEditingController();
   final edtHoraInicio = TextEditingController();
   final edtPaciente = TextEditingController();
   final edtTipo = TextEditingController();
+  final edtObservacoes = TextEditingController();
+  bool edtConfirmado = false;
+  bool edtEfetivado = false;
+  bool edtPago = false;
+  final edtValor = TextEditingController();
+
   TipoAtendimento? comboBoxValueTipoAtendimento;
   DateTime? data;
   TimeOfDay? horaFim;
@@ -36,9 +40,9 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
 
   @override
   void initState() {
-    Id = widget.pAtendimento.id!;
-    IdPaciente = widget.pAtendimento.idPaciente!;
-    edtPaciente.text = widget.pAtendimento.idPaciente.toString();
+    edtPaciente.text = widget.pAtendimento.idPaciente.toString() +
+        ' | ' +
+        widget.pAtendimento.nome.toString();
     edtData.text = DateFormat('dd/MM/yyyy').format(widget.pAtendimento.data!);
     edtHoraInicio.text = widget.pAtendimento.horaInicio.toString();
     edtHoraFim.text = widget.pAtendimento.horaFim.toString();
@@ -50,69 +54,85 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
 
   @override
   Widget build(BuildContext context) {
-    return (AlertDialog(
-      title: const Text('Atendimento'),
+    return ((AlertDialog(
+      title: const Text('Agendamento'),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       content: SizedBox(
-        width: 700,
-        height: 500,
+        width: 500,
+        height: 600,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                WdgEdtData(myController: edtData),
-                WdgEdtPaciente(myController: edtPaciente),
+                SizedBox(width: 180, child: WdgEdtData(myController: edtData)),
+                SizedBox(width: 30),
+                SizedBox(
+                    width: 289,
+                    child: WdgEdtTiposAtendimento(myController: edtTipo)),
               ],
             ),
-            const SizedBox(height: 3),
-            TextField(
-              controller: edtHoraFim,
-              decoration: const InputDecoration(
-                  icon: Icon(FluentIcons.timer), labelText: 'Horário Final'),
-              readOnly: true,
-              onTap: () async {
-                TimeOfDay? pickedTime = await showTimePicker(
-                    initialEntryMode: TimePickerEntryMode.input,
-                    initialTime: TimeOfDay.now(),
-                    context: context,
-                    builder: (context, childWidget) {
-                      return MediaQuery(
-                          data: MediaQuery.of(context)
-                              .copyWith(alwaysUse24HourFormat: true),
-                          child: childWidget!);
-                    });
-
-                if (pickedTime != null) {
-                  setState(() {
-                    horaFim = pickedTime;
-                    String pHora = "${pickedTime.hour}:${pickedTime.minute}";
-                    if (pHora.split(':').last.toString() == '0') {
-                      pHora += '0';
-                    }
-                    edtHoraFim.text = pHora;
-                  });
-                } else {
-                  print("Time is not selected");
-                }
-              },
+            SizedBox(
+              height: 70,
+              child: WdgEdtSimples(
+                  myController: edtDescricao,
+                  label: 'Descrição',
+                  placehold: 'Informe a descrição do agendamento'),
             ),
-            const SizedBox(height: 3),
-            TextFormField(
-              controller: edtDescricao,
-              decoration: const InputDecoration(
-                icon: Icon(FluentIcons.event_info),
-                hintText: '',
-                labelText: 'Descrição',
-              ),
-              validator: (String? value) {
-                return (value == null) ? 'Campo obrigatório' : null;
-              },
+            SizedBox(
+                height: 70, child: WdgEdtPaciente(myController: edtPaciente)),
+            Row(
+              children: [
+                WdgEdtHora(
+                    myController: edtHoraInicio, label: 'Horário Inicial'),
+                const SizedBox(width: 30),
+                WdgEdtHora(myController: edtHoraFim, label: 'Horário Final'),
+              ],
             ),
-            const SizedBox(height: 10),
-            WdgEdtTiposAtendimento(myController: edtTipo),
-            const SizedBox(height: 30),
+            WdgEdtObservacoes(
+              myController: edtObservacoes,
+            ),
+            Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              children: [
+                InfoLabel(
+                  label: 'Confirmado',
+                  child: Switch(
+                    value: edtConfirmado,
+                    onChanged: (value) {
+                      setState(() {
+                        edtConfirmado = value;
+                      });
+                    },
+                  ),
+                ),
+                InfoLabel(
+                  label: 'Efetivado',
+                  child: Switch(
+                    value: edtEfetivado,
+                    onChanged: (value) {
+                      setState(() {
+                        edtEfetivado = value;
+                      });
+                    },
+                  ),
+                ),
+                InfoLabel(
+                  label: 'Pago',
+                  child: Switch(
+                    value: edtPago,
+                    onChanged: (value) {
+                      setState(() {
+                        edtPago = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            WdgEdtValor(myController: edtValor),
+            SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -121,23 +141,27 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
                       Navigator.of(context).pop();
                     },
                     child: const Text("CANCELAR")),
-                const SizedBox(width: 20),
+                const SizedBox(width: 30),
                 ElevatedButton(
                     onPressed: () {
                       Atendimento atendimento = Atendimento();
-                      atendimento.id = Id;
-                      atendimento.data = DateTime.parse(edtData.text);
-                      atendimento.idPaciente = 0;
-                      atendimento.horaInicio = horaInicio;
-                      atendimento.horaFim = horaFim;
+                      atendimento.data =
+                          DateFormat('dd/MM/yyyy').parse(edtData.text);
+                      atendimento.idPaciente = int.parse(
+                          edtPaciente.text.split('|').first.toString().trim());
+                      atendimento.horaInicio =
+                          parseTimeOfDay(edtHoraInicio.text.toString());
+                      atendimento.horaFim =
+                          parseTimeOfDay(edtHoraFim.text.toString());
                       atendimento.descricao = edtDescricao.text;
-                      atendimento.idTipo = comboBoxValueTipoAtendimento!.id;
+                      var tipoAtendimento = TiposAtendimento.firstWhere(
+                          (e) => e.descricao == edtTipo.text);
+                      atendimento.idTipo = tipoAtendimento.id;
 
-                      print(
-                          'Dados alterados:' + atendimento.toJson().toString());
-                      // _atendimentos
-                      //     .alterar(atendimento)
-                      //     .then((value) => {Navigator.of(context).pop()});
+                      print(atendimento.toJson().toString());
+                      _atendimentos
+                          .adicionar(atendimento)
+                          .then((value) => {Navigator.of(context).pop()});
                     },
                     child: const Text(
                       "CONFIRMAR",
@@ -148,6 +172,6 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
           ],
         ),
       ),
-    ));
+    )));
   }
 }

@@ -13,11 +13,13 @@ class ListViewAtendimentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-        child: Column(children: [
-      Head(),
-      Body(),
-      Footer(),
-    ])));
+        child: Container(
+      child: Column(children: [
+        Head(),
+        Body(),
+        Footer(),
+      ]),
+    )));
   }
 }
 
@@ -59,24 +61,10 @@ class Body extends StatelessWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (atendimento.efetivado == true) Efetivado(),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (_) => ScreenAtendimento(
-                                      pAtendimento: atendimento,
-                                      pIdTipoAtendimento: int.parse(
-                                          atendimento.idTipo.toString()),
-                                    ));
-                          },
-                          icon: const Icon(Icons.edit)),
-                      IconButton(
-                          onPressed: () {
-                            _apagar(context, atendimento);
-                          },
-                          icon: const Icon(Icons.delete)),
+                      if (atendimento.efetivado == true)
+                        const WdgIconEfetivado(),
+                      WdgEditarAtendimento(atendimento: atendimento),
+                      WdgApagarAtendimento(),
                     ],
                   ),
                 ),
@@ -132,9 +120,8 @@ class Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: Center(
-        child: (TextButton.icon(
-            icon: const Icon(Icons.add),
-            label: const Text('ADICIONAR'),
+        child: (ElevatedButton(
+            child: Row(children: [Icon(Icons.add), Text('ADICIONAR')]),
             onPressed: () {
               showDialog(
                   context: context,
@@ -143,14 +130,5 @@ class Footer extends StatelessWidget {
             })),
       ),
     );
-  }
-}
-
-class Efetivado extends StatelessWidget {
-  const Efetivado({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return (const Icon(Icons.check_box_rounded));
   }
 }

@@ -1,10 +1,13 @@
-import 'package:flutter/material.dart' hide IconButton;
+import 'package:flutter/material.dart' hide IconButton, showDialog, Icon;
 import 'package:intl/intl.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:get/get.dart';
+import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter/services.dart';
 
+import 'package:eclinic/src/screens/screens.dart';
 import 'package:eclinic/src/models/models.dart';
 import 'package:eclinic/src/providers/providers.dart';
 
@@ -33,13 +36,17 @@ class _WdgEdtPaciente extends State<WdgEdtPaciente> {
         label: 'Paciente',
         child: (AutoSuggestBox(
           clearButtonEnabled: false,
-          items: _lista.todosPacientes.map((e) => e.nome.toString()).toList(),
+          items: _lista.todosPacientes
+              .map((e) => e.id.toString() + " | " + e.nome.toString())
+              .toList(),
           onSelected: (item) {
             setState(() => {print(item.toString())});
           },
           controller: widget.myController,
-          placeholder: 'Digite o nome do paciente',
-          leadingIcon: const Icon(FluentIcons.contact),
+          placeholder: 'Informe o Paciente',
+          leadingIcon: const Padding(
+              padding: EdgeInsetsDirectional.only(start: 10),
+              child: Icon(FluentIcons.contact)),
           trailingIcon: const Icon(FluentIcons.chevron_down),
         )),
       ),
@@ -65,7 +72,7 @@ class _WdgEdtData extends State<WdgEdtData> {
       child: TextFormBox(
         controller: widget.myController,
         header: 'Data',
-        placeholder: 'Escolha a data do agendamento',
+        placeholder: 'Escolha uma data',
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (text) {
           if (text == null || text.isEmpty) return 'Campo obrigatório';
@@ -268,7 +275,7 @@ class _WdgEdtTiposAtendimento extends State<WdgEdtTiposAtendimento> {
   Widget build(BuildContext context) {
     return Expanded(
       child: InfoLabel(
-        label: 'Tipos de Atendimento',
+        label: 'Tipo',
         child: (AutoSuggestBox(
           clearButtonEnabled: false,
           items: TiposAtendimento.map((e) => e.descricao).toList(),
@@ -279,11 +286,146 @@ class _WdgEdtTiposAtendimento extends State<WdgEdtTiposAtendimento> {
                 });
           },
           controller: widget.myController,
-          placeholder: 'Selecione um tipo de atendimento',
-          leadingIcon: const Icon(FluentIcons.bulleted_tree_list),
+          placeholder: 'Tipo de Atendimento',
+          leadingIcon: const Padding(
+              padding: EdgeInsetsDirectional.only(start: 10),
+              child: Icon(FluentIcons.bulleted_tree_list)),
           trailingIcon: const Icon(FluentIcons.chevron_down),
         )),
       ),
     );
+  }
+}
+
+// WdgApagarAtendimento --------------------------------------------------------
+class WdgApagarAtendimento extends StatefulWidget {
+  const WdgApagarAtendimento({Key? key}) : super(key: key);
+
+  @override
+  State<WdgApagarAtendimento> createState() => _WdgApagarAtendimentoState();
+}
+
+class _WdgApagarAtendimentoState extends State<WdgApagarAtendimento> {
+  void showContentDialog(BuildContext context) async {
+    await showDialog<String>(
+      context: context,
+      builder: (context) => ContentDialog(
+        title: const Text('Apagar'),
+        content: const Text(
+          'Deseja realmente apagar o atendimento?',
+        ),
+        actions: [
+          Button(
+            child: const Text('CONFIRMAR'),
+            onPressed: () {
+              //apagar aqui
+              Navigator.pop(context, 'User deleted file');
+            },
+          ),
+          FilledButton(
+            child: const Text('CANCELAR'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (IconButton(
+      icon: const Icon(FluentIcons.delete),
+      onPressed: () => showContentDialog(context),
+    ));
+  }
+}
+
+// WdgEditarAtendimento --------------------------------------------------------
+class WdgEditarAtendimento extends StatefulWidget {
+  final Atendimento? atendimento;
+  const WdgEditarAtendimento({Key? key, required this.atendimento})
+      : super(key: key);
+
+  @override
+  State<WdgEditarAtendimento> createState() => _WdgEditarAtendimentoState();
+}
+
+class _WdgEditarAtendimentoState extends State<WdgEditarAtendimento> {
+  void showContentDialog(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (context) => ScreenAtendimento(
+              pAtendimento: widget.atendimento!,
+              pIdTipoAtendimento:
+                  int.parse(widget.atendimento!.idTipo.toString()),
+            ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (IconButton(
+      icon: const Icon(FluentIcons.edit),
+      onPressed: () => showContentDialog(context),
+    ));
+  }
+}
+
+// WdgIconEfetivado ------------------------------------------------------------
+class WdgIconEfetivado extends StatelessWidget {
+  const WdgIconEfetivado({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (const Icon(FluentIcons.skype_circle_check));
+  }
+}
+
+// WdgEdtObservacoes------------------------------------------------------------
+class WdgEdtObservacoes extends StatelessWidget {
+  final TextEditingController myController;
+  const WdgEdtObservacoes({Key? key, required this.myController})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (Expanded(
+      child: TextFormBox(
+        maxLines: null,
+        minHeight: 100,
+        controller: myController,
+        header: 'Observações',
+        textInputAction: TextInputAction.next,
+        prefix: const Padding(
+            padding: EdgeInsetsDirectional.only(start: 10),
+            child: Icon(FluentIcons.paste)),
+      ),
+    ));
+  }
+}
+
+// WdgEdtValor -----------------------------------------------------------------
+class WdgEdtValor extends StatelessWidget {
+  final TextEditingController myController;
+  const WdgEdtValor({Key? key, required this.myController}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (Expanded(
+      child: TextFormBox(
+        controller: myController,
+        header: 'Valor',
+        placeholder: 'Informe o valor',
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          CentavosInputFormatter(moeda: true)
+        ],
+        textInputAction: TextInputAction.next,
+        prefix: const Padding(
+            padding: EdgeInsetsDirectional.only(start: 8.0),
+            child: Icon(FluentIcons.circle_dollar)),
+      ),
+    ));
   }
 }
