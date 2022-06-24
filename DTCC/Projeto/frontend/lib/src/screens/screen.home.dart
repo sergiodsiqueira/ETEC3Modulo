@@ -38,8 +38,12 @@ class _ScreenHomeState extends State<ScreenHome> {
               Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: SizedBox(
-                      height: 20,
-                      child: Image.asset('assets/images/LogoPB.png'))),
+                      height: 30,
+                      child: Image(
+                        image: NetworkImage(
+                            'https://raw.githubusercontent.com/sergiodsiqueira/ETEC3Modulo/main/DTCC/Projeto/images/LogoPB.png'),
+                        fit: BoxFit.cover,
+                      ))),
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 10),
                 child: Text(
