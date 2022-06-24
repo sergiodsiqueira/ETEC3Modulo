@@ -42,7 +42,7 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
           context, 'Data inválida', 'Verique novamente a data informada');
       return null;
     }
-    print(edtTipo);
+
     if (edtTipo.text.isEmpty) {
       showMessage(context, 'Tipo inválido', 'Tipo de Atendimento em branco');
       return null;
@@ -120,7 +120,7 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
       return null;
     }
 
-    atendimento.data = DateFormat('dd/MM/yyyy').parse(edtData.text);
+    atendimento.data = DateFormat('yyyy-MM-dd').parse(edtData.text);
     atendimento.idTipo = idTipo;
     atendimento.descricao = edtDescricao.text;
     atendimento.idPaciente = idPaciente;
@@ -140,48 +140,47 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                  width: 150, child: WdgDatePickerNew(myController: edtData)),
-              SizedBox(width: 30),
+              SizedBox(width: 150, child: WdgEdtData(myController: edtData)),
+              const SizedBox(width: 20),
               SizedBox(
                   width: 250,
                   child: WdgEdtTiposAtendimento(myController: edtTipo)),
             ],
           ),
-          // SizedBox(
-          //     height: 70,
-          //     child: WdgEdtDescricao(
-          //       myController: edtDescricao,
-          //       label: 'Descrição',
-          //     )),
           SizedBox(
-              height: 70, child: WdgEdtPaciente(myController: edtPaciente)),
-          // Row(
-          //   children: [
-          //     WdgEdtHora(
-          //         myController: edtHoraInicio, label: 'Horário Inicial'),
-          //     const SizedBox(width: 30),
-          //     WdgEdtHora(myController: edtHoraFim, label: 'Horário Final'),
-          //   ],
-          // )
+              child: WdgEdtDescricao(
+            myController: edtDescricao,
+            label: 'Descrição',
+          )),
+          SizedBox(child: WdgEdtPaciente(myController: edtPaciente)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                  width: 180,
+                  child: WdgEdtHora(
+                      myController: edtHoraInicio, label: 'Horário Inicial')),
+              SizedBox(
+                  width: 180,
+                  child: WdgEdtHora(
+                      myController: edtHoraFim, label: 'Horário Final')),
+            ],
+          )
         ],
       ),
       actions: [
         ElevatedButton(
             onPressed: () {
+              _gravar();
+            },
+            child: const Text("CONFIRMAR")),
+        ElevatedButton(
+            onPressed: () {
               Navigator.of(context).pop();
             },
             child: const Text("CANCELAR")),
-        ElevatedButton(
-            onPressed: () {
-              _gravar();
-            },
-            child: const Text(
-              "CONFIRMAR",
-              style: TextStyle(color: Colors.white),
-            )),
       ],
     ));
   }

@@ -36,11 +36,10 @@ class _ScreenHomeState extends State<ScreenHome> {
           return Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: FlutterLogo(
-                  size: 20,
-                ),
-              ),
+                  padding: const EdgeInsets.only(top: 10),
+                  child: SizedBox(
+                      height: 20,
+                      child: Image.asset('assets/images/LogoPB.png'))),
               Padding(
                 padding: const EdgeInsets.only(left: 10, top: 10),
                 child: Text(
@@ -59,7 +58,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         onChanged: (i) => setState(() => index = i),
         header: const Text('Menu'),
         indicator: () {
-          StickyNavigationIndicator();
+          const StickyNavigationIndicator();
         }(),
         items: [
           PaneItem(

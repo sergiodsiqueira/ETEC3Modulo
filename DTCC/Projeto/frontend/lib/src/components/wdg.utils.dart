@@ -21,7 +21,8 @@ parseTimeOfDay(String t) {
 // WdgEdtPaciente --------------------------------------------------------------
 class WdgEdtPaciente extends StatefulWidget {
   final TextEditingController myController;
-  const WdgEdtPaciente({Key? key, required this.myController})
+  final int? pIdPaciente;
+  const WdgEdtPaciente({Key? key, required this.myController, this.pIdPaciente})
       : super(key: key);
 
   @override
@@ -30,11 +31,32 @@ class WdgEdtPaciente extends StatefulWidget {
 
 class _WdgEdtPaciente extends State<WdgEdtPaciente> {
   final Pacientes _lista = Get.find<Pacientes>();
+  Paciente? paciente;
+
+  @override
+  void initState() {
+    if (widget.pIdPaciente != null) {
+      try {
+        paciente = _lista.todosPacientes
+            .singleWhere((element) => element.id == widget.pIdPaciente);
+      } catch (error) {
+        paciente = null;
+      }
+    } else {
+      paciente = null;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SearchField<Paciente>(
-      searchInputDecoration: InputDecoration(
+      initialValue: paciente != null
+          ? SearchFieldListItem<Paciente>(
+              paciente!.id.toString() + ' | ' + paciente!.nome.toString(),
+              item: paciente)
+          : null,
+      searchInputDecoration: const InputDecoration(
           icon: Icon(FluentIcons.contact), label: Text('Paciente')),
       suggestions: _lista.todosPacientes
           .map(
@@ -44,53 +66,43 @@ class _WdgEdtPaciente extends State<WdgEdtPaciente> {
             ),
           )
           .toList(),
+      onSuggestionTap: (value) {
+        String? id = value.item?.id.toString();
+        String? nome = value.item?.nome.toString();
+        String? x = id! + ' | ' + nome!;
+        widget.myController.text = x;
+      },
     );
   }
 }
 
 // WdgEdtData ------------------------------------------------------------------
-class WdgEdtData extends StatefulWidget {
-  final TextEditingController myController;
-  const WdgEdtData({Key? key, required this.myController}) : super(key: key);
-
-  @override
-  State<WdgEdtData> createState() => _WdgEdtData();
-}
-
-class _WdgEdtData extends State<WdgEdtData> {
-  String value = '';
+class WdgEdtData extends StatelessWidget {
+  TextEditingController myController = TextEditingController();
+  WdgEdtData({Key? key, required this.myController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return (Expanded(
-      child: TextFormField(
-        controller: widget.myController,
-        decoration: InputDecoration(
-            icon: Icon(FluentIcons.calendar), label: Text('Data')),
-        readOnly: true,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (text) {
-          if (text == null || text.isEmpty) return 'Campo obrigatório';
-          return null;
-        },
-        textInputAction: TextInputAction.next,
-        onTap: () async {
-          DateTime? pickedDate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2100));
-
-          if (pickedDate != null) {
-            String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-            setState(() {
-              value = formattedDate;
-              widget.myController.text = value;
-            });
-          }
-        },
-      ),
-    ));
+    return DateTimePicker(
+      type: DateTimePickerType.date,
+      dateMask: 'dd/MM/yyyy',
+      controller: myController,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      icon: const Icon(FluentIcons.calendar),
+      dateLabelText: 'Data',
+      use24HourFormat: true,
+      locale: const Locale('pt', 'BR'),
+      selectableDayPredicate: (date) {
+        if (date.weekday == 6 || date.weekday == 7) {
+          return false;
+        }
+        return true;
+      },
+      onChanged: (val) => {},
+      validator: (val) {},
+      onSaved: (val) => {},
+    );
   }
 }
 
@@ -153,64 +165,34 @@ class _WdgEdtSenha extends State<WdgEdtSenha> {
         textInputAction: TextInputAction.next,
         prefix: const Padding(
           padding: EdgeInsetsDirectional.only(start: 8.0),
-          child: Icon(FluentIcons.password_field),
+          child: Icon(FluentIcons.clock),
         ),
       ),
     ));
   }
 }
 
-//WdgEdtHora -------------------------------------------------------------------
-class WdgEdtHora extends StatefulWidget {
-  final TextEditingController myController;
+// //WdgEdtHora -------------------------------------------------------------------
+class WdgEdtHora extends StatelessWidget {
+  TextEditingController myController = TextEditingController();
   final String label;
-  const WdgEdtHora({Key? key, required this.myController, required this.label})
+  WdgEdtHora({Key? key, required this.myController, required this.label})
       : super(key: key);
 
   @override
-  State<WdgEdtHora> createState() => _WdgEdtHora();
-}
-
-class _WdgEdtHora extends State<WdgEdtHora> {
-  @override
   Widget build(BuildContext context) {
-    return (Expanded(
-      child: TextFormBox(
-          readOnly: true,
-          controller: widget.myController,
-          header: widget.label,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (text) {
-            if (text == null || text.isEmpty) return 'Campo obrigatório';
-            return null;
-          },
-          textInputAction: TextInputAction.next,
-          prefix: const Padding(
-            padding: EdgeInsetsDirectional.only(start: 8.0),
-            child: Icon(FluentIcons.clock),
-          ),
-          onTap: () async {
-            TimeOfDay? pickedTime = await showTimePicker(
-                initialEntryMode: TimePickerEntryMode.input,
-                initialTime: TimeOfDay.now(),
-                context: context,
-                builder: (context, childWidget) {
-                  return MediaQuery(
-                      data: MediaQuery.of(context)
-                          .copyWith(alwaysUse24HourFormat: true),
-                      child: childWidget!);
-                });
-
-            if (pickedTime != null) {
-              setState(() {
-                String pHora;
-                pHora = pickedTime.toString().substring(10);
-                pHora = pHora.substring(0, 5);
-                widget.myController.text = pHora;
-              });
-            }
-          }),
-    ));
+    return DateTimePicker(
+      type: DateTimePickerType.time,
+      dateMask: 'HH:mm',
+      controller: myController,
+      icon: const Icon(FluentIcons.clock),
+      timeLabelText: label,
+      use24HourFormat: true,
+      locale: const Locale('pt', 'BR'),
+      onChanged: (val) => {},
+      validator: (val) {},
+      onSaved: (val) => {},
+    );
   }
 }
 
@@ -224,21 +206,18 @@ class WdgEdtDescricao extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (Expanded(
-        child: TextFormBox(
+    return TextFormField(
       controller: myController,
-      header: label,
+      decoration: InputDecoration(
+          icon: Icon(FluentIcons.calendar_settings),
+          label: Text('Descrição do Agendamento')),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (text) {
         if (text == null || text.isEmpty) return 'Campo obrigatório';
         return null;
       },
       textInputAction: TextInputAction.next,
-      prefix: const Padding(
-        padding: EdgeInsetsDirectional.only(start: 8.0),
-        child: Icon((FluentIcons.calendar_settings)),
-      ),
-    )));
+    );
   }
 }
 
@@ -374,15 +353,12 @@ class WdgEdtObservacoes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-      child: TextFormBox(
-        maxLines: null,
-        minHeight: 100,
+      child: TextFormField(
         controller: myController,
-        header: 'Observações',
+        decoration: const InputDecoration(
+            icon: Icon(FluentIcons.paste), label: Text('Observações')),
+        maxLines: null,
         textInputAction: TextInputAction.next,
-        prefix: const Padding(
-            padding: EdgeInsetsDirectional.only(start: 10),
-            child: Icon(FluentIcons.paste)),
       ),
     ));
   }
@@ -396,19 +372,16 @@ class WdgEdtValor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-      child: TextFormBox(
-        controller: myController,
-        header: 'Valor',
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-          CentavosInputFormatter(moeda: true)
-        ],
-        textInputAction: TextInputAction.next,
-        prefix: const Padding(
-            padding: EdgeInsetsDirectional.only(start: 8.0),
-            child: Icon(FluentIcons.circle_dollar)),
-      ),
+      child: TextFormField(
+          controller: myController,
+          decoration: const InputDecoration(
+              icon: Icon(FluentIcons.circle_dollar), label: Text('Valor')),
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            CentavosInputFormatter(moeda: true)
+          ],
+          textInputAction: TextInputAction.next),
     ));
   }
 }
@@ -461,36 +434,5 @@ class _WdgInfoBarState extends State<WdgInfoBar> {
         severity: severidade(),
         isLong: true,
         onClose: () => setState(() => show = false)));
-  }
-}
-
-class WdgDatePickerNew extends StatelessWidget {
-  TextEditingController myController = TextEditingController();
-  WdgDatePickerNew({Key? key, required this.myController}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DateTimePicker(
-      type: DateTimePickerType.date,
-      dateMask: 'dd/MM/yyyy',
-      controller: myController,
-      //initialValue: _initialValue,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      icon: Icon(FluentIcons.calendar),
-      dateLabelText: 'Data',
-      //timeLabelText: "Hora",
-      use24HourFormat: true,
-      locale: Locale('pt', 'BR'),
-      selectableDayPredicate: (date) {
-        if (date.weekday == 6 || date.weekday == 7) {
-          return false;
-        }
-        return true;
-      },
-      onChanged: (val) => {},
-      validator: (val) {},
-      onSaved: (val) => {},
-    );
   }
 }

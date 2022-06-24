@@ -23,7 +23,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
   final Pacientes _pacientes = Get.find<Pacientes>();
 
   final edtData = TextEditingController();
-  final edtTipo = TextEditingController();
+  TextEditingController edtTipo = TextEditingController();
   final edtDescricao = TextEditingController();
   final edtPaciente = TextEditingController();
   final edtHoraFim = TextEditingController();
@@ -41,10 +41,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
   @override
   void initState() {
     edtData.text = DateFormat('dd/MM/yyyy').format(widget.pAtendimento.data!);
-    edtTipo.text =
-        TiposAtendimento.singleWhere((e) => e.id == widget.pAtendimento.idTipo)
-            .descricao
-            .toString();
+
     edtDescricao.text = widget.pAtendimento.descricao.toString();
     edtPaciente.text = widget.pAtendimento.idPaciente.toString() +
         ' | ' +
@@ -194,98 +191,95 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
 
   @override
   Widget build(BuildContext context) {
-    return ((AlertDialog(
+    return AlertDialog(
       title: const Text('Atendimento'),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      content: SizedBox(
-        width: 500,
-        height: 470,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(width: 180, child: WdgEdtData(myController: edtData)),
-                SizedBox(width: 30),
-                SizedBox(
-                    width: 289,
-                    child: WdgEdtTiposAtendimento(myController: edtTipo)),
-              ],
-            ),
-            SizedBox(
-              height: 70,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: 150, child: WdgEdtData(myController: edtData)),
+              const SizedBox(width: 20),
+              SizedBox(
+                  width: 250,
+                  child: WdgEdtTiposAtendimento(myController: edtTipo)),
+            ],
+          ),
+          SizedBox(
               child: WdgEdtDescricao(
-                  myController: edtDescricao, label: 'Descrição'),
-            ),
-            SizedBox(
-                height: 70, child: WdgEdtPaciente(myController: edtPaciente)),
-            Row(
-              children: [
-                WdgEdtHora(
-                    myController: edtHoraInicio, label: 'Horário Inicial'),
-                const SizedBox(width: 30),
-                WdgEdtHora(myController: edtHoraFim, label: 'Horário Final'),
-              ],
-            ),
-            WdgEdtObservacoes(
-              myController: edtObservacoes,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                    width: 200, child: WdgEdtValor(myController: edtValor)),
-                const SizedBox(width: 10),
-                SizedBox(
-                  width: 100,
-                  child: InfoLabel(
-                    label: 'Pago',
-                    child: Switch(
-                      value: edtPago,
-                      onChanged: (value) {
-                        setState(() {
-                          edtPago = value;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 30),
-                InfoLabel(
-                  label: 'Confirmado',
+            myController: edtDescricao,
+            label: 'Descrição',
+          )),
+          SizedBox(
+              child: WdgEdtPaciente(
+            myController: edtPaciente,
+            pIdPaciente: widget.pAtendimento.idPaciente,
+          )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                  width: 180,
+                  child: WdgEdtHora(
+                      myController: edtHoraInicio, label: 'Horário Inicial')),
+              SizedBox(
+                  width: 180,
+                  child: WdgEdtHora(
+                      myController: edtHoraFim, label: 'Horário Final')),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Row(
+            children: [
+              SizedBox(width: 200, child: WdgEdtValor(myController: edtValor)),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: 100,
+                child: InfoLabel(
+                  label: 'Pago',
                   child: Switch(
-                    value: edtConfirmado,
+                    value: edtPago,
                     onChanged: (value) {
                       setState(() {
-                        edtConfirmado = value;
+                        edtPago = value;
                       });
                     },
                   ),
                 ),
-                SizedBox(width: 20),
-                InfoLabel(
-                  label: 'Efetivado',
-                  child: Switch(
-                    value: edtEfetivado,
-                    onChanged: (value) {
-                      setState(() {
-                        edtEfetivado = value;
-                      });
-                    },
-                  ),
+              ),
+              const SizedBox(width: 30),
+              InfoLabel(
+                label: 'Confirmado',
+                child: Switch(
+                  value: edtConfirmado,
+                  onChanged: (value) {
+                    setState(() {
+                      edtConfirmado = value;
+                    });
+                  },
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              SizedBox(width: 20),
+              InfoLabel(
+                label: 'Efetivado',
+                child: Switch(
+                  value: edtEfetivado,
+                  onChanged: (value) {
+                    setState(() {
+                      edtEfetivado = value;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+          WdgEdtObservacoes(
+            myController: edtObservacoes,
+          ),
+        ],
       ),
       actions: [
-        ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("CANCELAR")),
-        const SizedBox(width: 30),
         ElevatedButton(
             onPressed: () {
               _gravar();
@@ -294,7 +288,12 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               "CONFIRMAR",
               style: TextStyle(color: Colors.white),
             )),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("CANCELAR")),
       ],
-    )));
+    );
   }
 }

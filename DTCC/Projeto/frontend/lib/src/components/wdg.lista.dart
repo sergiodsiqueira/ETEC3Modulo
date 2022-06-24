@@ -14,7 +14,7 @@ class ListViewAtendimentos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [Head(), Body(), Footer()],
+      children: [const Head(), Body(), const Footer()],
     );
   }
 }
@@ -116,7 +116,7 @@ class LblDataSelecionada extends StatelessWidget {
     return (Obx(() => Text(
           DateFormat("d ' de ' MMMM", "pt_BR")
               .format(DateTime.parse(_lista.dataSelecionada.value.toString())),
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w100,
               color: Colors.grey,
@@ -133,9 +133,10 @@ class Footer extends StatelessWidget {
     return SizedBox(
       child: Center(
         child: (ElevatedButton(
-            child: Row(children: [Icon(Icons.add), Text('ADICIONAR')]),
+            child: Row(children: const [Icon(Icons.add), Text('ADICIONAR')]),
             onPressed: () {
-              showDialog(context: context, builder: (_) => ScreenAgendamento());
+              showDialog(
+                  context: context, builder: (_) => const ScreenAgendamento());
             })),
       ),
     );

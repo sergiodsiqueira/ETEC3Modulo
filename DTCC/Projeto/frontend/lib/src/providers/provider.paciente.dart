@@ -35,7 +35,6 @@ class Pacientes extends GetxController {
             for (var el in dados) {
               Paciente paciente = Paciente();
               try {
-                print(response.toString());
                 paciente.id = el['id'];
                 paciente.nome = el['nome'];
                 paciente.email = el['email'];
@@ -55,7 +54,7 @@ class Pacientes extends GetxController {
                 paciente.observacoes = el['observacoes'];
                 paciente.end_cep = el['end_cep'];
               } catch (e) {
-                print(e);
+                print('Erro loading data...' + e.toString());
               }
               _todosPacientes.add(paciente);
             }
