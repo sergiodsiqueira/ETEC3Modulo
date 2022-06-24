@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluent_ui/fluent_ui.dart' hide Colors;
+import 'package:fluent_ui/fluent_ui.dart' hide Colors, ThemeData;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';

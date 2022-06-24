@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart' hide IconButton;
+import 'package:fluent_ui/fluent_ui.dart' hide Colors;
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -25,8 +27,6 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
   final edtHoraInicio = TextEditingController();
   final edtPaciente = TextEditingController();
   final edtTipo = TextEditingController();
-  bool exibirInfobar = false;
-  TipoAtendimento? comboBoxValueTipoAtendimento;
 
   _gravar() {
     Atendimento atendimento = Atendimento();
@@ -42,7 +42,7 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
           context, 'Data inválida', 'Verique novamente a data informada');
       return null;
     }
-
+    print(edtTipo);
     if (edtTipo.text.isEmpty) {
       showMessage(context, 'Tipo inválido', 'Tipo de Atendimento em branco');
       return null;
@@ -136,44 +136,37 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
   Widget build(BuildContext context) {
     return (AlertDialog(
       title: const Text('Agendamento'),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      content: SizedBox(
-        width: 500,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(width: 180, child: WdgEdtData(myController: edtData)),
-                SizedBox(width: 30),
-                SizedBox(
-                    width: 289,
-                    child: WdgEdtTiposAtendimento(myController: edtTipo)),
-              ],
-            ),
-            SizedBox(
-              height: 70,
-              child: WdgEdtSimples(
-                  myController: edtDescricao,
-                  label: 'Descrição',
-                  placehold: 'Informe a descrição do agendamento'),
-            ),
-            SizedBox(
-                height: 70, child: WdgEdtPaciente(myController: edtPaciente)),
-            Row(
-              children: [
-                WdgEdtHora(
-                    myController: edtHoraInicio, label: 'Horário Inicial'),
-                const SizedBox(width: 30),
-                WdgEdtHora(myController: edtHoraFim, label: 'Horário Final'),
-              ],
-            ),
-            if (exibirInfobar)
-              WdgInfoBar(
-                  pTitulo: 'pTitulo', pMensagem: 'pMensagem', pSeveridade: 1),
-          ],
-        ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                  width: 150, child: WdgDatePickerNew(myController: edtData)),
+              SizedBox(width: 30),
+              SizedBox(
+                  width: 250,
+                  child: WdgEdtTiposAtendimento(myController: edtTipo)),
+            ],
+          ),
+          // SizedBox(
+          //     height: 70,
+          //     child: WdgEdtDescricao(
+          //       myController: edtDescricao,
+          //       label: 'Descrição',
+          //     )),
+          SizedBox(
+              height: 70, child: WdgEdtPaciente(myController: edtPaciente)),
+          // Row(
+          //   children: [
+          //     WdgEdtHora(
+          //         myController: edtHoraInicio, label: 'Horário Inicial'),
+          //     const SizedBox(width: 30),
+          //     WdgEdtHora(myController: edtHoraFim, label: 'Horário Final'),
+          //   ],
+          // )
+        ],
       ),
       actions: [
         ElevatedButton(
@@ -181,7 +174,6 @@ class _ScreenAgendamentoState extends State<ScreenAgendamento> {
               Navigator.of(context).pop();
             },
             child: const Text("CANCELAR")),
-        const SizedBox(width: 30),
         ElevatedButton(
             onPressed: () {
               _gravar();

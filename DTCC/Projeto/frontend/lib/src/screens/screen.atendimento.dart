@@ -215,10 +215,8 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
             ),
             SizedBox(
               height: 70,
-              child: WdgEdtSimples(
-                  myController: edtDescricao,
-                  label: 'Descrição',
-                  placehold: 'Informe a descrição do agendamento'),
+              child: WdgEdtDescricao(
+                  myController: edtDescricao, label: 'Descrição'),
             ),
             SizedBox(
                 height: 70, child: WdgEdtPaciente(myController: edtPaciente)),

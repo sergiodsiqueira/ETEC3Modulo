@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/link.dart';
 
 import 'package:eclinic/src/screens/screens.dart';
 import 'package:eclinic/src/providers/providers.dart';
@@ -53,35 +54,82 @@ class _ScreenHomeState extends State<ScreenHome> {
         automaticallyImplyLeading: false,
       ),
       pane: NavigationPane(
-          displayMode: PaneDisplayMode.compact,
-          selected: index,
-          onChanged: (i) => setState(() => index = i),
-          header: Container(
-            child: Text('Menu'),
+        displayMode: PaneDisplayMode.compact,
+        selected: index,
+        onChanged: (i) => setState(() => index = i),
+        header: const Text('Menu'),
+        indicator: () {
+          StickyNavigationIndicator();
+        }(),
+        items: [
+          PaneItem(
+            icon: const Icon(FluentIcons.dashboard_add),
+            title: const Text('Dashboard'),
           ),
-          indicator: () {
-            StickyNavigationIndicator();
-          }(),
-          items: [
-            PaneItem(
-              icon: const Icon(FluentIcons.dashboard_add),
-              title: const Text('Dashboard'),
-            ),
-            PaneItem(
-              icon: const Icon(FluentIcons.calendar_agenda),
-              title: const Text('Agenda'),
-            ),
-            PaneItem(
-              icon: const Icon(FluentIcons.contact),
-              title: const Text('Pacientes'),
-            ),
-            PaneItemSeparator(),
-          ]),
+          PaneItem(
+            icon: const Icon(FluentIcons.calendar_agenda),
+            title: const Text('Agenda'),
+          ),
+          PaneItem(
+            icon: const Icon(FluentIcons.contact),
+            title: const Text('Pacientes'),
+          ),
+          PaneItemSeparator(),
+        ],
+        footerItems: [
+          _LinkPaneItemAction(
+            icon: const Icon(FluentIcons.plug_disconnected),
+            title: const Text('Sair'),
+            link: 'https://sergiodsiqueira.github.io/',
+          ),
+        ],
+      ),
       content: NavigationBody(index: index, children: [
         Dashboard(),
         TelaAgenda(),
         ScreenPacientes(),
       ]),
+    );
+  }
+}
+
+class _LinkPaneItemAction extends PaneItem {
+  _LinkPaneItemAction({
+    required Widget icon,
+    required this.link,
+    title,
+    infoBadge,
+    focusNode,
+    autofocus = false,
+  }) : super(
+          icon: icon,
+          title: title,
+          infoBadge: infoBadge,
+          focusNode: focusNode,
+          autofocus: autofocus,
+        );
+
+  final String link;
+
+  @override
+  Widget build(
+    BuildContext context,
+    bool selected,
+    VoidCallback? onPressed, {
+    PaneDisplayMode? displayMode,
+    bool showTextOnTop = true,
+    bool? autofocus,
+  }) {
+    return Link(
+      uri: Uri.parse(link),
+      builder: (context, followLink) => super.build(
+        context,
+        selected,
+        followLink,
+        displayMode: displayMode,
+        showTextOnTop: showTextOnTop,
+        autofocus: autofocus,
+      ),
     );
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart' hide IconButton, showDialog, Icon;
 import 'package:intl/intl.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:fluent_ui/fluent_ui.dart' hide Colors, ListTile;
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:get/get.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/services.dart';
+import 'package:searchfield/searchfield.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 import 'package:eclinic/src/screens/screens.dart';
 import 'package:eclinic/src/models/models.dart';
@@ -31,25 +33,17 @@ class _WdgEdtPaciente extends State<WdgEdtPaciente> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InfoLabel(
-        label: 'Paciente',
-        child: (AutoSuggestBox(
-          clearButtonEnabled: false,
-          items: _lista.todosPacientes
-              .map((e) => e.id.toString() + " | " + e.nome.toString())
-              .toList(),
-          onSelected: (item) {
-            setState(() => {});
-          },
-          controller: widget.myController,
-          placeholder: 'Informe o Paciente',
-          leadingIcon: const Padding(
-              padding: EdgeInsetsDirectional.only(start: 10),
-              child: Icon(FluentIcons.contact)),
-          trailingIcon: const Icon(FluentIcons.chevron_down),
-        )),
-      ),
+    return SearchField<Paciente>(
+      searchInputDecoration: InputDecoration(
+          icon: Icon(FluentIcons.contact), label: Text('Paciente')),
+      suggestions: _lista.todosPacientes
+          .map(
+            (e) => SearchFieldListItem<Paciente>(
+              e.id.toString() + ' | ' + e.nome.toString(),
+              item: e,
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -69,21 +63,17 @@ class _WdgEdtData extends State<WdgEdtData> {
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-      child: TextFormBox(
-        readOnly: true,
+      child: TextFormField(
         controller: widget.myController,
-        header: 'Data',
-        placeholder: 'Escolha uma data',
+        decoration: InputDecoration(
+            icon: Icon(FluentIcons.calendar), label: Text('Data')),
+        readOnly: true,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (text) {
           if (text == null || text.isEmpty) return 'Campo obrigatório';
           return null;
         },
         textInputAction: TextInputAction.next,
-        prefix: const Padding(
-          padding: EdgeInsetsDirectional.only(start: 8.0),
-          child: Icon(FluentIcons.calendar),
-        ),
         onTap: () async {
           DateTime? pickedDate = await showDatePicker(
               context: context,
@@ -189,7 +179,6 @@ class _WdgEdtHora extends State<WdgEdtHora> {
           readOnly: true,
           controller: widget.myController,
           header: widget.label,
-          placeholder: 'Defina um ' + widget.label,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (text) {
             if (text == null || text.isEmpty) return 'Campo obrigatório';
@@ -225,36 +214,31 @@ class _WdgEdtHora extends State<WdgEdtHora> {
   }
 }
 
-// WdgEdtSimples ---------------------------------------------------------------
-class WdgEdtSimples extends StatelessWidget {
+// WdgEdtDescricao -------------------------------------------------------------
+class WdgEdtDescricao extends StatelessWidget {
   final TextEditingController myController;
   final String label;
-  final String placehold;
-  const WdgEdtSimples(
-      {Key? key,
-      required this.myController,
-      required this.label,
-      required this.placehold})
+  const WdgEdtDescricao(
+      {Key? key, required this.myController, required this.label})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-      child: TextFormBox(
-        controller: myController,
-        header: label,
-        placeholder: placehold,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (text) {
-          if (text == null || text.isEmpty) return 'Campo obrigatório';
-          return null;
-        },
-        textInputAction: TextInputAction.next,
-        prefix: const Padding(
-            padding: EdgeInsetsDirectional.only(start: 8.0),
-            child: Icon(FluentIcons.context_menu)),
+        child: TextFormBox(
+      controller: myController,
+      header: label,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (text) {
+        if (text == null || text.isEmpty) return 'Campo obrigatório';
+        return null;
+      },
+      textInputAction: TextInputAction.next,
+      prefix: const Padding(
+        padding: EdgeInsetsDirectional.only(start: 8.0),
+        child: Icon((FluentIcons.calendar_settings)),
       ),
-    ));
+    )));
   }
 }
 
@@ -271,26 +255,23 @@ class WdgEdtTiposAtendimento extends StatefulWidget {
 class _WdgEdtTiposAtendimento extends State<WdgEdtTiposAtendimento> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InfoLabel(
-        label: 'Tipo',
-        child: (AutoSuggestBox(
-          clearButtonEnabled: false,
-          items: TiposAtendimento.map((e) => e.descricao).toList(),
-          onSelected: (item) {
-            setState(() => {
-                  TiposAtendimento.firstWhere(
-                      (tipos) => tipos.descricao == item)
-                });
-          },
-          controller: widget.myController,
-          placeholder: 'Tipo de Atendimento',
-          leadingIcon: const Padding(
-              padding: EdgeInsetsDirectional.only(start: 10),
-              child: Icon(FluentIcons.bulleted_tree_list)),
-          trailingIcon: const Icon(FluentIcons.chevron_down),
-        )),
-      ),
+    return SearchField<TipoAtendimento>(
+      searchInputDecoration: InputDecoration(
+          icon: const Icon(FluentIcons.category_classification),
+          label: const Text('Tipo de Atendimento')),
+      suggestions: TiposAtendimento.map(
+        (e) => SearchFieldListItem<TipoAtendimento>(
+          e.id.toString() + ' | ' + e.descricao.toString(),
+          item: e,
+        ),
+      ).toList(),
+      textInputAction: TextInputAction.next,
+      onSuggestionTap: (value) {
+        String? id = value.item?.id.toString();
+        String? desc = value.item?.descricao.toString();
+        String? x = id! + ' | ' + desc!;
+        widget.myController.text = x;
+      },
     );
   }
 }
@@ -418,7 +399,6 @@ class WdgEdtValor extends StatelessWidget {
       child: TextFormBox(
         controller: myController,
         header: 'Valor',
-        placeholder: 'Informe o valor',
         keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
@@ -481,5 +461,36 @@ class _WdgInfoBarState extends State<WdgInfoBar> {
         severity: severidade(),
         isLong: true,
         onClose: () => setState(() => show = false)));
+  }
+}
+
+class WdgDatePickerNew extends StatelessWidget {
+  TextEditingController myController = TextEditingController();
+  WdgDatePickerNew({Key? key, required this.myController}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DateTimePicker(
+      type: DateTimePickerType.date,
+      dateMask: 'dd/MM/yyyy',
+      controller: myController,
+      //initialValue: _initialValue,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      icon: Icon(FluentIcons.calendar),
+      dateLabelText: 'Data',
+      //timeLabelText: "Hora",
+      use24HourFormat: true,
+      locale: Locale('pt', 'BR'),
+      selectableDayPredicate: (date) {
+        if (date.weekday == 6 || date.weekday == 7) {
+          return false;
+        }
+        return true;
+      },
+      onChanged: (val) => {},
+      validator: (val) {},
+      onSaved: (val) => {},
+    );
   }
 }
