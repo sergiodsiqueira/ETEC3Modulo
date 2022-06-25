@@ -76,7 +76,8 @@ Widget loginBox(BuildContext context) {
             'BEM-VINDO',
           ),
           const Text(
-            'OFICINA DA MENTE v2.0.5',
+            'OFICINA DA MENTE',
+            style: TextStyle(fontSize: 18),
           ),
           SizedBox(height: 30),
           WdgEdtEmail(myController: _tEmail),

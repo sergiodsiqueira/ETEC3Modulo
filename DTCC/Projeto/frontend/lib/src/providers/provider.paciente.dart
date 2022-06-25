@@ -54,7 +54,8 @@ class Pacientes extends GetxController {
                 paciente.observacoes = el['observacoes'];
                 paciente.end_cep = el['end_cep'];
               } catch (e) {
-                print('Erro loading data...' + e.toString());
+                errorPrint(e.toString(), 'provider.paciente', 'Pacientes',
+                    'carregarDados');
               }
               _todosPacientes.add(paciente);
             }
@@ -139,7 +140,6 @@ class Pacientes extends GetxController {
   }
 
   gerarDados(Paciente pPaciente) {
-    print('Gerando dados...');
     _dados += '{';
     _dados += '"nome": "${pPaciente.nome}",';
     _dados += '"email": "${pPaciente.email}",';
@@ -158,6 +158,5 @@ class Pacientes extends GetxController {
     _dados += '"redesocial_2": "${pPaciente.redesocial_2}",';
     _dados += '"observacoes": "${pPaciente.observacoes}"';
     _dados += '}';
-    print('Dados gerados...');
   }
 }

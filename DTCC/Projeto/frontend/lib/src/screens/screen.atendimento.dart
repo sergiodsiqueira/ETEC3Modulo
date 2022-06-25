@@ -1,8 +1,8 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart' hide IconButton;
-import 'package:fluent_ui/fluent_ui.dart' hide Colors;
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:fluent_ui/fluent_ui.dart' hide Colors;
 
 import 'package:eclinic/src/providers/providers.dart';
 import 'package:eclinic/src/models/models.dart';
@@ -23,7 +23,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
   final Pacientes _pacientes = Get.find<Pacientes>();
 
   final edtData = TextEditingController();
-  TextEditingController edtTipo = TextEditingController();
+  final edtTipo = TextEditingController();
   final edtDescricao = TextEditingController();
   final edtPaciente = TextEditingController();
   final edtHoraFim = TextEditingController();
@@ -34,33 +34,39 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
   bool edtPago = false;
   final edtValor = TextEditingController();
 
-  DateTime? data;
-  TimeOfDay? horaFim;
-  TimeOfDay? horaInicio;
-
   @override
   void initState() {
     edtData.text = DateFormat('dd/MM/yyyy').format(widget.pAtendimento.data!);
-
     edtDescricao.text = widget.pAtendimento.descricao.toString();
-    edtPaciente.text = widget.pAtendimento.idPaciente.toString() +
-        ' | ' +
-        widget.pAtendimento.nome.toString();
 
-    edtHoraInicio.text =
-        widget.pAtendimento.horaInicio.toString().substring(10);
-    edtHoraInicio.text = edtHoraInicio.text.substring(0, 5);
+    edtHoraInicio.text = UtilData.obterHoraHHMM(DateTime(
+        0000,
+        0,
+        0,
+        widget.pAtendimento.horaInicio!.hour,
+        widget.pAtendimento.horaInicio!.minute));
 
-    edtHoraFim.text = widget.pAtendimento.horaFim.toString().substring(10);
-    edtHoraFim.text = edtHoraFim.text.substring(0, 5);
+    edtHoraFim.text = UtilData.obterHoraHHMM(DateTime(
+        0000,
+        0,
+        0,
+        widget.pAtendimento.horaFim!.hour,
+        widget.pAtendimento.horaFim!.minute));
 
     edtObservacoes.text = widget.pAtendimento.observacao.toString();
+
     edtValor.text = widget.pAtendimento.valor.toString() == 'null'
-        ? ''
+        ? '000'
         : UtilBrasilFields.obterReal(widget.pAtendimento.valor!);
-    edtPago = widget.pAtendimento.pago!;
-    edtConfirmado = widget.pAtendimento.confirmado!;
-    edtEfetivado = widget.pAtendimento.efetivado!;
+
+    edtPago =
+        widget.pAtendimento.pago == null ? false : widget.pAtendimento.pago!;
+    edtConfirmado = widget.pAtendimento.confirmado == null
+        ? false
+        : widget.pAtendimento.confirmado!;
+    edtEfetivado = widget.pAtendimento.efetivado == null
+        ? false
+        : widget.pAtendimento.efetivado!;
 
     super.initState();
   }
@@ -78,11 +84,6 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
     if (edtData.text.isEmpty && !edtData.text.isDateTime) {
       showMessage(
           context, 'Data inválida', 'Verique novamente a data informada');
-      return null;
-    }
-
-    if (edtTipo.text.isEmpty) {
-      showMessage(context, 'Tipo inválido', 'Tipo de Atendimento em branco');
       return null;
     }
 
@@ -105,11 +106,6 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
     if (edtDescricao.text.isEmpty) {
       showMessage(context, 'Descrição inválida',
           'Informe uma descrição para o agendamento');
-      return null;
-    }
-
-    if (edtPaciente.text.isEmpty) {
-      showMessage(context, 'Nome inválido', 'Nome do paciente em branco');
       return null;
     }
 
@@ -180,10 +176,10 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
       atendimento.confirmado = edtConfirmado;
       atendimento.efetivado = edtEfetivado;
     } catch (error) {
-      print('Error on generating data ' + error.toString());
+      errorPrint(error.toString(), 'screen.atendimento', 'ScreenAtendimento',
+          '_gravar');
     }
 
-    print(atendimento.toJson().toString().trim());
     _atendimentos
         .alterar(atendimento)
         .then((value) => {Navigator.of(context).pop()});
@@ -203,7 +199,9 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               const SizedBox(width: 20),
               SizedBox(
                   width: 250,
-                  child: WdgEdtTiposAtendimento(myController: edtTipo)),
+                  child: WdgEdtTiposAtendimento(
+                      myController: edtTipo,
+                      pIdTipo: widget.pAtendimento.idTipo)),
             ],
           ),
           SizedBox(
@@ -213,26 +211,25 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
           )),
           SizedBox(
               child: WdgEdtPaciente(
-            myController: edtPaciente,
-            pIdPaciente: widget.pAtendimento.idPaciente,
-          )),
+                  myController: edtPaciente,
+                  pIdPaciente: widget.pAtendimento.idPaciente)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
                   width: 180,
-                  child: WdgEdtHora(
-                      myController: edtHoraInicio, label: 'Horário Inicial')),
+                  child: WdgEdtHoraNew(
+                      myController: edtHoraInicio, pLabel: 'Horário Inicial')),
               SizedBox(
                   width: 180,
-                  child: WdgEdtHora(
-                      myController: edtHoraFim, label: 'Horário Final')),
+                  child: WdgEdtHoraNew(
+                      myController: edtHoraFim, pLabel: 'Horário Final')),
             ],
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           Row(
             children: [
-              SizedBox(width: 200, child: WdgEdtValor(myController: edtValor)),
+              SizedBox(width: 150, child: WdgEdtValor(myController: edtValor)),
               const SizedBox(width: 10),
               SizedBox(
                 width: 100,
@@ -260,7 +257,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
                   },
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               InfoLabel(
                 label: 'Efetivado',
                 child: Switch(
@@ -274,9 +271,7 @@ class _ScreenAtendimentoState extends State<ScreenAtendimento> {
               ),
             ],
           ),
-          WdgEdtObservacoes(
-            myController: edtObservacoes,
-          ),
+          WdgEdtObservacoes(myController: edtObservacoes),
         ],
       ),
       actions: [

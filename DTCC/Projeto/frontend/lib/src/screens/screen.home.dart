@@ -41,7 +41,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                       height: 30,
                       child: Image(
                         image: NetworkImage(
-                            'https://raw.githubusercontent.com/sergiodsiqueira/ETEC3Modulo/main/DTCC/Projeto/images/LogoPB.png'),
+                            'https://raw.githubusercontent.com/sergiodsiqueira/ETEC3Modulo/main/DTCC/Projeto/images/LogoPB_90x96.png'),
                         fit: BoxFit.cover,
                       ))),
               Padding(

@@ -133,7 +133,9 @@ class Footer extends StatelessWidget {
     return SizedBox(
       child: Center(
         child: (ElevatedButton(
-            child: Row(children: const [Icon(Icons.add), Text('ADICIONAR')]),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [Icon(Icons.add), Text('ADICIONAR')]),
             onPressed: () {
               showDialog(
                   context: context, builder: (_) => const ScreenAgendamento());

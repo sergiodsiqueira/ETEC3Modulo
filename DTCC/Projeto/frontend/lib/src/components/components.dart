@@ -7,3 +7,4 @@ export 'package:eclinic/src/components/wdg.alert.dart';
 export 'package:eclinic/src/components/wdg.APIResponse.dart';
 export 'package:eclinic/src/components/wdg.utils.dart';
 export 'package:eclinic/src/components/wdg.GraphicLine.dart';
+export 'package:eclinic/src/components/wdg.inputs.dart';

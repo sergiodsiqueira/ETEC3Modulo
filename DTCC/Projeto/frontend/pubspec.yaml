@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.2 <3.0.1"
+  sdk: ">=2.16.2 <3.0.2"
 
 dependencies:
   flutter:
@@ -13,7 +13,6 @@ dependencies:
   fluent_ui:
   flutter_localizations:
     sdk: flutter
-  dio:
   http:
   syncfusion_flutter_datepicker:
   fl_chart: ^0.51.0
@@ -21,17 +20,12 @@ dependencies:
   animated_splash_screen: ^1.2.0
   loading_animation_widget:
   intl:
-  jiffy: ^5.0.0
   graphic: ^0.10.5
   email_validator: ^2.0.1
   brasil_fields: 1.4.5
   url_launcher: ^6.1.4
   searchfield: ^0.6.6
   date_time_picker: ^2.1.0
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  #cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:

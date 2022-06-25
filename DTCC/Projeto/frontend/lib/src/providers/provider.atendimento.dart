@@ -60,7 +60,7 @@ class Atendimentos extends GetxController {
               item.observacao = el['observacao'];
               item.confirmado = el['confirmado'];
               item.efetivado = el['efetivado'];
-              item.valor = null;
+              item.valor = double.parse(el['valor']);
               item.pago = el['pago'];
               item.idTipo = el['id_tipo'];
               item.nome = el['nome'];
@@ -155,7 +155,6 @@ class Atendimentos extends GetxController {
   }
 
   gerarDados(Atendimento pAtendimento) {
-    print('Processing data...');
     try {
       _dados = '{"id_paciente": ${pAtendimento.idPaciente},';
       _dados +=
@@ -172,7 +171,9 @@ class Atendimentos extends GetxController {
       _dados += '"pago": ${pAtendimento.pago},';
       _dados += '"id_tipo": ${pAtendimento.idTipo}}';
     } catch (error) {
-      print('Erro ao gerar dados ' + error.toString());
+      print('Error: ' +
+          error.toString() +
+          '| file: provider.atendimento | class: Atendimento | metod: gerarDados');
     }
   }
 
