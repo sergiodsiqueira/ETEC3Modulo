@@ -62,35 +62,46 @@ Widget loginBox(BuildContext context) {
     }
   }
 
-  return Container(
-    margin: const EdgeInsets.all(2.0),
-    color: Color.fromARGB(255, 240, 240, 240),
-    width: 500.0,
-    height: 400.0,
-    child: Padding(
-      padding: const EdgeInsets.only(left: 80, right: 80, bottom: 60, top: 80),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'BEM-VINDO',
-          ),
-          const Text(
-            'OFICINA DA MENTE',
-            style: TextStyle(fontSize: 18),
-          ),
-          SizedBox(height: 30),
-          WdgEdtEmail(myController: _tEmail),
-          SizedBox(height: 10),
-          WdgEdtSenha(myController: _tSenha),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              _onClickEntrar(context);
-            },
-            child: const Text('ENTRAR'),
-          )
-        ],
+  return SingleChildScrollView(
+    child: Container(
+      margin: const EdgeInsets.all(2.0),
+      color: Color.fromARGB(255, 240, 240, 240),
+      width: 500.0,
+      height: 400.0,
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 80, right: 80, bottom: 60, top: 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'BEM-VINDO',
+            ),
+            SizedBox(
+              width: 200,
+              child: Image(
+                image: NetworkImage(
+                    'https://raw.githubusercontent.com/sergiodsiqueira/ETEC3Modulo/main/DTCC/Projeto/images/LogoMarcaPB.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            // const Text(
+            //   'OFICINA DA MENTE',
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            SizedBox(height: 30),
+            WdgEdtEmail(myController: _tEmail),
+            SizedBox(height: 10),
+            WdgEdtSenha(myController: _tSenha),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _onClickEntrar(context);
+              },
+              child: const Text('ENTRAR'),
+            )
+          ],
+        ),
       ),
     ),
   );
