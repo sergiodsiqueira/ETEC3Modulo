@@ -14,15 +14,15 @@ class _ScreenLoginState extends State<ScreenLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: SingleChildScrollView(
-          child: Wrap(
-        children: [
-          welcomeBox(context),
-          loginBox(context),
-        ],
-      )),
-    ));
+        body: SingleChildScrollView(
+            child: Align(
+      alignment: Alignment.bottomCenter,
+      child: Wrap(alignment: WrapAlignment.center, children: [
+        Container(height: 100),
+        welcomeBox(context),
+        loginBox(context)
+      ]),
+    )));
   }
 }
 
@@ -30,14 +30,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
 Widget welcomeBox(BuildContext context) {
   return Container(
       margin: const EdgeInsets.all(2.0),
-      color: Color.fromARGB(255, 240, 240, 240),
+      color: const Color.fromARGB(255, 240, 240, 240),
       width: 300.0,
       height: 400.0,
-      child: (Image(
+      child: const Image(
         image: NetworkImage(
             'https://rehabafterwork.pyramidhealthcarepa.com/wp-content/uploads/2020/03/Online-Counseling-and-Confidentiality.jpg'),
         fit: BoxFit.cover,
-      )));
+      ));
 }
 
 //Container Login
@@ -65,19 +65,18 @@ Widget loginBox(BuildContext context) {
   return SingleChildScrollView(
     child: Container(
       margin: const EdgeInsets.all(2.0),
-      color: Color.fromARGB(255, 240, 240, 240),
+      color: const Color.fromARGB(255, 240, 240, 240),
       width: 500.0,
       height: 400.0,
       child: Padding(
         padding:
             const EdgeInsets.only(left: 80, right: 80, bottom: 60, top: 40),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
               'BEM-VINDO',
             ),
-            SizedBox(
+            const SizedBox(
               width: 200,
               child: Image(
                 image: NetworkImage(
@@ -85,20 +84,25 @@ Widget loginBox(BuildContext context) {
                 fit: BoxFit.cover,
               ),
             ),
-            // const Text(
-            //   'OFICINA DA MENTE',
-            //   style: TextStyle(fontSize: 18),
-            // ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             WdgEdtEmail(myController: _tEmail),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             WdgEdtSenha(myController: _tSenha),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _onClickEntrar(context);
-              },
-              child: const Text('ENTRAR'),
+            const SizedBox(height: 20),
+            Container(
+              width: 250,
+              height: 35,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ))),
+                onPressed: () {
+                  _onClickEntrar(context);
+                },
+                child: const Text('ENTRAR'),
+              ),
             )
           ],
         ),

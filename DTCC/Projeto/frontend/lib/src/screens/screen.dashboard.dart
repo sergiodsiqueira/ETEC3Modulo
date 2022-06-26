@@ -33,14 +33,14 @@ class EstatisticasDiarias extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (Container(
+    return SingleChildScrollView(
       child: Wrap(children: [
         CardAtendimentos(),
         CardNaoConfirmados(),
         CardEfetivados(),
         CardPacientes()
       ]),
-    ));
+    );
   }
 }
 

@@ -75,7 +75,9 @@ class _WdgEdtPaciente extends State<WdgEdtPaciente> {
 // WdgEdtData ------------------------------------------------------------------
 class WdgEdtData extends StatelessWidget {
   TextEditingController myController = TextEditingController();
-  WdgEdtData({Key? key, required this.myController}) : super(key: key);
+  String? pLabel;
+  WdgEdtData({Key? key, required this.myController, this.pLabel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +85,10 @@ class WdgEdtData extends StatelessWidget {
       type: DateTimePickerType.date,
       dateMask: 'dd/MM/yyyy',
       controller: myController,
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1900),
       lastDate: DateTime(2100),
       icon: const Icon(FluentIcons.calendar),
-      dateLabelText: 'Data',
+      dateLabelText: pLabel ?? 'Data',
       use24HourFormat: true,
       locale: const Locale('pt', 'BR'),
       onChanged: (val) => {},
@@ -109,10 +111,10 @@ class _WdgEdtEmail extends State<WdgEdtEmail> {
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-      child: TextFormBox(
+      child: TextFormField(
         controller: widget.myController,
-        header: 'E-mail',
-        placeholder: 'Digite seu e-mail',
+        decoration: const InputDecoration(
+            label: Text('Email'), icon: Icon(FluentIcons.mail)),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (text) {
           if (text == null || text.isEmpty) return 'Campo obrigatório';
@@ -120,10 +122,6 @@ class _WdgEdtEmail extends State<WdgEdtEmail> {
           return null;
         },
         textInputAction: TextInputAction.next,
-        prefix: const Padding(
-          padding: EdgeInsetsDirectional.only(start: 8.0),
-          child: Icon(FluentIcons.edit_mail),
-        ),
       ),
     ));
   }
@@ -142,21 +140,18 @@ class _WdgEdtSenha extends State<WdgEdtSenha> {
   @override
   Widget build(BuildContext context) {
     return (Expanded(
-      child: TextFormBox(
+      child: TextFormField(
         obscureText: true,
         controller: widget.myController,
-        header: 'Senha',
-        placeholder: 'Digite a senha',
+        decoration: const InputDecoration(
+            label: Text('Senha'), icon: Icon(FluentIcons.password_field)),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (text) {
           if (text == null || text.isEmpty) return 'Campo obrigatório';
+          if (text.length < 8) return 'Senha inválida';
           return null;
         },
         textInputAction: TextInputAction.next,
-        prefix: const Padding(
-          padding: EdgeInsetsDirectional.only(start: 8.0),
-          child: Icon(FluentIcons.clock),
-        ),
       ),
     ));
   }
@@ -353,5 +348,132 @@ class _WdgEdtHoraNewState extends State<WdgEdtHoraNew> {
         _selecionar();
       },
     );
+  }
+}
+
+// WdgEdtPadrao ----------------------------------------------------------------
+class WdgEdtPadrao extends StatefulWidget {
+  final TextEditingController myController;
+  final String pLabel;
+  final Widget pIcone;
+  const WdgEdtPadrao(
+      {Key? key,
+      required this.myController,
+      required this.pLabel,
+      required this.pIcone})
+      : super(key: key);
+
+  @override
+  State<WdgEdtPadrao> createState() => _WdgEdtPadraoState();
+}
+
+class _WdgEdtPadraoState extends State<WdgEdtPadrao> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.myController,
+      decoration:
+          InputDecoration(label: Text(widget.pLabel), icon: widget.pIcone),
+    );
+  }
+}
+
+// WdgEdtTelefone --------------------------------------------------------------
+class WdgEdtTelefone extends StatefulWidget {
+  final TextEditingController myController;
+  final String pLabel;
+  final Widget pIcone;
+  const WdgEdtTelefone(
+      {Key? key,
+      required this.myController,
+      required this.pLabel,
+      required this.pIcone})
+      : super(key: key);
+
+  @override
+  State<WdgEdtTelefone> createState() => _WdgEdtTelefoneState();
+}
+
+class _WdgEdtTelefoneState extends State<WdgEdtTelefone> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.myController,
+      decoration:
+          InputDecoration(label: Text(widget.pLabel), icon: widget.pIcone),
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        TelefoneInputFormatter(),
+      ],
+    );
+  }
+}
+
+// WdgEdtCEP -------------------------------------------------------------------
+class WdgEdtCEP extends StatefulWidget {
+  final TextEditingController myController;
+  const WdgEdtCEP({Key? key, required this.myController}) : super(key: key);
+
+  @override
+  State<WdgEdtCEP> createState() => _WdgEdtCEPState();
+}
+
+class _WdgEdtCEPState extends State<WdgEdtCEP> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.myController,
+      decoration: InputDecoration(
+          label: Text('CEP'), icon: const Icon(FluentIcons.map_directions)),
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        CepInputFormatter(),
+      ],
+    );
+  }
+}
+
+// WdgEdtCPFCNPJ ---------------------------------------------------------------
+class WdgEdtCPFCNPJ extends StatefulWidget {
+  final TextEditingController myController;
+  final String pLabel;
+  const WdgEdtCPFCNPJ(
+      {Key? key, required this.myController, required this.pLabel})
+      : super(key: key);
+
+  @override
+  State<WdgEdtCPFCNPJ> createState() => _WdgEdtCPFCNPJState();
+}
+
+class _WdgEdtCPFCNPJState extends State<WdgEdtCPFCNPJ> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.myController,
+      decoration: InputDecoration(
+          label: Text(widget.pLabel), icon: const Icon(FluentIcons.i_d_badge)),
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        CpfOuCnpjFormatter(),
+      ],
+    );
+  }
+}
+
+// WdgEdtCPFCNPJ ---------------------------------------------------------------
+class WdgEdtObs extends StatelessWidget {
+  final TextEditingController myController;
+  const WdgEdtObs({Key? key, required this.myController}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (TextFormField(
+      keyboardType: TextInputType.multiline,
+      controller: myController,
+      decoration: const InputDecoration(
+          icon: Icon(FluentIcons.paste), label: Text('Observações')),
+      maxLines: null,
+      textInputAction: TextInputAction.next,
+    ));
   }
 }

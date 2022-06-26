@@ -18,7 +18,7 @@ class Application extends StatelessWidget {
         home: AnimatedSplashScreen(
             duration: 3000,
             splash: LoadingAnimationWidget.discreteCircle(
-              color: Colors.blueAccent,
+              color: Color.fromARGB(255, 71, 117, 245),
               size: 200,
             ),
             nextScreen: MyApp(),
@@ -37,7 +37,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // theme: ThemeData(
-      //     colorSchemeSeed: Color.fromARGB(255, 80, 144, 164), useMaterial3: true),
+      //     colorSchemeSeed: Color.fromARGB(255, 84, 56, 158),
+      //     useMaterial3: true),
       home: FluentApp(
         onGenerateTitle: IniciarProviders(),
         title: 'OFICINA DA MENTE',

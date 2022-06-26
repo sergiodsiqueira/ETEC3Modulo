@@ -1,3 +1,4 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -75,7 +76,7 @@ class Pacientes extends GetxController {
 
   Future<void> adicionar(Paciente pPaciente) async {
     if (pPaciente.id! > 0) {
-      feedback = 'Impossivel incluir este Paciente';
+      feedback = 'Impossivel incluir este paciente';
       return;
     } else {
       gerarDados(pPaciente);
@@ -86,7 +87,7 @@ class Pacientes extends GetxController {
     final response = await http.post(url,
         headers: {
           "Content-Type": "application/json",
-          'x-access-token': x_access_token.toString(),
+          'x-access-token': x_access_token.value,
         },
         body: _dados);
     if (response.statusCode >= 400) {
@@ -140,23 +141,39 @@ class Pacientes extends GetxController {
   }
 
   gerarDados(Paciente pPaciente) {
-    _dados += '{';
-    _dados += '"nome": "${pPaciente.nome}",';
-    _dados += '"email": "${pPaciente.email}",';
-    _dados += '"data_nascimento": "${pPaciente.data_nascimento}",';
-    _dados += '"telefone_principal": "${pPaciente.telefone_principal}"';
-    _dados += '"telefone_secundario": "${pPaciente.telefone_secundario}"';
-    _dados += '"end_logradouro": "${pPaciente.end_logradouro}",';
-    _dados += '"end_bairro": "${pPaciente.end_bairro}",';
-    _dados += '"end_cidade": "${pPaciente.end_cidade}",';
-    _dados += '"end_estado": "${pPaciente.end_estado}",';
-    _dados += '"end_cep": "${pPaciente.end_cep}",';
-    _dados += '"end_pais": "${pPaciente.end_pais}",';
-    _dados += '"doc_cpf": "${pPaciente.doc_cpf}",';
-    _dados += '"doc_rg": "${pPaciente.doc_rg}",';
-    _dados += '"redesocial_1": "${pPaciente.redesocial_1}",';
-    _dados += '"redesocial_2": "${pPaciente.redesocial_2}",';
-    _dados += '"observacoes": "${pPaciente.observacoes}"';
-    _dados += '}';
+    try {
+      _dados = '{';
+      _dados += '"nome": "${pPaciente.nome}",';
+      _dados += '"email": "${pPaciente.email}",';
+
+      String data = pPaciente.data_nascimento.toString();
+      if (data == 'null') {
+        _dados += '"data_nascimento": null,';
+      } else {
+        _dados +=
+            '"data_nascimento": "${pPaciente.data_nascimento!.toIso8601String().substring(0, 10)}",';
+      }
+
+      _dados +=
+          '"telefone_principal": "${pPaciente.telefone_principal.toString().replaceAll(RegExp('[^0-9]'), '')}",';
+      _dados +=
+          '"telefone_secundario": "${pPaciente.telefone_secundario.toString().replaceAll(RegExp('[^0-9]'), '')}",';
+      _dados += '"end_logradouro": "${pPaciente.end_logradouro}",';
+      _dados += '"end_bairro": "${pPaciente.end_bairro}",';
+      _dados += '"end_cidade": "${pPaciente.end_cidade}",';
+      _dados += '"end_estado": "${pPaciente.end_estado}",';
+      _dados += '"end_pais": "${pPaciente.end_pais}",';
+      _dados +=
+          '"doc_cpf": "${pPaciente.doc_cpf.toString().replaceAll(RegExp('[^0-9]'), '')}",';
+      _dados += '"doc_rg": "${pPaciente.doc_rg}",';
+      _dados += '"redesocial_1": "${pPaciente.redesocial_1}",';
+      _dados += '"redesocial_2": "${pPaciente.redesocial_2}",';
+      _dados += '"observacoes": "${pPaciente.observacoes}",';
+      _dados +=
+          '"end_cep": "${pPaciente.end_cep.toString().replaceAll(RegExp('[^0-9]'), '')}"';
+      _dados += '}';
+    } catch (e) {
+      errorPrint(e.toString(), 'provider.paciente', 'Pacientes', 'gerarDados');
+    }
   }
 }

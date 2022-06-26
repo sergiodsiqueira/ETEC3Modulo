@@ -171,9 +171,8 @@ class Atendimentos extends GetxController {
       _dados += '"pago": ${pAtendimento.pago},';
       _dados += '"id_tipo": ${pAtendimento.idTipo}}';
     } catch (error) {
-      print('Error: ' +
-          error.toString() +
-          '| file: provider.atendimento | class: Atendimento | metod: gerarDados');
+      errorPrint(error.toString(), 'provider.atendimento', 'Atendimento',
+          'gerarDados');
     }
   }
 

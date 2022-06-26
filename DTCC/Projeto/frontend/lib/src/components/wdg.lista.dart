@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide Card, ListTile, Scrollbar;
-import 'package:fluent_ui/fluent_ui.dart' hide Colors, showDialog;
+import 'package:fluent_ui/fluent_ui.dart' hide Colors, showDialog, ButtonStyle;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -133,6 +133,11 @@ class Footer extends StatelessWidget {
     return SizedBox(
       child: Center(
         child: (ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ))),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [Icon(Icons.add), Text('ADICIONAR')]),

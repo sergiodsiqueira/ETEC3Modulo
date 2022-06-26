@@ -4,4 +4,5 @@ export 'package:eclinic/src/screens/screen.login.dart';
 export 'package:eclinic/src/screens/screen.home.dart';
 export 'package:eclinic/src/screens/screen.agendamento.dart';
 export 'package:eclinic/src/screens/screen.atendimento.dart';
-export 'package:eclinic/src/screens/screen.paciente.dart';
+export 'package:eclinic/src/screens/screen.pacientes.dart';
+export 'package:eclinic/src/screens/screen.editapaciente.dart';
