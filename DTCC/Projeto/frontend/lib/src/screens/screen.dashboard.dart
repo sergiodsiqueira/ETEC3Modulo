@@ -20,8 +20,10 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
         body: Column(
       children: [
-        Container(child: EstatisticasDiarias()),
-        Container(child: EstatisticasResultadosFinanceiro()),
+        const EstatisticasDiarias(),
+        Container(
+            padding: const EdgeInsets.only(left: 140, right: 140, top: 10),
+            child: const EstatisticasResultadosFinanceiro()),
       ],
     ));
   }
@@ -278,7 +280,7 @@ class CardPacientes extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 130,
                     child: Text(
                       'Pacientes',
@@ -286,7 +288,7 @@ class CardPacientes extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 130,
                     child: Text(
                       'Total Geral de Pacientes',
@@ -303,7 +305,7 @@ class CardPacientes extends StatelessWidget {
                       () => Text(
                         _pacientes.todosPacientes.length.toString(),
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -324,11 +326,7 @@ class EstatisticasResultadosFinanceiro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (Container(
-      width: 700,
-      height: 250,
-      child: CardGrafico(),
-    ));
+    return const CardGrafico();
   }
 }
 
@@ -337,7 +335,7 @@ class CardGrafico extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (LineChartSample2());
+    return Container(height: 300, child: GraficoBarras());
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:fluent_ui/fluent_ui.dart' hide Colors;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +21,9 @@ class ScreenEditaPaciente extends StatefulWidget {
 class _ScreenEditaPacienteState extends State<ScreenEditaPaciente> {
   final Pacientes _pacientes = Get.find<Pacientes>();
 
+  bool? isInsert;
+  int? ID;
+
   TextEditingController edtNome = TextEditingController();
   TextEditingController edtDataNascimento = TextEditingController();
   TextEditingController edtEmail = TextEditingController();
@@ -39,21 +43,55 @@ class _ScreenEditaPacienteState extends State<ScreenEditaPaciente> {
 
   @override
   void initState() {
-    if (widget.paciente == null) return null;
+    if (widget.paciente == null) {
+      isInsert = true;
+      ID = 0;
+      return;
+    } else {
+      isInsert = false;
+      ID = widget.paciente!.id;
+    }
 
-    edtNome.text = widget.paciente.toString();
+    edtNome.text = widget.paciente!.nome.toString();
     edtDataNascimento.text = widget.paciente!.data_nascimento.toString();
     edtEmail.text = widget.paciente!.email ?? '';
-    edtTelefone1.text = widget.paciente!.telefone_principal ?? '';
-    edtTelefone2.text = widget.paciente!.telefone_secundario ?? '';
-    edtLogradouro.text = widget.paciente!.end_logradouro ?? '';
+
+    try {
+      edtTelefone1.text = UtilBrasilFields.obterTelefone(
+          widget.paciente!.telefone_principal.toString());
+    } catch (e) {
+      edtTelefone1.text = widget.paciente!.telefone_principal.toString();
+    }
+
+    try {
+      edtTelefone2.text = UtilBrasilFields.obterTelefone(
+          widget.paciente!.telefone_secundario.toString());
+    } catch (e) {
+      edtTelefone2.text = widget.paciente!.telefone_secundario.toString();
+    }
+
+    edtLogradouro.text = widget.paciente!.end_logradouro.toString();
     edtBairro.text = widget.paciente!.end_bairro ?? '';
     edtCidade.text = widget.paciente!.end_cidade ?? '';
-    edtCEP.text = widget.paciente!.end_cep ?? '';
+
+    try {
+      edtCEP.text =
+          UtilBrasilFields.obterCep(widget.paciente!.end_cep.toString());
+    } catch (e) {
+      edtCEP.text = widget.paciente!.end_cep.toString();
+    }
+
     edtEstado.text = widget.paciente!.end_estado ?? '';
     edtPais.text = widget.paciente!.end_pais ?? '';
     edtRG.text = widget.paciente!.doc_rg ?? '';
-    edtCPF.text = widget.paciente!.doc_cpf ?? '';
+
+    try {
+      edtCPF.text =
+          UtilBrasilFields.obterCpf(widget.paciente!.doc_cpf.toString());
+    } catch (e) {
+      edtCPF.text = widget.paciente!.doc_cpf.toString();
+    }
+
     edtRedeSocial1.text = widget.paciente!.redesocial_1 ?? '';
     edtRedeSocial2.text = widget.paciente!.redesocial_2 ?? '';
     edtObservacoes.text = widget.paciente!.observacoes ?? '';
@@ -72,31 +110,48 @@ class _ScreenEditaPacienteState extends State<ScreenEditaPaciente> {
         showMessage(context, 'Email em branco', 'Campo obrigatório');
         return null;
       }
+
+      if (!EmailValidator.validate(edtEmail.text)) {
+        showMessage(context, 'Email inválido', 'Verifique o e-mail');
+        return null;
+      }
     } catch (e) {
       errorPrint(e.toString(), 'screen.paciente', 'ScreenPaciente', '_gravar');
     }
 
-    paciente.nome = edtNome.text;
-    paciente.data_nascimento = edtDataNascimento.text.isEmpty
-        ? null
-        : DateFormat('yyyy-MM-dd').parse(edtDataNascimento.text);
-    paciente.email = edtEmail.text;
-    paciente.telefone_principal = edtTelefone1.text;
-    paciente.telefone_secundario = edtTelefone2.text;
-    paciente.end_logradouro = edtLogradouro.text;
-    paciente.end_bairro = edtBairro.text;
-    paciente.end_cidade = edtCidade.text;
-    paciente.end_estado = edtEstado.text;
-    paciente.end_pais = edtPais.text;
-    paciente.end_cep = edtCEP.text;
-    paciente.doc_rg = edtRG.text;
-    paciente.doc_cpf = edtCPF.text;
-    paciente.redesocial_1 = edtRedeSocial1.text;
-    paciente.redesocial_2 = edtRedeSocial2.text;
-    paciente.observacoes = edtObservacoes.text;
+    try {
+      paciente.id = ID;
+      paciente.nome = edtNome.text;
+      paciente.data_nascimento = edtDataNascimento.text.isEmpty
+          ? null
+          : DateFormat('yyyy-MM-dd').parse(edtDataNascimento.text);
+      paciente.email = edtEmail.text;
+      paciente.telefone_principal = edtTelefone1.text;
+      paciente.telefone_secundario = edtTelefone2.text;
+      paciente.end_logradouro = edtLogradouro.text;
+      paciente.end_bairro = edtBairro.text;
+      paciente.end_cidade = edtCidade.text;
+      paciente.end_estado = edtEstado.text;
+      paciente.end_pais = edtPais.text;
+      paciente.end_cep = edtCEP.text;
+      paciente.doc_rg = edtRG.text;
+      paciente.doc_cpf = edtCPF.text;
+      paciente.redesocial_1 = edtRedeSocial1.text;
+      paciente.redesocial_2 = edtRedeSocial2.text;
+      paciente.observacoes = edtObservacoes.text;
+    } catch (error) {
+      showMessage(context, 'Erro', error.toString());
+    }
 
-    _pacientes.adicionar(paciente).then((value) =>
-        {showMessage(context, 'Sucesso', 'Paciente gravado com sucesso')});
+    if (isInsert!) {
+      _pacientes
+          .adicionar(paciente)
+          .then((value) => {Navigator.of(context).pop()});
+    } else {
+      _pacientes
+          .alterar(paciente)
+          .then((value) => {Navigator.of(context).pop()});
+    }
   }
 
   @override
@@ -106,6 +161,19 @@ class _ScreenEditaPacienteState extends State<ScreenEditaPaciente> {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    children: [
+                      Text(
+                        'ID: ' + ID.toString(),
+                        style: const TextStyle(
+                            fontSize: 8,
+                            color: Color.fromARGB(255, 206, 206, 206)),
+                      ),
+                    ],
+                  ),
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Wrap(

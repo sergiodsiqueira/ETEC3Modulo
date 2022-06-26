@@ -34,9 +34,10 @@ class _ScreenHomeState extends State<ScreenHome> {
       appBar: NavigationAppBar(
         title: () {
           return Row(
+            // ignore: prefer_const_literals_to_create_immutables
             children: [
-              Padding(
-                  padding: const EdgeInsets.only(top: 10),
+              const Padding(
+                  padding: EdgeInsets.only(top: 10),
                   child: SizedBox(
                       height: 30,
                       child: Image(
@@ -44,11 +45,11 @@ class _ScreenHomeState extends State<ScreenHome> {
                             'https://raw.githubusercontent.com/sergiodsiqueira/ETEC3Modulo/main/DTCC/Projeto/images/LogoPB_90x96.png'),
                         fit: BoxFit.cover,
                       ))),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 10),
+              const Padding(
+                padding: EdgeInsets.only(left: 10, top: 10),
                 child: Text(
                   'OFICINA DA MENTE',
-                  style: const TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: 24),
                 ),
               ),
             ],
@@ -57,7 +58,7 @@ class _ScreenHomeState extends State<ScreenHome> {
         automaticallyImplyLeading: false,
       ),
       pane: NavigationPane(
-        displayMode: PaneDisplayMode.compact,
+        displayMode: PaneDisplayMode.minimal,
         selected: index,
         onChanged: (i) => setState(() => index = i),
         header: const Text('Menu'),
