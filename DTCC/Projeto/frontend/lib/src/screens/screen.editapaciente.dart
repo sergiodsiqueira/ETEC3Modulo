@@ -19,8 +19,45 @@ class ScreenEditaPaciente extends StatefulWidget {
 }
 
 class _ScreenEditaPacienteState extends State<ScreenEditaPaciente> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          children: [
+            Container(
+              child: BoxCadastro(paciente: widget.paciente),
+              width: MediaQuery.of(context).size.width / 1.7,
+              height: MediaQuery.of(context).size.height - 100,
+            ),
+            widget.paciente == null
+                ? const Text('')
+                : Container(
+                    child: ScreenHistorico(paciente: widget.paciente),
+                    width: MediaQuery.of(context).size.width / 2.9,
+                    height: MediaQuery.of(context).size.height - 100,
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BoxCadastro extends StatefulWidget {
+  final Paciente? paciente;
+  const BoxCadastro({Key? key, required this.paciente}) : super(key: key);
+
+  @override
+  State<BoxCadastro> createState() => _BoxCadastroState();
+}
+
+class _BoxCadastroState extends State<BoxCadastro> {
   final Pacientes _pacientes = Get.find<Pacientes>();
 
+  bool abrirHistorico = false;
   bool? isInsert;
   int? ID;
 
@@ -157,199 +194,195 @@ class _ScreenEditaPacienteState extends State<ScreenEditaPaciente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-            padding: const EdgeInsets.all(15),
-            child: Column(
+      body: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Row(
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    children: [
-                      Text(
-                        'ID: ' + ID.toString(),
-                        style: const TextStyle(
-                            fontSize: 8,
-                            color: Color.fromARGB(255, 206, 206, 206)),
-                      ),
-                    ],
-                  ),
+                Text(
+                  'ID: ' + ID.toString(),
+                  style: const TextStyle(
+                      fontSize: 8, color: Color.fromARGB(255, 206, 206, 206)),
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    children: [
-                      SizedBox(
-                        width: 450,
-                        child: WdgEdtPadrao(
-                            myController: edtNome,
-                            pLabel: 'Nome do Paciente',
-                            pIcone: const Icon(FluentIcons.contact)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 250,
-                        child: WdgEdtData(
-                            myController: edtDataNascimento,
-                            pLabel: 'Data de Nascimento'),
-                      )
-                    ],
-                  ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              children: [
+                SizedBox(
+                  width: 450,
+                  child: WdgEdtPadrao(
+                      myController: edtNome,
+                      pLabel: 'Nome do Paciente',
+                      pIcone: const Icon(FluentIcons.contact)),
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    children: [
-                      SizedBox(
-                        width: 350,
-                        child: WdgEdtPadrao(
-                            myController: edtEmail,
-                            pLabel: 'E-mail',
-                            pIcone: const Icon(FluentIcons.mail)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 165,
-                        child: WdgEdtTelefone(
-                            myController: edtTelefone1,
-                            pLabel: 'Celular',
-                            pIcone: const Icon(FluentIcons.cell_phone)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 165,
-                        child: WdgEdtTelefone(
-                            myController: edtTelefone2,
-                            pLabel: 'Telefone',
-                            pIcone: const Icon(FluentIcons.phone)),
-                      ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    children: [
-                      SizedBox(
-                        width: 450,
-                        child: WdgEdtPadrao(
-                            myController: edtLogradouro,
-                            pLabel: 'Logradouro',
-                            pIcone: const Icon(FluentIcons.home)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 250,
-                        child: WdgEdtPadrao(
-                            myController: edtBairro,
-                            pLabel: 'Bairro',
-                            pIcone: const Icon(FluentIcons.map_pin)),
-                      )
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    children: [
-                      SizedBox(
-                        width: 250,
-                        child: WdgEdtPadrao(
-                            myController: edtCidade,
-                            pLabel: 'Cidade',
-                            pIcone: const Icon(FluentIcons.map_pin_solid)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 150,
-                        child: WdgEdtPadrao(
-                            myController: edtEstado,
-                            pLabel: 'Estado',
-                            pIcone: const Icon(FluentIcons.map_pin12)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 130,
-                        child: WdgEdtPadrao(
-                            myController: edtPais,
-                            pLabel: 'Pais',
-                            pIcone: const Icon(FluentIcons.globe2)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 130,
-                        child: WdgEdtCEP(myController: edtCEP),
-                      )
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    children: [
-                      SizedBox(
-                        width: 160,
-                        child: WdgEdtPadrao(
-                            myController: edtRG,
-                            pLabel: 'RG',
-                            pIcone: const Icon(FluentIcons.i_d_badge)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 180,
-                        child:
-                            WdgEdtCPFCNPJ(myController: edtCPF, pLabel: 'CPF'),
-                      ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    children: [
-                      SizedBox(
-                        width: 300,
-                        child: WdgEdtPadrao(
-                            myController: edtRedeSocial1,
-                            pLabel: 'Rede Social',
-                            pIcone: const Icon(FluentIcons.group)),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 300,
-                        child: WdgEdtPadrao(
-                            myController: edtRedeSocial2,
-                            pLabel: 'Rede Social',
-                            pIcone: const Icon(FluentIcons.group)),
-                      )
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: SizedBox(
-                      width: 720,
-                      child: WdgEdtObs(myController: edtObservacoes)),
-                ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Row(
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            _gravar();
-                          },
-                          child: const Text("CONFIRMAR")),
-                      const SizedBox(width: 20),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("CANCELAR")),
-                    ],
-                  ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 250,
+                  child: WdgEdtData(
+                      myController: edtDataNascimento,
+                      pLabel: 'Data de Nascimento'),
                 )
               ],
-            )));
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              children: [
+                SizedBox(
+                  width: 350,
+                  child: WdgEdtPadrao(
+                      myController: edtEmail,
+                      pLabel: 'E-mail',
+                      pIcone: const Icon(FluentIcons.mail)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 165,
+                  child: WdgEdtTelefone(
+                      myController: edtTelefone1,
+                      pLabel: 'Celular',
+                      pIcone: const Icon(FluentIcons.cell_phone)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 165,
+                  child: WdgEdtTelefone(
+                      myController: edtTelefone2,
+                      pLabel: 'Telefone',
+                      pIcone: const Icon(FluentIcons.phone)),
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              children: [
+                SizedBox(
+                  width: 450,
+                  child: WdgEdtPadrao(
+                      myController: edtLogradouro,
+                      pLabel: 'Logradouro',
+                      pIcone: const Icon(FluentIcons.home)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 250,
+                  child: WdgEdtPadrao(
+                      myController: edtBairro,
+                      pLabel: 'Bairro',
+                      pIcone: const Icon(FluentIcons.map_pin)),
+                )
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              children: [
+                SizedBox(
+                  width: 250,
+                  child: WdgEdtPadrao(
+                      myController: edtCidade,
+                      pLabel: 'Cidade',
+                      pIcone: const Icon(FluentIcons.map_pin_solid)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 150,
+                  child: WdgEdtPadrao(
+                      myController: edtEstado,
+                      pLabel: 'Estado',
+                      pIcone: const Icon(FluentIcons.map_pin12)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 130,
+                  child: WdgEdtPadrao(
+                      myController: edtPais,
+                      pLabel: 'Pais',
+                      pIcone: const Icon(FluentIcons.globe2)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 130,
+                  child: WdgEdtCEP(myController: edtCEP),
+                )
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              children: [
+                SizedBox(
+                  width: 160,
+                  child: WdgEdtPadrao(
+                      myController: edtRG,
+                      pLabel: 'RG',
+                      pIcone: const Icon(FluentIcons.i_d_badge)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 180,
+                  child: WdgEdtCPFCNPJ(myController: edtCPF, pLabel: 'CPF'),
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              children: [
+                SizedBox(
+                  width: 300,
+                  child: WdgEdtPadrao(
+                      myController: edtRedeSocial1,
+                      pLabel: 'Rede Social',
+                      pIcone: const Icon(FluentIcons.group)),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 300,
+                  child: WdgEdtPadrao(
+                      myController: edtRedeSocial2,
+                      pLabel: 'Rede Social',
+                      pIcone: const Icon(FluentIcons.group)),
+                )
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+                width: 720, child: WdgEdtObs(myController: edtObservacoes)),
+          ),
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      _gravar();
+                    },
+                    child: const Text("CONFIRMAR")),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("CANCELAR"))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

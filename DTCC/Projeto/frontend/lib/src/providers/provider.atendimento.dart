@@ -19,7 +19,7 @@ class Atendimentos extends GetxController {
   late RxInt efetivadosDia = 0.obs;
   late RxInt confirmadosDia = 0.obs;
 
-  //Carga de dados
+  //Carga de dados por Data ----------------------------------------------------
   get carregarDados => () async {
         _todosAtendimentos.clear();
 
@@ -78,16 +78,11 @@ class Atendimentos extends GetxController {
         }
       };
 
-  //Lista de todos Atendimentos
   List<Atendimento> get todosAtendimentos {
     return [..._todosAtendimentos];
   }
 
-  //Lista de atendimentos efetivados
-  List<Atendimento> get efetivados {
-    return _todosAtendimentos.where((x) => x.efetivado == true).toList();
-  }
-
+  // Adicionar Atendimento -----------------------------------------------------
   Future<void> adicionar(Atendimento pAtendimento) async {
     if (pAtendimento.id! > 0) {
       feedback = 'Impossivel incluir este atendimento';
@@ -112,6 +107,7 @@ class Atendimentos extends GetxController {
     }
   }
 
+  // Alterar Atendimento -------------------------------------------------------
   Future<void> alterar(Atendimento pAtendimento) async {
     if (pAtendimento.id == 0) {
       feedback = 'Impossivel alterar este atendimento';
@@ -136,6 +132,7 @@ class Atendimentos extends GetxController {
     }
   }
 
+  // Apagar Atendimento --------------------------------------------------------
   Future<void> apagar(int pID) async {
     final url = Uri.parse(
         'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/${pID.toString()}');
@@ -154,6 +151,7 @@ class Atendimentos extends GetxController {
     }
   }
 
+  // Gerar Dados para gravação -------------------------------------------------
   gerarDados(Atendimento pAtendimento) {
     try {
       _dados = '{"id_paciente": ${pAtendimento.idPaciente},';
@@ -176,6 +174,7 @@ class Atendimentos extends GetxController {
     }
   }
 
+  // Contador para quantidades usadas no Dashboard -----------------------------
   ContadorDiario() {
     if (dataSelecionada.value.toString().substring(0, 10) ==
         DateTime.now().toString().substring(0, 10)) {

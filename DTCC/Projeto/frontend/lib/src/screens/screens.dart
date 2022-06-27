@@ -6,3 +6,4 @@ export 'package:eclinic/src/screens/screen.agendamento.dart';
 export 'package:eclinic/src/screens/screen.atendimento.dart';
 export 'package:eclinic/src/screens/screen.pacientes.dart';
 export 'package:eclinic/src/screens/screen.editapaciente.dart';
+export 'package:eclinic/src/screens/screen.historico.dart';

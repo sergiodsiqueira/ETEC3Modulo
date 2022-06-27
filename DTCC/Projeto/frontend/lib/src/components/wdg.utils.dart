@@ -2,12 +2,7 @@ import 'package:flutter/material.dart' hide IconButton, showDialog, Icon;
 import 'package:intl/intl.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Colors, ListTile;
 import 'dart:core';
-import 'package:email_validator/email_validator.dart';
 import 'package:get/get.dart';
-import 'package:brasil_fields/brasil_fields.dart';
-import 'package:flutter/services.dart';
-import 'package:searchfield/searchfield.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 
 import 'package:eclinic/src/screens/screens.dart';
 import 'package:eclinic/src/models/models.dart';
