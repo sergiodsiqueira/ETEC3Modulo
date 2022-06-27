@@ -1,15 +1,13 @@
-import 'package:brasil_fields/brasil_fields.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
 
 import 'package:eclinic/src/models/models.dart';
-import 'package:eclinic/src/providers/providers.dart';
 import 'package:eclinic/src/components/components.dart';
 
+final Login _login = Get.find<Login>();
+
 class Pacientes extends GetxController {
-  final Login _login = Get.find<Login>();
   final RxList<Paciente> _todosPacientes = <Paciente>[].obs;
   final RxString x_access_token = ''.obs;
   late String feedback = '';

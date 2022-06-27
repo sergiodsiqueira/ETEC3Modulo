@@ -1,3 +1,4 @@
+import 'package:eclinic/src/providers/provider.dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -6,8 +7,9 @@ import 'package:get/get.dart';
 import 'package:eclinic/src/models/models.dart';
 import 'package:eclinic/src/components/components.dart';
 
+final Login _login = Get.find<Login>();
+
 class Atendimentos extends GetxController {
-  final Login _login = Get.find<Login>();
   final RxList<Atendimento> _todosAtendimentos = <Atendimento>[].obs;
   final RxString dataSelecionada =
       DateTime.now().toIso8601String().substring(0, 10).obs;

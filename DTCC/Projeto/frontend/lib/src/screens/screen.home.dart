@@ -20,12 +20,10 @@ class _ScreenHomeState extends State<ScreenHome> {
   // Carga inicial de dados ----------------------------------------------------
   final Atendimentos _atendimentos = Get.find<Atendimentos>();
   final Pacientes _pacientes = Get.find<Pacientes>();
-  final Dashboard _dashboard = Get.find<Dashboard>();
 
   @override
   void initState() {
     print('Iniciando...');
-    _dashboard.carregarDados();
     _atendimentos.carregarDados();
     _pacientes.carregarDados();
     super.initState();

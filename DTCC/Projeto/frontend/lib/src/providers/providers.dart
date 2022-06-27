@@ -16,7 +16,6 @@ class Providers {
   Login _login = Get.put<Login>(Login());
   Atendimentos _atendimentos = Get.put<Atendimentos>(Atendimentos());
   Pacientes _pacientes = Get.put<Pacientes>(Pacientes());
-  Dashboard _dashboard = Get.put<Dashboard>(Dashboard());
 
   start() {
     Intl.defaultLocale = 'pt_BR';
