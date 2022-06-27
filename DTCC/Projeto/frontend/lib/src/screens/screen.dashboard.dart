@@ -9,12 +9,12 @@ import 'package:intl/intl.dart';
 final Atendimentos _atendimentos = Get.find<Atendimentos>();
 final Pacientes _pacientes = Get.find<Pacientes>();
 
-class Dashboard extends StatefulWidget {
+class ScreenDashboard extends StatefulWidget {
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<ScreenDashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<ScreenDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

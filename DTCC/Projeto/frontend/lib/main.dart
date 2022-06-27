@@ -18,40 +18,39 @@ class Application extends StatelessWidget {
         home: AnimatedSplashScreen(
             duration: 3000,
             splash: LoadingAnimationWidget.discreteCircle(
-              color: Color.fromARGB(255, 71, 117, 245),
+              color: const Color.fromARGB(255, 71, 117, 245),
               size: 200,
             ),
-            nextScreen: MyApp(),
+            nextScreen: const MyApp(),
             splashTransition: SplashTransition.fadeTransition,
             backgroundColor: Colors.white));
   }
 }
 
 class MyApp extends StatelessWidget {
-  IniciarProviders() {
-    Providers _providers = Providers();
-    _providers.start();
-  }
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData(
-      //     colorSchemeSeed: Color.fromARGB(255, 84, 56, 158),
-      //     useMaterial3: true),
       home: FluentApp(
-        onGenerateTitle: IniciarProviders(),
+        onGenerateTitle: () {
+          Providers _providers = Providers();
+          _providers.start();
+        }(),
         title: 'OFICINA DA MENTE',
+        // ignore: prefer_const_literals_to_create_immutables
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
+        // ignore: prefer_const_literals_to_create_immutables
         supportedLocales: [
           const Locale('pt'),
         ],
         locale: const Locale('pt'),
         debugShowCheckedModeBanner: false,
-        home: ScreenLogin(),
+        home: const ScreenLogin(),
       ),
     );
   }

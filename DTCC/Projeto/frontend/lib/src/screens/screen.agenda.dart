@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 
 import 'package:eclinic/src/components/components.dart';
 
-class TelaAgenda extends StatefulWidget {
-  const TelaAgenda({Key? key}) : super(key: key);
+class ScreenAgenda extends StatefulWidget {
+  const ScreenAgenda({Key? key}) : super(key: key);
 
   @override
-  State<TelaAgenda> createState() => _TelaAgendaState();
+  State<ScreenAgenda> createState() => _TelaAgendaState();
 }
 
-class _TelaAgendaState extends State<TelaAgenda> {
+class _TelaAgendaState extends State<ScreenAgenda> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

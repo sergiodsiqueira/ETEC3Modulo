@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/link.dart';
@@ -7,6 +6,8 @@ import 'package:eclinic/src/screens/screens.dart';
 import 'package:eclinic/src/providers/providers.dart';
 
 class ScreenHome extends StatefulWidget {
+  const ScreenHome({Key? key}) : super(key: key);
+
   @override
   State<ScreenHome> createState() => _ScreenHomeState();
 }
@@ -16,16 +17,20 @@ class _ScreenHomeState extends State<ScreenHome> {
   int index = 0;
   bool value = false;
 
+  // Carga inicial de dados ----------------------------------------------------
   final Atendimentos _atendimentos = Get.find<Atendimentos>();
   final Pacientes _pacientes = Get.find<Pacientes>();
+  final Dashboard _dashboard = Get.find<Dashboard>();
 
   @override
   void initState() {
     print('Iniciando...');
+    _dashboard.carregarDados();
     _atendimentos.carregarDados();
     _pacientes.carregarDados();
     super.initState();
   }
+  //----------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +94,9 @@ class _ScreenHomeState extends State<ScreenHome> {
         ],
       ),
       content: NavigationBody(index: index, children: [
-        Dashboard(),
-        TelaAgenda(),
-        ScreenPacientes(),
+        ScreenDashboard(),
+        const ScreenAgenda(),
+        const ScreenPacientes(),
       ]),
     );
   }
