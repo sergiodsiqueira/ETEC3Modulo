@@ -9,7 +9,7 @@ class LoginApi {
   static Future<ApiResponse<Login>> login(String pEmail, String pSenha) async {
     final Login _login = Get.find<Login>();
     try {
-      String url = 'https://app-eclinic-oficinadamente.herokuapp.com/api/login';
+      String url = 'https://eclinic-teal.vercel.app/api/login';
 
       Map params = {'login': pEmail, 'senha': pSenha};
 
@@ -32,7 +32,8 @@ class LoginApi {
 
       return ApiResponse.error("Erro ao fazer o login");
     } catch (error, exception) {
-      return ApiResponse.error("Servidor não responde... tente mais tarde... ");
+      return ApiResponse.error(
+          "Servidor não responde... tente mais tarde... ");
     }
   }
 }

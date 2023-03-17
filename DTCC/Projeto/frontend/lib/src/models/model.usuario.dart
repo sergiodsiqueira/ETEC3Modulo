@@ -1,4 +1,4 @@
-//https://app-eclinic-oficinadamente.herokuapp.com/api/usuarios
+//https://eclinic-teal.vercel.app/api/usuarios
 import 'package:flutter/material.dart';
 
 class Usuario {

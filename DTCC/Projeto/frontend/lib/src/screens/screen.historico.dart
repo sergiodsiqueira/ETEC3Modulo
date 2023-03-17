@@ -240,7 +240,7 @@ class _ScreenHistoricoState extends State<ScreenHistorico> {
 class API {
   static Future carregarAtendimentos(int ID) async {
     var url =
-        'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/paciente?id=${ID.toString()}';
+        'https://eclinic-teal.vercel.app/api/atendimentos/paciente?id=${ID.toString()}';
 
     final response = await http.get(Uri.parse(url), headers: {
       "Content-Type": "application/json",

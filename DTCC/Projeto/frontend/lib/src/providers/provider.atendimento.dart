@@ -31,7 +31,7 @@ class Atendimentos extends GetxController {
 
         try {
           String url =
-              "https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/data?data='${dataSelecionada.value.substring(0, 10)}'";
+              "https://eclinic-teal.vercel.app/api/atendimentos/data?data='${dataSelecionada.value.substring(0, 10)}'";
           var response = await http.get(Uri.parse(url), headers: {
             "Content-Type": "application/json",
             'x-access-token': x_access_token.value
@@ -93,8 +93,7 @@ class Atendimentos extends GetxController {
       gerarDados(pAtendimento);
     }
 
-    final url = Uri.parse(
-        'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos');
+    final url = Uri.parse('https://eclinic-teal.vercel.app/api/atendimentos');
     final response = await http.post(url,
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +118,7 @@ class Atendimentos extends GetxController {
     }
 
     final url = Uri.parse(
-        'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/${pAtendimento.id.toString()}');
+        'https://eclinic-teal.vercel.app/api/atendimentos/${pAtendimento.id.toString()}');
     final response = await http.put(url,
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +136,7 @@ class Atendimentos extends GetxController {
   // Apagar Atendimento --------------------------------------------------------
   Future<void> apagar(int pID) async {
     final url = Uri.parse(
-        'https://app-eclinic-oficinadamente.herokuapp.com/api/atendimentos/${pID.toString()}');
+        'https://eclinic-teal.vercel.app/api/atendimentos/${pID.toString()}');
     final response = await http.delete(
       url,
       headers: {

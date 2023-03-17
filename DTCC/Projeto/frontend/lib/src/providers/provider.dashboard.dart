@@ -13,7 +13,7 @@ class DashboardAPI {
     ano = ano.substring(6, 10);
 
     String url =
-        "https://app-eclinic-oficinadamente.herokuapp.com/api/dashboard/1/${int.parse(ano)}";
+        "https://eclinic-teal.vercel.app/api/dashboard/1/${int.parse(ano)}";
 
     final response = await http.get(Uri.parse(url), headers: {
       "Content-Type": "application/json",

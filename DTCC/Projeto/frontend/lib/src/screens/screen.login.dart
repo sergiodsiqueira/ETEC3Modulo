@@ -49,9 +49,6 @@ Widget loginBox(BuildContext context) {
     final login = _tEmail.text;
     final senha = _tSenha.text;
 
-    // final login = 'admin@local.com';
-    // final senha = '12345678';
-
     ApiResponse response = await LoginApi.login(login, senha);
 
     if (response.ok) {
